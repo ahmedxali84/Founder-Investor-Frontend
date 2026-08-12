@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+:root.dark {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-cream text-ink font-sans antialiased dark:bg-slate-950 dark:text-slate-100;
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid #2f6bff;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@layer components {
+  .field-label {
+    @apply block text-[12.5px] font-semibold text-ink/80 dark:text-slate-300 mb-1;
+  }
+  .field-shell {
+    @apply flex items-center gap-2 w-full rounded-lg border border-line dark:border-slate-700 bg-white dark:bg-slate-800 px-3 h-[38px]
+           transition-colors focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/10;
+  }
+  .field-input {
+    @apply w-full bg-transparent text-[13.5px] text-ink dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 outline-none;
+  }
+  .btn-primary {
+    @apply w-full h-[40px] rounded-lg bg-brand text-white text-btn
+           transition-all duration-150 hover:bg-brand-hover hover:shadow-glow active:scale-[0.985]
+           disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:active:scale-100;
+  }
+  .btn-oauth {
+    @apply w-full h-[40px] rounded-lg border border-line dark:border-slate-700 bg-white dark:bg-slate-800 text-btn text-ink dark:text-slate-100
+           flex items-center justify-center gap-2.5 transition-all duration-150 hover:bg-gray-50 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-600
+           active:scale-[0.985] disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+  /* In-app zone equivalent of .btn-primary, on the accent/blue palette. */
+  .btn-accent {
+    @apply h-10 px-4 rounded-xl bg-accent text-white text-btn shadow-sm shadow-accent/20
+           transition-all duration-150 hover:bg-accent-hover hover:shadow-glow active:scale-[0.98]
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-sm disabled:active:scale-100;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes notice-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-notice-in {
+  animation: notice-in 0.18s ease-out;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-card-in {
+  animation: card-in 0.25s ease-out both;
+}
+
+/* Gentle hover-lift for interactive cards across the in-app zone. */
+.hover-lift {
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, border-color 0.15s ease-out;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -12px rgba(15, 23, 42, 0.15);
+}
+
+/* Shimmering placeholder for loading states — swapped in wherever a page
+   used to show a bare spinner over blank space. */
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #eef1f5 25%, #f7f9fb 37%, #eef1f5 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+  border-radius: 0.75rem;
+}
+.dark .skeleton {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 37%, #1e293b 63%);
+  background-size: 400% 100%;
+}
+
+/* Subtle gradient text accent — used sparingly on hero headings/numbers. */
+.text-gradient-accent {
+  background-image: linear-gradient(135deg, #2563EB 0%, #4F46E5 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
