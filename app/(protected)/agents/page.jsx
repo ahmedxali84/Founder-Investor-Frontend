@@ -311,17 +311,24 @@ export default function AgentsDashboard() {
                     <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{step.description}</p>
 
                     {isFailed && (
-                      <div className="mt-3 flex items-center gap-3">
-                        <button
-                          onClick={() => handleRetry(step.agentId)}
-                          disabled={retrying[step.agentId]}
-                          className="h-8 px-4 rounded-lg bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 disabled:opacity-50 text-xs font-semibold text-rose-600 dark:text-rose-400 transition-colors"
-                        >
-                          {retrying[step.agentId] ? 'Retrying…' : 'Try again'}
-                        </button>
-                        {retryErrors[step.agentId] && (
-                          <span className="text-[11px] text-rose-500 dark:text-rose-400">{retryErrors[step.agentId]}</span>
+                      <div className="mt-3">
+                        {step.agent?.error && (
+                          <p className="text-[11px] text-rose-500 dark:text-rose-400 mb-2 break-words">
+                            {step.agent.error}
+                          </p>
                         )}
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => handleRetry(step.agentId)}
+                            disabled={retrying[step.agentId]}
+                            className="h-8 px-4 rounded-lg bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 disabled:opacity-50 text-xs font-semibold text-rose-600 dark:text-rose-400 transition-colors"
+                          >
+                            {retrying[step.agentId] ? 'Retrying…' : 'Try again'}
+                          </button>
+                          {retryErrors[step.agentId] && (
+                            <span className="text-[11px] text-rose-500 dark:text-rose-400">{retryErrors[step.agentId]}</span>
+                          )}
+                        </div>
                       </div>
                     )}
 
