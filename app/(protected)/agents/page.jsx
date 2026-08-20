@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '../../../context/AuthContext.jsx'
 import { useAgentStatus } from '../../../hooks/useAgentStatus.js'
@@ -104,10 +104,12 @@ const STATUS_META = {
 export default function AgentsDashboard() {
   const { user, accessToken, signOut } = useAuth()
   const router = useRouter()
-  // Only used to feed the notification bell — this page tracks its own
-  // role/onboarded/agent-pipeline state separately above/below, unrelated
-  // to what useAgentStatus otherwise returns.
-  const { profileData, statusData } = useAgentStatus()
+  // Mostly just for the notification bell — this page tracks its own
+  // role/onboarded/agent-pipeline state separately above/below. userRole is
+  // the exception: it's pulled from here rather than recomputed, so this
+  // page shows the same real designation ("CEO", "Partner", ...) every
+  // other page does instead of a generic "Investor"/"Founder" placeholder.
+  const { profileData, statusData, userRole } = useAgentStatus()
 
   const [role, setRole] = useState('founder')
   const [onboarded, setOnboarded] = useState(null) // null = not known yet
@@ -119,7 +121,10 @@ export default function AgentsDashboard() {
 
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User'
 
-  const [consecutiveErrors, setConsecutiveErrors] = useState(0)
+  // A ref, not state — read synchronously by the polling loop below to pick
+  // the next delay; state would only be visible on the following render,
+  // one tick too late for that decision.
+  const consecutiveErrorsRef = useRef(0)
 
   async function fetchStatus() {
     try {
@@ -130,10 +135,10 @@ export default function AgentsDashboard() {
       const data = await res.json()
       setAgentsById(Object.fromEntries((data.agents || []).map((a) => [a.agent_id, a])))
       setError('')
-      setConsecutiveErrors(0)
+      consecutiveErrorsRef.current = 0
     } catch (err) {
       console.error(err)
-      setConsecutiveErrors((prev) => prev + 1)
+      consecutiveErrorsRef.current += 1
       setError("Couldn't load your progress right now. Retrying…")
     } finally {
       setLoading(false)
@@ -159,9 +164,24 @@ export default function AgentsDashboard() {
   }, [accessToken])
 
   useEffect(() => {
-    fetchStatus()
-    const timer = setInterval(fetchStatus, 3000)
-    return () => clearInterval(timer)
+    let cancelled = false
+    let timer = null
+
+    async function tick() {
+      await fetchStatus()
+      if (cancelled) return
+      // Back off exponentially on repeated failures (capped at 30s) instead
+      // of hammering a downed endpoint every 3s indefinitely; drops straight
+      // back to the 3s base the moment a poll succeeds.
+      const delay = Math.min(3000 * 2 ** consecutiveErrorsRef.current, 30000)
+      timer = setTimeout(tick, delay)
+    }
+
+    tick()
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+    }
   }, [accessToken])
 
   async function handleRetry(agentId) {
@@ -202,7 +222,7 @@ export default function AgentsDashboard() {
     role === 'founder' && onboarded && profileBuilt && (agentsById.agent1?.status || 'idle') === 'idle'
 
   return (
-    <AppShell active="agents" userType={role} userName={userName} userRole={role === 'investor' ? 'Investor' : 'Founder'} onSignOut={signOut} profileData={profileData} statusData={statusData}>
+    <AppShell active="agents" userType={role} userName={userName} userRole={userRole} onSignOut={signOut} profileData={profileData} statusData={statusData}>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-page md:text-page-lg text-slate-900 dark:text-slate-100 tracking-tight">Your Progress</h1>

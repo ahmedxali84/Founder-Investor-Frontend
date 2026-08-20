@@ -15,7 +15,10 @@ export default function ProtectedRoute({ children }) {
   // PREVIEW MODE: set NEXT_PUBLIC_PREVIEW_NO_AUTH=true in .env.local to view
   // every page without logging in (UI/design preview only — no real user data).
   // Remove or set to false to restore normal login protection.
-  const previewNoAuth = process.env.NEXT_PUBLIC_PREVIEW_NO_AUTH === 'true'
+  // Gated on NODE_ENV !== 'production' (inlined at build time, same as the
+  // flag itself) so a stray/misconfigured env var can never disable auth on
+  // a real deployed build — only a local dev server can ever honor it.
+  const previewNoAuth = process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_PREVIEW_NO_AUTH === 'true'
 
   useEffect(() => {
     if (previewNoAuth) return
