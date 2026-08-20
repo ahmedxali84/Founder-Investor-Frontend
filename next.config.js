@@ -21,7 +21,7 @@ const CSP = [
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https://ui-avatars.com https://avatars.githubusercontent.com https://*.supabase.co https://media.licdn.com",
-  "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://founder-investor-backend.onrender.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
