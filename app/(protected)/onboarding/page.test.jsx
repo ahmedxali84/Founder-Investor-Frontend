@@ -66,3 +66,49 @@ describe('Onboarding — founder step 2 submitting overlay', () => {
     expect(screen.queryByRole('button', { name: /^back$/i })).not.toBeInTheDocument()
   })
 })
+
+describe('Onboarding — recovers when /founder/profile errors but actually saved', () => {
+  it('does not show an error when a follow-up /profile check confirms onboarding actually completed', async () => {
+    const user = userEvent.setup()
+    // Keyed off what actually happened, not call order — the page-load
+    // "already onboarded?" pre-check may run more than once in a test
+    // environment, so a simple call counter is fragile. Real behavior:
+    // onboarded only flips true once the founder/profile POST below has
+    // actually been attempted.
+    let founderProfilePosted = false
+    let recoveryCheckRan = false
+
+    global.fetch = vi.fn((url) => {
+      const urlStr = String(url)
+      if (urlStr.includes('/founder/profile')) {
+        founderProfilePosted = true
+        return Promise.resolve({
+          ok: false,
+          json: () => Promise.resolve({ detail: 'Profile error — please try again.' }),
+        })
+      }
+      if (urlStr.includes('/profile')) {
+        if (founderProfilePosted) recoveryCheckRan = true
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ onboarded: founderProfilePosted }) })
+      }
+      return Promise.reject(new Error(`unexpected fetch in test: ${urlStr}`))
+    })
+
+    renderOnboarding()
+
+    await waitFor(() => expect(screen.queryByText(/connect your linkedin/i)).toBeInTheDocument())
+
+    await user.type(screen.getByLabelText(/linkedin profile url/i), 'https://linkedin.com/in/testuser')
+    await user.click(screen.getByRole('button', { name: /continue/i }))
+
+    await waitFor(() => expect(screen.queryByText(/connect your github/i)).toBeInTheDocument())
+
+    await user.type(screen.getByLabelText(/github profile url/i), 'https://github.com/testuser')
+    await user.click(screen.getByRole('button', { name: /complete & post your idea/i }))
+
+    // Wait for the recovery check to actually run, then confirm the error
+    // banner this used to show unconditionally never rendered.
+    await waitFor(() => expect(recoveryCheckRan).toBe(true))
+    expect(screen.queryByText(/profile error/i)).not.toBeInTheDocument()
+  })
+})

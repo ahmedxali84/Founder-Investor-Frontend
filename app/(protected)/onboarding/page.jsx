@@ -221,6 +221,27 @@ function OnboardingInner() {
     setStep(2)
   }
 
+  // A handful of real profile submissions have gone on to actually succeed
+  // server-side (Postgres write + session save) even after this request came
+  // back with an error response — the one thing in that request capable of
+  // throwing before those saves run is Agent 2's Groq call, and it's been
+  // transiently rate-limited during heavy same-key testing. Before showing a
+  // scary "failed" error for something that may have actually gone through a
+  // moment later, double-check with the server itself rather than trusting
+  // this one response alone.
+  async function reallyDidFail() {
+    try {
+      const res = await fetch(`${API_URL}/profile`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      if (!res.ok) return true
+      const data = await res.json()
+      return !data.onboarded
+    } catch {
+      return true
+    }
+  }
+
   async function handleFounderSubmit(e) {
     if (e) e.preventDefault()
     setFormError('')
@@ -262,6 +283,10 @@ function OnboardingInner() {
 
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
+        if (!(await reallyDidFail())) {
+          router.push('/ideas')
+          return
+        }
         throw new Error(data.detail || 'Failed to submit founder profile.')
       }
 
@@ -319,6 +344,10 @@ function OnboardingInner() {
 
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
+        if (!(await reallyDidFail())) {
+          router.push('/matches')
+          return
+        }
         throw new Error(data.detail || 'Failed to submit investor profile.')
       }
 
