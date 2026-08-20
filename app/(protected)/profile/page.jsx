@@ -14,7 +14,7 @@ import { PageSkeleton } from '../../../components/Skeleton.jsx'
 import {
   LinkedInMark, GitHubMark, RepoIcon, StarIcon, ProfileIcon,
   BulbIcon, RobotIcon, HandshakeIcon, CheckCircleIcon,
-  ArrowRightIcon, ArrowUpRightIcon, HomeIcon,
+  ArrowRightIcon, ArrowUpRightIcon, HomeIcon, WarningIcon,
 } from '../../../components/icons.jsx'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api'
@@ -28,12 +28,21 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState(null)
   const [pitchPosts, setPitchPosts] = useState([])
   const [loading, setLoading] = useState(true)
+  // Distinct from "profile is null" — lets the render branch below show an
+  // honest retry screen instead of silently falling through to the founder-
+  // mode default a moment ago, which meant a transient network blip on this
+  // fetch showed an investor their own account rendered as a founder with no
+  // indication anything had gone wrong.
+  const [loadError, setLoadError] = useState(false)
 
   useEffect(() => {
+    let cancelled = false
+
     async function loadProfileAndPosts() {
       try {
         setLoading(true)
-        let loadedUserType = 'founder'
+        setLoadError(false)
+        let loadedUserType = null
 
         if (accessToken) {
           const res = await fetch(`${API_URL}/profile`, {
@@ -41,8 +50,12 @@ export default function ProfilePage() {
           })
           if (res.ok) {
             const data = await res.json()
+            if (cancelled) return
             setProfile(data)
             loadedUserType = data.user_type || 'founder'
+          } else {
+            if (cancelled) return
+            setLoadError(true)
           }
         }
 
@@ -55,18 +68,21 @@ export default function ProfilePage() {
             .eq('founder_id', user.id)
             .order('created_at', { ascending: false })
 
+          if (cancelled) return
           if (!error && posts) {
             setPitchPosts(posts)
           }
         }
       } catch (err) {
         console.error('Error loading profile page:', err)
+        if (!cancelled) setLoadError(true)
       } finally {
-        setLoading(false)
+        if (!cancelled) setLoading(false)
       }
     }
 
     loadProfileAndPosts()
+    return () => { cancelled = true }
   }, [accessToken, user])
 
   const founderData = profile?.profile || {}
@@ -86,6 +102,27 @@ export default function ProfilePage() {
 
   if (loading) {
     return <PageSkeleton />
+  }
+
+  if (loadError && !profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-cream dark:bg-slate-950 px-6">
+        <EmptyState
+          icon={<WarningIcon className="w-6 h-6" />}
+          title="Couldn't load your profile"
+          subtitle="That's likely a transient connection issue — your account and data are fine. Try again in a moment."
+          action={
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-colors"
+            >
+              Try again
+            </button>
+          }
+          className="max-w-sm"
+        />
+      </div>
+    )
   }
 
   return (

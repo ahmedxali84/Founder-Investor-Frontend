@@ -414,10 +414,18 @@ on conflict (id) do nothing;
 -- if it's still present from an earlier version of this schema.
 drop policy if exists "pitch_screenshots_public_read" on storage.objects;
 
+-- Path must be {auth.uid()}/{filename} (see uploadPitchScreenshot() in
+-- frontend/lib/supabaseStorage.js) — checking only "is authenticated" let any
+-- signed-up user write to any path in this bucket, including one that looks
+-- like it belongs to another user's folder. Same shape as the equivalent
+-- message-attachments policy above.
 drop policy if exists "pitch_screenshots_owner_write" on storage.objects;
 create policy "pitch_screenshots_owner_write"
   on storage.objects for insert
-  with check (bucket_id = 'pitch-screenshots' and (select auth.uid()) is not null);
+  with check (
+    bucket_id = 'pitch-screenshots'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
 
 -- ============================================================
 -- public.investors — dead leftover from an early RealtimeChat.jsx prototype

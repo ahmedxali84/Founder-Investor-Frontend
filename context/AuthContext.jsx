@@ -21,16 +21,19 @@ export function AuthProvider({ children }) {
       return
     }
 
-    let active = true
-
-    // 1. Restore the session that Supabase persisted (survives a page refresh).
-    supabase.auth.getSession().then(({ data }) => {
-      if (!active) return
-      setSession(data.session ?? null)
-      setLoading(false)
-    })
-
-    // 2. Stay in sync with logins, logouts, token refreshes and OAuth returns.
+    // onAuthStateChange alone covers every case here — it fires an
+    // INITIAL_SESSION event exactly once on subscribe (restoring whatever
+    // session was already persisted), then every subsequent sign-in/out,
+    // token refresh, and OAuth return. A separate getSession() call used to
+    // run alongside this and set loading=false the instant IT resolved —
+    // but getSession() doesn't wait for the OAuth code exchange
+    // detectSessionInUrl kicks off (that's a real network round-trip), so it
+    // could resolve with session=null before the exchange finished. That
+    // raced against ProtectedRoute's redirect-to-/login check and usually
+    // lost on a fast production build (rarely on a slower dev server, which
+    // is why this only ever showed up after deploying): the instant after
+    // approving Google sign-in, the app would bounce back to /login a beat
+    // before the real session arrived.
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, newSession) => {
@@ -39,7 +42,6 @@ export function AuthProvider({ children }) {
     })
 
     return () => {
-      active = false
       subscription.unsubscribe()
     }
   }, [])

@@ -7,13 +7,25 @@
 // connect/img restricted to this origin plus the actual external hosts the
 // app talks to (Supabase, Google Fonts, GitHub/ui-avatars avatar images,
 // LinkedIn's media CDN for OAuth-verified profile photos).
-// If NEXT_PUBLIC_API_URL is ever pointed at a separately-hosted backend
-// instead of the same-origin /api rewrite below, that origin needs adding to
-// connect-src too.
 // Dev-only: Next's Fast Refresh / dev-mode error overlay uses eval() for
 // stack-frame reconstruction, which a strict script-src blocks (React itself
 // never calls eval() in production, so prod keeps no 'unsafe-eval').
 const isDev = process.env.NODE_ENV !== 'production'
+
+// Derived from NEXT_PUBLIC_API_URL (the same env var apiClient.js/authApi.js
+// etc. already read) rather than hardcoded, so connect-src always matches
+// wherever the backend is actually deployed — e.g. Render — without needing
+// a second value kept in sync by hand. Same-origin '/api' rewrite (local dev)
+// needs nothing extra here since 'self' already covers it.
+let backendOrigin = ''
+try {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || ''
+  if (/^https?:\/\//.test(apiUrl)) backendOrigin = new URL(apiUrl).origin
+} catch {
+  // Malformed NEXT_PUBLIC_API_URL — leave backendOrigin empty rather than
+  // fail the build over it; the app's own apiClient.js already surfaces a
+  // clear "can't reach the server" error at runtime in that case.
+}
 
 const CSP = [
   "default-src 'self'",
@@ -21,7 +33,7 @@ const CSP = [
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https://ui-avatars.com https://avatars.githubusercontent.com https://*.supabase.co https://media.licdn.com",
-  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://founder-investor-backend.onrender.com",
+  `connect-src 'self' https://*.supabase.co wss://*.supabase.co${backendOrigin ? ` ${backendOrigin}` : ''}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",

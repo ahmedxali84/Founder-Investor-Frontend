@@ -479,6 +479,13 @@ function MessagingPageInner() {
 
   const currentContact = contacts.find((c) => c.id === selectedId)
 
+  // Index of the last message that's mine — not "the last message in the
+  // thread," which flips to the other person's the instant they reply, even
+  // though my own last-sent message is still genuinely my most recent one.
+  const lastMineIndex = conversation.reduce(
+    (acc, m, i) => (m.sender_id === currentUser?.id ? i : acc), -1
+  )
+
   const handleSelectContact = (id) => {
     setSelectedId(id)
     markContactRead(id)
@@ -901,8 +908,13 @@ function MessagingPageInner() {
                         !nextMsg || nextMsg.sender_id !== msg.sender_id || !isSameDay(nextMsg.created_at, msg.created_at)
                       // "Seen" only ever applies to my own most recent message in the
                       // thread — showing it on an older one would misleadingly imply
-                      // everything since was read too.
-                      const showSeen = isMine && index === conversation.length - 1 && Boolean(msg.read_at)
+                      // everything since was read too. This has to be "the last
+                      // message I sent," not "the last message in the thread": the
+                      // instant the other person replies, that reply becomes the
+                      // thread's last message, so checking against the thread's end
+                      // made the indicator vanish off a message that's genuinely
+                      // still my most recent one and still genuinely read.
+                      const showSeen = isMine && index === lastMineIndex && Boolean(msg.read_at)
 
                       return (
                         <div key={msg.id}>

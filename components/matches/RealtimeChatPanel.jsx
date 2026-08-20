@@ -54,8 +54,10 @@ export default function RealtimeChatPanel({ selfUserId, counterpartUserId, count
       } catch (err) {
         if (!cancelled) {
           setError(
-            `Real chat isn't set up on this Supabase project yet (${err.message}). Run the SQL in ` +
-            `frontend/supabase/schema.sql and enable Realtime replication on "messages".`
+            err.code === 'CONVERSATION_NOT_YET_CREATED'
+              ? err.message
+              : `Real chat isn't set up on this Supabase project yet (${err.message}). Run the SQL in ` +
+                `frontend/supabase/schema.sql and enable Realtime replication on "messages".`
           )
         }
       } finally {
