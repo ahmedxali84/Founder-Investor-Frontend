@@ -10,6 +10,7 @@ import { safeHref } from '../../../lib/validation.js'
 import AppShell from '../../../components/AppShell.jsx'
 import StatTile from '../../../components/StatTile.jsx'
 import InfoPill from '../../../components/InfoPill.jsx'
+import Notice from '../../../components/Notice.jsx'
 import EmptyState from '../../../components/EmptyState.jsx'
 import { PageSkeleton } from '../../../components/Skeleton.jsx'
 import {
@@ -35,6 +36,8 @@ export default function ProfilePage() {
   // fetch showed an investor their own account rendered as a founder with no
   // indication anything had gone wrong.
   const [loadError, setLoadError] = useState(false)
+  const [resumeError, setResumeError] = useState('')
+  const [downloadingResume, setDownloadingResume] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -85,6 +88,23 @@ export default function ProfilePage() {
     loadProfileAndPosts()
     return () => { cancelled = true }
   }, [accessToken, user])
+
+  async function handleDownloadResume(url, filename) {
+    // downloadAuthenticated used to be called with no error handling at all
+    // here — any failure (a 503 while the resume rebuilds from a wiped
+    // file, a network blip, ...) just silently did nothing, which is
+    // exactly what "I clicked it and nothing happened" looks like from the
+    // outside.
+    setResumeError('')
+    setDownloadingResume(true)
+    try {
+      await downloadAuthenticated(url, accessToken, filename)
+    } catch (err) {
+      setResumeError(err.message || 'Could not download the resume. Please try again.')
+    } finally {
+      setDownloadingResume(false)
+    }
+  }
 
   const founderData = profile?.profile || {}
   const rawData = profile?.raw || {}
@@ -222,10 +242,11 @@ export default function ProfilePage() {
                   resumeUrl ? (
                     <button
                       type="button"
-                      onClick={() => downloadAuthenticated(resumeUrl, accessToken, `${displayName.replace(/\s+/g, '_')}_resume.docx`)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 transition-all"
+                      disabled={downloadingResume}
+                      onClick={() => handleDownloadResume(resumeUrl, `${displayName.replace(/\s+/g, '_')}_resume.docx`)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 disabled:opacity-50 transition-all"
                     >
-                      <ArrowUpRightIcon className="w-4 h-4" /> Download resume
+                      <ArrowUpRightIcon className="w-4 h-4" /> {downloadingResume ? 'Downloading…' : 'Download resume'}
                     </button>
                   ) : (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-700">
@@ -234,6 +255,7 @@ export default function ProfilePage() {
                   )
                 )}
               </div>
+              {resumeError && <Notice tone="error" className="mt-3">{resumeError}</Notice>}
             </div>
           </div>
 
