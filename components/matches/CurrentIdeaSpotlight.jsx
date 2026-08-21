@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext.jsx'
 import { scoreBadgeTone, mvpStatusTone } from '../../lib/format.js'
 import { raiseHand, rejectMatch } from '../../lib/matchesApi.js'
 import { downloadAuthenticated } from '../../lib/apiClient.js'
+import { safeHref } from '../../lib/validation.js'
 import InfoPill from '../InfoPill.jsx'
 import Notice from '../Notice.jsx'
 import { SpinnerIcon, GitHubMark, StarIcon, LockIcon, RepoIcon, ArrowUpRightIcon, RocketIcon, CheckCircleIcon } from '../icons.jsx'
@@ -162,8 +163,8 @@ export default function CurrentIdeaSpotlight({ currentMatch, meetingSlot, onActi
             </div>
           )}
 
-          {founder.screenshot_url && (
-            <img src={founder.screenshot_url} alt="MVP screenshot" className="w-full max-h-64 object-cover rounded-2xl border border-slate-100 dark:border-slate-800" />
+          {safeHref(founder.screenshot_url) && (
+            <img src={safeHref(founder.screenshot_url)} alt="MVP screenshot" className="w-full max-h-64 object-cover rounded-2xl border border-slate-100 dark:border-slate-800" />
           )}
 
           {founder.repo_url && (
@@ -183,8 +184,8 @@ export default function CurrentIdeaSpotlight({ currentMatch, meetingSlot, onActi
                 <ArrowUpRightIcon className="w-3.5 h-3.5" /> Download resume
               </button>
             )}
-            {founder.mvp_url && <a href={founder.mvp_url} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><ArrowUpRightIcon className="w-3.5 h-3.5" /> View live MVP</a>}
-            {founder.repo_url && <a href={founder.repo_url} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><RepoIcon className="w-3.5 h-3.5" /> View repo</a>}
+            {safeHref(founder.mvp_url) && <a href={safeHref(founder.mvp_url)} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><ArrowUpRightIcon className="w-3.5 h-3.5" /> View live MVP</a>}
+            {safeHref(founder.repo_url) && <a href={safeHref(founder.repo_url)} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><RepoIcon className="w-3.5 h-3.5" /> View repo</a>}
             {currentMatch.reason && <span className="text-slate-400 dark:text-slate-500 font-normal italic">"{currentMatch.reason}"</span>}
           </div>
         </>

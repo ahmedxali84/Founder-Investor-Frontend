@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { raiseHand } from '../../lib/matchesApi.js'
 import { scoreBadgeTone, mvpStatusTone } from '../../lib/format.js'
+import { safeHref } from '../../lib/validation.js'
 import EmptyState from '../EmptyState.jsx'
 import InfoPill from '../InfoPill.jsx'
 import Notice from '../Notice.jsx'
@@ -106,8 +107,8 @@ function ShortlistCard({ idea, slot, onRaised }) {
 
       <div className="flex items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
         <div className="flex items-center gap-3 text-[11px] font-semibold">
-          {founder.mvp_url && <a href={founder.mvp_url} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><ArrowUpRightIcon className="w-3.5 h-3.5" /> MVP</a>}
-          {founder.repo_url && <a href={founder.repo_url} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><RepoIcon className="w-3.5 h-3.5" /> Repo</a>}
+          {safeHref(founder.mvp_url) && <a href={safeHref(founder.mvp_url)} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><ArrowUpRightIcon className="w-3.5 h-3.5" /> MVP</a>}
+          {safeHref(founder.repo_url) && <a href={safeHref(founder.repo_url)} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><RepoIcon className="w-3.5 h-3.5" /> Repo</a>}
         </div>
 
         {confirmed ? (

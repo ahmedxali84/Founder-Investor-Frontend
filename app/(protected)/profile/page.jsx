@@ -6,6 +6,7 @@ import { useAuth } from '../../../context/AuthContext.jsx'
 import { useAgentStatus } from '../../../hooks/useAgentStatus.js'
 import { supabase } from '../../../lib/supabaseClient.js'
 import { downloadAuthenticated } from '../../../lib/apiClient.js'
+import { safeHref } from '../../../lib/validation.js'
 import AppShell from '../../../components/AppShell.jsx'
 import StatTile from '../../../components/StatTile.jsx'
 import InfoPill from '../../../components/InfoPill.jsx'
@@ -426,7 +427,7 @@ export default function ProfilePage() {
                           <ArrowUpRightIcon className="w-4 h-4 text-slate-500 dark:text-slate-400" /> Working MVP prototype
                         </div>
                         <a
-                          href={post.mvp_url}
+                          href={safeHref(post.mvp_url)}
                           target="_blank"
                           rel="noreferrer"
                           className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline"

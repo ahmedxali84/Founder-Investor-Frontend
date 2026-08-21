@@ -137,6 +137,27 @@ create policy "pitch_posts_delete_own"
   on public.pitch_posts for delete
   using ((select auth.uid()) = founder_id);
 
+-- mvp_url/repo_url/screenshot_url get rendered as a real <a href>/<img src>
+-- for OTHER users (investors browsing shortlists) once the backend pulls
+-- this row into a match payload — a founder could otherwise self-serve a
+-- `javascript:`/`data:` URL straight past any client-side JS check (RLS
+-- only enforces founder_id ownership, not URL scheme) and get it executed
+-- in an investor's authenticated session the moment they click the link.
+-- The frontend now also guards every render site with safeHref(), but this
+-- constraint is the one layer a malicious client can't bypass by skipping
+-- the app's own JS entirely and writing straight to Supabase.
+alter table public.pitch_posts drop constraint if exists pitch_posts_mvp_url_scheme_chk;
+alter table public.pitch_posts add constraint pitch_posts_mvp_url_scheme_chk
+  check (mvp_url is null or mvp_url ~* '^https?://');
+
+alter table public.pitch_posts drop constraint if exists pitch_posts_repo_url_scheme_chk;
+alter table public.pitch_posts add constraint pitch_posts_repo_url_scheme_chk
+  check (repo_url is null or repo_url ~* '^https?://');
+
+alter table public.pitch_posts drop constraint if exists pitch_posts_screenshot_url_scheme_chk;
+alter table public.pitch_posts add constraint pitch_posts_screenshot_url_scheme_chk
+  check (screenshot_url is null or screenshot_url ~* '^https?://');
+
 -- ============================================================
 -- Durable founder/investor profiles — written once LinkedIn/GitHub are
 -- connected at onboarding, read back on every login so the app never asks

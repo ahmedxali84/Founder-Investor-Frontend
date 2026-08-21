@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { supabase } from '../../lib/supabaseClient.js'
 import { uploadPitchScreenshot } from '../../lib/supabaseStorage.js'
+import { isSafeHttpUrl, safeHref } from '../../lib/validation.js'
 import Field from '../Field.jsx'
 import Notice from '../Notice.jsx'
 import InfoPill from '../InfoPill.jsx'
@@ -246,6 +247,19 @@ export default function FounderIdeasView() {
 
   async function handleConfirmGoLive(post) {
     setActivateError('')
+    // The warning banner above only nudges toward a valid http(s) URL — it
+    // never actually blocked a bad one from being saved. mvp_url/repo_url
+    // get rendered as a real <a href> for investors browsing this idea, so
+    // anything other than http(s) (javascript:, data:, etc.) must be
+    // rejected here, not just discouraged.
+    if (mvpUrl.trim() && !isSafeHttpUrl(mvpUrl.trim())) {
+      setActivateError('MVP link must be a valid http:// or https:// URL.')
+      return
+    }
+    if (repoUrl.trim() && !isSafeHttpUrl(repoUrl.trim())) {
+      setActivateError('Repo link must be a valid http:// or https:// URL.')
+      return
+    }
     setActivatingId(post.id)
     try {
       let screenshotUrl = post.screenshot_url || null
@@ -396,14 +410,14 @@ export default function FounderIdeasView() {
 
               <p className="text-xs text-slate-600 dark:text-slate-300 whitespace-pre-wrap leading-relaxed line-clamp-3">{post.pitch_text}</p>
 
-              {post.screenshot_url && (
-                <img src={post.screenshot_url} alt={`${post.title} screenshot`} className="w-full max-h-64 object-cover rounded-2xl border border-slate-100 dark:border-slate-800" />
+              {safeHref(post.screenshot_url) && (
+                <img src={safeHref(post.screenshot_url)} alt={`${post.title} screenshot`} className="w-full max-h-64 object-cover rounded-2xl border border-slate-100 dark:border-slate-800" />
               )}
 
               <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-3 text-[11px] font-semibold">
-                  {post.mvp_url && <a href={post.mvp_url} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><ArrowUpRightIcon className="w-3.5 h-3.5" /> MVP link</a>}
-                  {post.repo_url && <a href={post.repo_url} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><RepoIcon className="w-3.5 h-3.5" /> Repo</a>}
+                  {safeHref(post.mvp_url) && <a href={safeHref(post.mvp_url)} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><ArrowUpRightIcon className="w-3.5 h-3.5" /> MVP link</a>}
+                  {safeHref(post.repo_url) && <a href={safeHref(post.repo_url)} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><RepoIcon className="w-3.5 h-3.5" /> Repo</a>}
                 </div>
                 {!post.is_live && goLiveId !== post.id && (
                   <button
