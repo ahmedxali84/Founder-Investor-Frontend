@@ -50,6 +50,28 @@ describe('FounderMatchesView — new interest after a deal completes', () => {
     expect(screen.getByText(/interested investor/i)).toBeInTheDocument()
   })
 
+  it('the otherInterest fallback itself never returns an already-completed slot, regardless of current_match', () => {
+    // Direct coverage of the actual fix (filtering by !s.completed) rather
+    // than the id-comparison approach an earlier attempt used and which
+    // turned out not to reliably exclude the completed slot in production.
+    // No current_match at all here — isolates otherInterest's own filtering.
+    const completedSlot = { id: 'inv_old', both_opted_in: true, completed: true, investor: { id: 'inv_old', name: 'Old Investor' } }
+    const newInvestorSlot = { id: 'inv_new', investor_raised: true, both_opted_in: false, investor: { id: 'inv_new', name: 'New Investor' } }
+
+    render(
+      <FounderMatchesView
+        mvpUrlValid
+        currentMatch={{}}
+        meetingRequests={[completedSlot, newInvestorSlot]}
+        founderDomain="AI"
+        myIdeaId="idea_1"
+        onRefetch={() => {}}
+      />
+    )
+
+    expect(screen.getByText(/interested investor/i)).toBeInTheDocument()
+  })
+
   it('still shows the current match spotlight when it is not completed', () => {
     const activeInvestor = { id: 'inv_active', name: 'Active Investor', owner_user_id: 'active-owner' }
 

@@ -106,10 +106,14 @@ export default function InvestorMatchesView({ currentMatch, meetingRequests, onR
   // current_match at all.
   const currentMatchCompleted = Boolean(spotlightSlot?.completed)
 
-  const otherInterest = (!currentMatch?.idea || currentMatchCompleted)
-    ? (meetingRequests || []).find((s) =>
-        s.id !== currentMatch?.idea?.id && (s.founder_requested || s.both_opted_in))
-    : null
+  // Filtering by !s.completed directly is what actually matters here — an
+  // earlier version of this tried to exclude current_match's own slot by
+  // comparing ids instead, but current_match's snapshot id didn't reliably
+  // line up with the live meetingRequests entry, so .find() kept returning
+  // the already-completed deal (it still satisfies both_opted_in) instead
+  // of skipping past it to genuinely new interest.
+  const otherInterest = (meetingRequests || []).find((s) =>
+    !s.completed && (s.founder_requested || s.both_opted_in))
 
   // Whichever idea is actually actionable right now — the algorithmic top
   // match if there is one and it isn't already finished, otherwise a real
