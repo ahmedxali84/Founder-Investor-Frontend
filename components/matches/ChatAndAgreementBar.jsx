@@ -1,13 +1,20 @@
 'use client'
 
-import { ChatBubbleIcon, DocIcon } from '../icons.jsx'
+import { ChatBubbleIcon, DocIcon, CheckCircleIcon, SpinnerIcon } from '../icons.jsx'
 
 /**
  * Shown once a meeting is confirmed, instead of auto-opening the live chat
  * panel inline — the founder/investor decide when to actually step into
  * chat, and can jump straight to the term sheet either way.
+ *
+ * "Mark as Done" is the other action here: a confirmed deal used to have no
+ * further lifecycle state at all — nothing ever released it, so it
+ * permanently occupied this investor's/founder's one-deal slot even once
+ * the two had actually finished building together. Either side can mark it
+ * done unilaterally (same one-sided pattern "Reject" already uses
+ * elsewhere), which frees both of them up for a new match.
  */
-export default function ChatAndAgreementBar({ chatOpen, onToggleChat, onOpenAgreement }) {
+export default function ChatAndAgreementBar({ chatOpen, onToggleChat, onOpenAgreement, completed, markingDone, onMarkDone }) {
   return (
     <div className="flex items-center gap-2 flex-wrap">
       <button
@@ -24,6 +31,22 @@ export default function ChatAndAgreementBar({ chatOpen, onToggleChat, onOpenAgre
         <DocIcon className="w-4 h-4" />
         Agreement
       </button>
+      {completed ? (
+        <span className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold inline-flex items-center gap-2">
+          <CheckCircleIcon className="w-4 h-4" />
+          Deal Completed
+        </span>
+      ) : (
+        <button
+          onClick={onMarkDone}
+          disabled={markingDone}
+          title="Mark this deal as finished — frees you both up to be matched again"
+          className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold inline-flex items-center gap-2 transition-all disabled:opacity-50"
+        >
+          {markingDone ? <SpinnerIcon className="w-4 h-4" /> : <CheckCircleIcon className="w-4 h-4" />}
+          Mark as Done
+        </button>
+      )}
     </div>
   )
 }

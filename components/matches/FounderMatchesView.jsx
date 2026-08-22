@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext.jsx'
-import { requestMeeting } from '../../lib/matchesApi.js'
+import { requestMeeting, completeDeal } from '../../lib/matchesApi.js'
 import MvpGateBanner from './MvpGateBanner.jsx'
 import CurrentMatchSpotlight from './CurrentMatchSpotlight.jsx'
 import RealtimeChatPanel from './RealtimeChatPanel.jsx'
@@ -100,9 +100,11 @@ function PendingInterestCard({ slot, mvpUrlValid, onActionDone }) {
  * PendingInterestCard rather than silently dropped.
  */
 export default function FounderMatchesView({ mvpUrlValid, currentMatch, meetingRequests, founderDomain, onRefetch }) {
-  const { user } = useAuth()
+  const { user, accessToken } = useAuth()
   const [termSheetOpen, setTermSheetOpen] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
+  const [markingDone, setMarkingDone] = useState(false)
+  const [markDoneError, setMarkDoneError] = useState('')
   const slotsById = Object.fromEntries((meetingRequests || []).map((s) => [s.id, s]))
   const spotlightSlot = currentMatch?.investor ? slotsById[currentMatch.investor.id] : null
 
@@ -115,6 +117,20 @@ export default function FounderMatchesView({ mvpUrlValid, currentMatch, meetingR
   // current_match's stale snapshot hasn't caught up to.
   const activeInvestor = currentMatch?.investor || otherInterest?.investor
   const activeSlot = spotlightSlot || otherInterest
+
+  async function handleMarkDone() {
+    if (!activeInvestor?.id) return
+    setMarkingDone(true)
+    setMarkDoneError('')
+    try {
+      await completeDeal(activeInvestor.id, accessToken)
+      onRefetch?.()
+    } catch (err) {
+      setMarkDoneError(err.message)
+    } finally {
+      setMarkingDone(false)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -146,7 +162,11 @@ export default function FounderMatchesView({ mvpUrlValid, currentMatch, meetingR
             chatOpen={chatOpen}
             onToggleChat={() => setChatOpen((v) => !v)}
             onOpenAgreement={() => setTermSheetOpen(true)}
+            completed={activeSlot?.completed}
+            markingDone={markingDone}
+            onMarkDone={handleMarkDone}
           />
+          {markDoneError && <Notice tone="error">{markDoneError}</Notice>}
           {chatOpen && (
             <RealtimeChatPanel
               selfUserId={user?.id}

@@ -200,6 +200,27 @@ create policy "investor_profiles_select_own"
 -- Supabase client. Select policies exist only in case you want to read them
 -- from the frontend later.
 
+-- Durable record of who a user has passed on (an investor's rejected idea
+-- ids, or a founder's rejected investor ids) — previously lived only in
+-- SessionState.rejected_ids, serialized to sessions_db.json on Render's
+-- ephemeral disk and nowhere else, so a redeploy silently reset everyone's
+-- rejection history and previously-declined matches would resurface.
+create table if not exists public.user_rejections (
+  user_id      uuid primary key references auth.users (id) on delete cascade,
+  rejected_ids jsonb not null default '[]'::jsonb,
+  updated_at   timestamptz not null default now()
+);
+
+alter table public.user_rejections enable row level security;
+
+drop policy if exists "user_rejections_select_own" on public.user_rejections;
+create policy "user_rejections_select_own"
+  on public.user_rejections for select
+  using ((select auth.uid()) = user_id);
+
+-- Same reasoning as founder_profiles/investor_profiles above: only ever
+-- written by the backend over the direct DATABASE_URL connection.
+
 -- ============================================================
 -- Write-through durability for the shared marketplace pools
 -- (GLOBAL_IDEAS_POOL / GLOBAL_INVESTORS_POOL / GLOBAL_MEETING_REQUESTS in
@@ -299,6 +320,14 @@ create table if not exists public.meeting_requests (
   updated_at        timestamptz not null default now(),
   primary key (idea_id, investor_id)
 );
+
+-- Marks a confirmed deal (both_opted_in=true) as finished, once the
+-- founder/investor have actually completed the project together — frees
+-- the pair up to be matched again instead of the confirmed slot permanently
+-- blocking any new deal for either party (see _investor_has_other_confirmed_
+-- deal / _idea_has_other_confirmed_deal in main_app.py, which check this).
+alter table public.meeting_requests add column if not exists completed boolean not null default false;
+alter table public.meeting_requests add column if not exists completed_at timestamptz;
 
 create index if not exists meeting_requests_founder_user_id_idx on public.meeting_requests (founder_user_id);
 create index if not exists meeting_requests_investor_user_id_idx on public.meeting_requests (investor_user_id);

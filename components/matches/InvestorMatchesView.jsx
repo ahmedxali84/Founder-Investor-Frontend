@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext.jsx'
-import { raiseHand } from '../../lib/matchesApi.js'
+import { raiseHand, completeDeal } from '../../lib/matchesApi.js'
 import CurrentIdeaSpotlight from './CurrentIdeaSpotlight.jsx'
 import RealtimeChatPanel from './RealtimeChatPanel.jsx'
 import ChatAndAgreementBar from './ChatAndAgreementBar.jsx'
@@ -91,9 +91,11 @@ function PendingIdeaCard({ slot, onActionDone }) {
  * below via PendingIdeaCard rather than silently dropped.
  */
 export default function InvestorMatchesView({ currentMatch, meetingRequests, onRefetch }) {
-  const { user } = useAuth()
+  const { user, accessToken } = useAuth()
   const [termSheetOpen, setTermSheetOpen] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
+  const [markingDone, setMarkingDone] = useState(false)
+  const [markDoneError, setMarkDoneError] = useState('')
   const slotsById = Object.fromEntries((meetingRequests || []).map((s) => [s.id, s]))
   const spotlightSlot = currentMatch?.idea ? slotsById[currentMatch.idea.id] : null
 
@@ -106,6 +108,20 @@ export default function InvestorMatchesView({ currentMatch, meetingRequests, onR
   // current_match's stale snapshot hasn't caught up to.
   const activeIdea = currentMatch?.idea || otherInterest?.idea
   const activeSlot = spotlightSlot || otherInterest
+
+  async function handleMarkDone() {
+    if (!activeIdea?.id) return
+    setMarkingDone(true)
+    setMarkDoneError('')
+    try {
+      await completeDeal(activeIdea.id, accessToken)
+      onRefetch?.()
+    } catch (err) {
+      setMarkDoneError(err.message)
+    } finally {
+      setMarkingDone(false)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -123,7 +139,11 @@ export default function InvestorMatchesView({ currentMatch, meetingRequests, onR
             chatOpen={chatOpen}
             onToggleChat={() => setChatOpen((v) => !v)}
             onOpenAgreement={() => setTermSheetOpen(true)}
+            completed={activeSlot?.completed}
+            markingDone={markingDone}
+            onMarkDone={handleMarkDone}
           />
+          {markDoneError && <Notice tone="error">{markDoneError}</Notice>}
           {chatOpen && (
             <RealtimeChatPanel
               selfUserId={user?.id}
