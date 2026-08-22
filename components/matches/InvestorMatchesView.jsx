@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { raiseHand, completeDeal } from '../../lib/matchesApi.js'
 import CurrentIdeaSpotlight from './CurrentIdeaSpotlight.jsx'
-import RealtimeChatPanel from './RealtimeChatPanel.jsx'
 import ChatAndAgreementBar from './ChatAndAgreementBar.jsx'
 import TermSheetModal from './TermSheetModal.jsx'
 import EmptyState from '../EmptyState.jsx'
@@ -93,7 +92,6 @@ function PendingIdeaCard({ slot, onActionDone }) {
 export default function InvestorMatchesView({ currentMatch, meetingRequests, onRefetch }) {
   const { user, accessToken } = useAuth()
   const [termSheetOpen, setTermSheetOpen] = useState(false)
-  const [chatOpen, setChatOpen] = useState(false)
   const [markingDone, setMarkingDone] = useState(false)
   const [markDoneError, setMarkDoneError] = useState('')
   const slotsById = Object.fromEntries((meetingRequests || []).map((s) => [s.id, s]))
@@ -150,23 +148,13 @@ export default function InvestorMatchesView({ currentMatch, meetingRequests, onR
       {activeSlot?.both_opted_in && activeIdea?.owner_user_id && (
         <>
           <ChatAndAgreementBar
-            chatOpen={chatOpen}
-            onToggleChat={() => setChatOpen((v) => !v)}
+            counterpartUserId={activeIdea.owner_user_id}
             onOpenAgreement={() => setTermSheetOpen(true)}
             completed={activeSlot?.completed}
             markingDone={markingDone}
             onMarkDone={handleMarkDone}
           />
           {markDoneError && <Notice tone="error">{markDoneError}</Notice>}
-          {chatOpen && (
-            <RealtimeChatPanel
-              selfUserId={user?.id}
-              counterpartUserId={activeIdea.owner_user_id}
-              counterpartName={activeIdea.founder?.name || 'Founder'}
-              ideaRef={activeIdea.id}
-              isFounder={false}
-            />
-          )}
         </>
       )}
 

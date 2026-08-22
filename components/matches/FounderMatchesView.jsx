@@ -5,7 +5,6 @@ import { useAuth } from '../../context/AuthContext.jsx'
 import { requestMeeting, completeDeal } from '../../lib/matchesApi.js'
 import MvpGateBanner from './MvpGateBanner.jsx'
 import CurrentMatchSpotlight from './CurrentMatchSpotlight.jsx'
-import RealtimeChatPanel from './RealtimeChatPanel.jsx'
 import ChatAndAgreementBar from './ChatAndAgreementBar.jsx'
 import TermSheetModal from './TermSheetModal.jsx'
 import EmptyState from '../EmptyState.jsx'
@@ -99,10 +98,9 @@ function PendingInterestCard({ slot, mvpUrlValid, onActionDone }) {
  * raised-hand interest that falls outside it is still surfaced below via
  * PendingInterestCard rather than silently dropped.
  */
-export default function FounderMatchesView({ mvpUrlValid, currentMatch, meetingRequests, founderDomain, myIdeaId, onRefetch }) {
+export default function FounderMatchesView({ mvpUrlValid, currentMatch, meetingRequests, founderDomain, onRefetch }) {
   const { user, accessToken } = useAuth()
   const [termSheetOpen, setTermSheetOpen] = useState(false)
-  const [chatOpen, setChatOpen] = useState(false)
   const [markingDone, setMarkingDone] = useState(false)
   const [markDoneError, setMarkDoneError] = useState('')
   const slotsById = Object.fromEntries((meetingRequests || []).map((s) => [s.id, s]))
@@ -173,22 +171,13 @@ export default function FounderMatchesView({ mvpUrlValid, currentMatch, meetingR
       {activeSlot?.both_opted_in && activeInvestor?.owner_user_id && (
         <>
           <ChatAndAgreementBar
-            chatOpen={chatOpen}
-            onToggleChat={() => setChatOpen((v) => !v)}
+            counterpartUserId={activeInvestor.owner_user_id}
             onOpenAgreement={() => setTermSheetOpen(true)}
             completed={activeSlot?.completed}
             markingDone={markingDone}
             onMarkDone={handleMarkDone}
           />
           {markDoneError && <Notice tone="error">{markDoneError}</Notice>}
-          {chatOpen && (
-            <RealtimeChatPanel
-              selfUserId={user?.id}
-              counterpartUserId={activeInvestor.owner_user_id}
-              counterpartName={activeInvestor.name}
-              ideaRef={myIdeaId}
-            />
-          )}
         </>
       )}
 

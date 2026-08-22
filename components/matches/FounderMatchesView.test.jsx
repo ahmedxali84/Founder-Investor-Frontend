@@ -18,7 +18,6 @@ vi.mock('./MvpGateBanner.jsx', () => ({ default: () => null }))
 vi.mock('./CurrentMatchSpotlight.jsx', () => ({
   default: () => <div data-testid="current-match-spotlight">Stale completed match</div>,
 }))
-vi.mock('./RealtimeChatPanel.jsx', () => ({ default: () => null }))
 vi.mock('./ChatAndAgreementBar.jsx', () => ({ default: () => null }))
 vi.mock('./TermSheetModal.jsx', () => ({ default: () => null }))
 
@@ -41,7 +40,6 @@ describe('FounderMatchesView — new interest after a deal completes', () => {
           newInvestorSlot,
         ]}
         founderDomain="AI"
-        myIdeaId="idea_1"
         onRefetch={() => {}}
       />
     )
@@ -64,7 +62,6 @@ describe('FounderMatchesView — new interest after a deal completes', () => {
         currentMatch={{}}
         meetingRequests={[completedSlot, newInvestorSlot]}
         founderDomain="AI"
-        myIdeaId="idea_1"
         onRefetch={() => {}}
       />
     )
@@ -81,7 +78,6 @@ describe('FounderMatchesView — new interest after a deal completes', () => {
         currentMatch={{ investor: activeInvestor }}
         meetingRequests={[{ id: 'inv_active', both_opted_in: true, completed: false, investor: activeInvestor }]}
         founderDomain="AI"
-        myIdeaId="idea_1"
         onRefetch={() => {}}
       />
     )
