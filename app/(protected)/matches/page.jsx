@@ -49,6 +49,7 @@ export default function MatchesPage() {
           currentMatch={statusData?.current_match}
           meetingRequests={statusData?.meeting_requests}
           founderDomain={founderProfile?.specialization}
+          myIdeaId={statusData?.my_idea?.id}
           onRefetch={refetch}
         />
       )}

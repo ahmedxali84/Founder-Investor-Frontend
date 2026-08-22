@@ -383,7 +383,13 @@ end $$;
 
 -- ============================================================
 -- Real-time chat: opens the instant both sides confirm a match.
--- One conversation per (founder, investor) pair.
+-- One conversation per (founder, investor, idea) — NOT just per (founder,
+-- investor). It used to be keyed on the pair alone, on the assumption a
+-- confirmed deal between two people was permanent (there could only ever be
+-- one). Now that a deal can be marked complete (see /api/complete-deal in
+-- main_app.py) and the same two people can go on to confirm a second deal
+-- on a different idea, keying on the pair alone made every later deal
+-- silently reuse — and merge messages into — the first one's chat thread.
 -- ============================================================
 create table if not exists public.conversations (
   id                uuid primary key default gen_random_uuid(),
@@ -391,8 +397,30 @@ create table if not exists public.conversations (
   investor_user_id  uuid not null references auth.users (id) on delete cascade,
   idea_ref          text,
   created_at        timestamptz not null default now(),
-  unique (founder_user_id, investor_user_id)
+  unique (founder_user_id, investor_user_id, idea_ref)
 );
+
+-- Backfill for a project that already ran the old two-column version of
+-- this table — `create table if not exists` above is a no-op once the
+-- table already exists, so the wider unique constraint has to be applied
+-- here explicitly instead of just being declared inline. Drops the old
+-- constraint (Postgres's default auto-generated name for it) first, then
+-- adds the three-column one, guarded so re-running this file is safe.
+alter table public.conversations
+  drop constraint if exists conversations_founder_user_id_investor_user_id_key;
+
+do $$
+begin
+  if not exists (
+    select 1 from information_schema.table_constraints
+    where table_schema = 'public' and table_name = 'conversations'
+      and constraint_name = 'conversations_founder_investor_idea_key'
+  ) then
+    alter table public.conversations
+      add constraint conversations_founder_investor_idea_key
+      unique (founder_user_id, investor_user_id, idea_ref);
+  end if;
+end $$;
 
 -- The unique constraint above already covers founder_user_id as its leading
 -- column, but investor_user_id has no index of its own — needed both for

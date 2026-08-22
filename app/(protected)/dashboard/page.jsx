@@ -165,20 +165,24 @@ export default function Dashboard() {
               <div className="space-y-2">
                 {meetingRequests.slice(0, 5).map((slot) => {
                   const confirmed = slot.both_opted_in
+                  const completed = Boolean(slot.completed)
                   // Investor identity stays confidential to the founder until the
                   // meeting is actually confirmed — same rule as the Matches page,
                   // so this widget can't be used to peek at who it is early.
                   const counterpart = !confirmed && userType === 'founder'
                     ? 'Confidential Investor'
                     : slot.investor?.name || slot.idea?.title || 'Match'
+                  const badgeTone = completed
+                    ? 'bg-slate-100 text-slate-600 ring-1 ring-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:ring-slate-700'
+                    : confirmed
+                    ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20'
+                    : 'bg-amber-50 text-amber-700 ring-1 ring-amber-100 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20'
                   return (
                     <div key={slot.id} className="p-3 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
                       <span className="font-semibold text-slate-700 dark:text-slate-200">{counterpart}</span>
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1 ${
-                        confirmed ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20' : 'bg-amber-50 text-amber-700 ring-1 ring-amber-100 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20'
-                      }`}>
-                        {confirmed ? <CheckCircleIcon className="w-3 h-3" /> : <ClockIcon className="w-3 h-3" />}
-                        {confirmed ? 'Confirmed' : 'Pending'}
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1 ${badgeTone}`}>
+                        {confirmed || completed ? <CheckCircleIcon className="w-3 h-3" /> : <ClockIcon className="w-3 h-3" />}
+                        {completed ? 'Completed' : confirmed ? 'Confirmed' : 'Pending'}
                       </span>
                     </div>
                   )

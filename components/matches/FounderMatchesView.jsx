@@ -99,7 +99,7 @@ function PendingInterestCard({ slot, mvpUrlValid, onActionDone }) {
  * raised-hand interest that falls outside it is still surfaced below via
  * PendingInterestCard rather than silently dropped.
  */
-export default function FounderMatchesView({ mvpUrlValid, currentMatch, meetingRequests, founderDomain, onRefetch }) {
+export default function FounderMatchesView({ mvpUrlValid, currentMatch, meetingRequests, founderDomain, myIdeaId, onRefetch }) {
   const { user, accessToken } = useAuth()
   const [termSheetOpen, setTermSheetOpen] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
@@ -172,7 +172,7 @@ export default function FounderMatchesView({ mvpUrlValid, currentMatch, meetingR
               selfUserId={user?.id}
               counterpartUserId={activeInvestor.owner_user_id}
               counterpartName={activeInvestor.name}
-              ideaRef={activeInvestor.id}
+              ideaRef={myIdeaId}
             />
           )}
         </>
