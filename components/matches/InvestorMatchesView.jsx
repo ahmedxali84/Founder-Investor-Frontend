@@ -98,16 +98,26 @@ export default function InvestorMatchesView({ currentMatch, meetingRequests, onR
   const [markDoneError, setMarkDoneError] = useState('')
   const slotsById = Object.fromEntries((meetingRequests || []).map((s) => [s.id, s]))
   const spotlightSlot = currentMatch?.idea ? slotsById[currentMatch.idea.id] : null
+  // Mirror of the same fix in FounderMatchesView.jsx: a completed deal
+  // frees this idea up to be matched again, but current_match is never
+  // reset when that happens — without this, the spotlight kept showing the
+  // finished deal forever and hid any real new founder-initiated request
+  // underneath it, since the fallback search only ran when there was no
+  // current_match at all.
+  const currentMatchCompleted = Boolean(spotlightSlot?.completed)
 
-  const otherInterest = !currentMatch?.idea
-    ? (meetingRequests || []).find((s) => s.founder_requested || s.both_opted_in)
+  const otherInterest = (!currentMatch?.idea || currentMatchCompleted)
+    ? (meetingRequests || []).find((s) =>
+        s.id !== currentMatch?.idea?.id && (s.founder_requested || s.both_opted_in))
     : null
 
   // Whichever idea is actually actionable right now — the algorithmic top
-  // match if there is one, otherwise a real founder-initiated request that
-  // current_match's stale snapshot hasn't caught up to.
-  const activeIdea = currentMatch?.idea || otherInterest?.idea
-  const activeSlot = spotlightSlot || otherInterest
+  // match if there is one and it isn't already finished, otherwise a real
+  // founder-initiated request that current_match's stale snapshot hasn't
+  // caught up to (including a brand-new founder after the last deal
+  // completed).
+  const activeIdea = (currentMatch?.idea && !currentMatchCompleted) ? currentMatch.idea : otherInterest?.idea
+  const activeSlot = (spotlightSlot && !currentMatchCompleted) ? spotlightSlot : otherInterest
 
   async function handleMarkDone() {
     if (!activeIdea?.id) return
@@ -125,7 +135,7 @@ export default function InvestorMatchesView({ currentMatch, meetingRequests, onR
 
   return (
     <div className="space-y-6">
-      {currentMatch?.idea ? (
+      {currentMatch?.idea && !currentMatchCompleted ? (
         <CurrentIdeaSpotlight currentMatch={currentMatch} meetingSlot={spotlightSlot} onActionDone={onRefetch} />
       ) : otherInterest ? (
         <PendingIdeaCard slot={otherInterest} onActionDone={onRefetch} />

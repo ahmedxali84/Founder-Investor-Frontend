@@ -107,16 +107,26 @@ export default function FounderMatchesView({ mvpUrlValid, currentMatch, meetingR
   const [markDoneError, setMarkDoneError] = useState('')
   const slotsById = Object.fromEntries((meetingRequests || []).map((s) => [s.id, s]))
   const spotlightSlot = currentMatch?.investor ? slotsById[currentMatch.investor.id] : null
+  // A completed deal frees this investor up to be matched again (see
+  // /api/complete-deal), but current_match itself is never reset when that
+  // happens — without this, the spotlight kept showing the finished deal
+  // forever, and worse, real new raised-hand interest from a different
+  // investor stayed completely hidden below, because the fallback search
+  // only ever ran when there was no current_match at all.
+  const currentMatchCompleted = Boolean(spotlightSlot?.completed)
 
-  const otherInterest = !currentMatch?.investor
-    ? (meetingRequests || []).find((s) => s.investor_raised || s.both_opted_in)
+  const otherInterest = (!currentMatch?.investor || currentMatchCompleted)
+    ? (meetingRequests || []).find((s) =>
+        s.id !== currentMatch?.investor?.id && (s.investor_raised || s.both_opted_in))
     : null
 
   // Whichever investor is actually actionable right now — the algorithmic
-  // top match if there is one, otherwise real raised-hand interest that
-  // current_match's stale snapshot hasn't caught up to.
-  const activeInvestor = currentMatch?.investor || otherInterest?.investor
-  const activeSlot = spotlightSlot || otherInterest
+  // top match if there is one and it isn't already finished, otherwise real
+  // raised-hand interest that current_match's stale snapshot hasn't caught
+  // up to (including a brand-new investor showing up after the last one's
+  // deal completed).
+  const activeInvestor = (currentMatch?.investor && !currentMatchCompleted) ? currentMatch.investor : otherInterest?.investor
+  const activeSlot = (spotlightSlot && !currentMatchCompleted) ? spotlightSlot : otherInterest
 
   async function handleMarkDone() {
     if (!activeInvestor?.id) return
@@ -142,7 +152,7 @@ export default function FounderMatchesView({ mvpUrlValid, currentMatch, meetingR
           something it would be gating. */}
       {!mvpUrlValid && !activeSlot?.both_opted_in && <MvpGateBanner onUnlocked={onRefetch} />}
 
-      {currentMatch?.investor ? (
+      {currentMatch?.investor && !currentMatchCompleted ? (
         <CurrentMatchSpotlight
           currentMatch={currentMatch}
           mvpUrlValid={mvpUrlValid}
