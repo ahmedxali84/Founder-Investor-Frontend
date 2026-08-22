@@ -221,6 +221,33 @@ create policy "user_rejections_select_own"
 -- Same reasoning as founder_profiles/investor_profiles above: only ever
 -- written by the backend over the direct DATABASE_URL connection.
 
+-- Durable backing for agents/store.py's per-user AI pipeline step status
+-- (what the "Your Progress" / Agents Dashboard page reads). That module
+-- previously only wrote to a local SQLite file (agent_profiles.db) on
+-- Render's ephemeral disk — every redeploy silently reset every user's
+-- dashboard to "Waiting" on all steps, even though the actual underlying
+-- work (profile, resume, matches) was untouched and already durable
+-- elsewhere. SQLite stays the fast local cache; this is the durability
+-- layer underneath it, same relationship as founder_profiles/ideas/etc.
+create table if not exists public.agent_run_status (
+  agent_id    text not null,
+  user_id     uuid not null references auth.users (id) on delete cascade,
+  task_type   text,
+  status      text,
+  last_output text,
+  error       text,
+  session_ref text,
+  updated_at  timestamptz not null default now(),
+  primary key (agent_id, user_id)
+);
+
+alter table public.agent_run_status enable row level security;
+
+drop policy if exists "agent_run_status_select_own" on public.agent_run_status;
+create policy "agent_run_status_select_own"
+  on public.agent_run_status for select
+  using ((select auth.uid()) = user_id);
+
 -- ============================================================
 -- Write-through durability for the shared marketplace pools
 -- (GLOBAL_IDEAS_POOL / GLOBAL_INVESTORS_POOL / GLOBAL_MEETING_REQUESTS in
