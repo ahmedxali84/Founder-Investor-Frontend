@@ -12,7 +12,7 @@ import InfoPill from '../InfoPill.jsx'
 import EmptyState from '../EmptyState.jsx'
 import { SpinnerIcon, GitHubMark, PaperclipIcon } from '../icons.jsx'
 import { Skeleton } from '../Skeleton.jsx'
-import { BulbIcon, RepoIcon, ArrowUpRightIcon, RocketIcon, CheckCircleIcon } from '../icons.jsx'
+import { BulbIcon, RepoIcon, ArrowUpRightIcon, RocketIcon, CheckCircleIcon, TrashIcon } from '../icons.jsx'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api'
 
@@ -52,6 +52,13 @@ export default function FounderIdeasView() {
   const [screenshotFile, setScreenshotFile] = useState(null)
   const [activatingId, setActivatingId] = useState(null)
   const [activateError, setActivateError] = useState('')
+
+  // Delete — a plain confirm() is enough here (unlike account deletion,
+  // losing one idea draft is cheap and undoable by re-posting), but we still
+  // want a distinct "confirming" id so only the clicked card's button shows
+  // a spinner/disables while the request is in flight.
+  const [deletingId, setDeletingId] = useState(null)
+  const [deleteError, setDeleteError] = useState('')
 
   // Agent 1's actual output for whichever idea is live — refined problem/
   // solution/target market, MVP must-have vs nice-to-have split, and the
@@ -303,6 +310,32 @@ export default function FounderIdeasView() {
     }
   }
 
+  async function handleDeleteIdea(post) {
+    if (!window.confirm(`Delete "${post.title}"? This can't be undone.`)) return
+    setDeleteError('')
+    setDeletingId(post.id)
+    try {
+      if (post.is_live) {
+        const res = await fetch(`${API_URL}/founder/idea/active`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        const data = await res.json().catch(() => ({}))
+        if (!res.ok) throw new Error(data.detail || 'Failed to remove idea from matching.')
+        setIdeaDetails(null)
+      }
+      if (!supabase) throw new Error('Supabase client is not initialized.')
+      const { error } = await supabase.from('pitch_posts').delete().eq('id', post.id)
+      if (error) throw error
+      if (goLiveId === post.id) setGoLiveId(null)
+      await loadPosts()
+    } catch (err) {
+      setDeleteError(err.message || 'Failed to delete idea.')
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
@@ -375,6 +408,7 @@ export default function FounderIdeasView() {
 
       {successMsg && <Notice tone="success" className="mb-4">{successMsg}</Notice>}
       {activateError && <Notice tone="error" className="mb-4">{activateError}</Notice>}
+      {deleteError && <Notice tone="error" className="mb-4">{deleteError}</Notice>}
 
       {loading ? (
         <div className="space-y-4">
@@ -419,25 +453,44 @@ export default function FounderIdeasView() {
                   {safeHref(post.mvp_url) && <a href={safeHref(post.mvp_url)} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><ArrowUpRightIcon className="w-3.5 h-3.5" /> MVP link</a>}
                   {safeHref(post.repo_url) && <a href={safeHref(post.repo_url)} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><RepoIcon className="w-3.5 h-3.5" /> Repo</a>}
                 </div>
-                {!post.is_live && goLiveId !== post.id && (
+                <div className="flex items-center gap-2">
+                  {!post.is_live && goLiveId !== post.id && (
+                    <button
+                      onClick={() => openGoLive(post)}
+                      className="px-4 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold transition-all"
+                    >
+                      Go live
+                    </button>
+                  )}
+                  {post.is_live && goLiveId !== post.id && (
+                    <button
+                      onClick={() => openGoLive(post)}
+                      title="Add or change the MVP link, repo link, or screenshot"
+                      className="px-4 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-[11px] font-bold transition-all"
+                    >
+                      Edit details
+                    </button>
+                  )}
+                  {post.is_live && (
+                    <button
+                      onClick={() => handleRefreshMatches(post)}
+                      disabled={activatingId === post.id}
+                      title="Re-run matching against the current investor pool"
+                      className="px-4 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 hover:bg-blue-100 dark:hover:bg-blue-500/20 disabled:opacity-50 text-blue-700 dark:text-blue-400 text-[11px] font-bold transition-all flex items-center gap-1.5"
+                    >
+                      {activatingId === post.id && <SpinnerIcon className="w-3 h-3" />}
+                      {activatingId === post.id ? 'Refreshing…' : 'Refresh matches'}
+                    </button>
+                  )}
                   <button
-                    onClick={() => openGoLive(post)}
-                    className="px-4 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold transition-all"
+                    onClick={() => handleDeleteIdea(post)}
+                    disabled={deletingId === post.id}
+                    title="Delete this idea"
+                    className="px-3 py-1.5 rounded-lg bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 disabled:opacity-50 text-rose-600 dark:text-rose-400 text-[11px] font-bold transition-all flex items-center gap-1.5"
                   >
-                    Go live
+                    {deletingId === post.id ? <SpinnerIcon className="w-3 h-3" /> : <TrashIcon className="w-3.5 h-3.5" />}
                   </button>
-                )}
-                {post.is_live && (
-                  <button
-                    onClick={() => handleRefreshMatches(post)}
-                    disabled={activatingId === post.id}
-                    title="Re-run matching against the current investor pool"
-                    className="px-4 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 hover:bg-blue-100 dark:hover:bg-blue-500/20 disabled:opacity-50 text-blue-700 dark:text-blue-400 text-[11px] font-bold transition-all flex items-center gap-1.5"
-                  >
-                    {activatingId === post.id && <SpinnerIcon className="w-3 h-3" />}
-                    {activatingId === post.id ? 'Refreshing…' : 'Refresh matches'}
-                  </button>
-                )}
+                </div>
               </div>
 
               {post.is_live && ideaDetails && (
@@ -484,7 +537,7 @@ export default function FounderIdeasView() {
               {post.is_live && (!post.screenshot_url || !post.mvp_url) && (
                 <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 text-amber-800 dark:text-amber-300 text-xs flex items-start gap-2">
                   <span className="font-bold text-amber-600 dark:text-amber-400 shrink-0">⚠️ Lower Match Score:</span>
-                  <span>Missing MVP screenshot or link reduces investor match probability. Click "Go live" again to upload screenshots and link.</span>
+                  <span>Missing MVP screenshot or link reduces investor match probability. Click "Edit details" to add them.</span>
                 </div>
               )}
 
@@ -537,7 +590,7 @@ export default function FounderIdeasView() {
                       className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white text-xs font-bold flex items-center gap-1.5 transition-all"
                     >
                       {activatingId === post.id && <SpinnerIcon className="w-3 h-3" />}
-                      {activatingId === post.id ? 'Activating…' : 'Confirm & Go Live'}
+                      {activatingId === post.id ? 'Saving…' : post.is_live ? 'Save Details' : 'Confirm & Go Live'}
                     </button>
                   </div>
                 </div>
