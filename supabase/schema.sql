@@ -315,6 +315,14 @@ create table if not exists public.investor_listings (
   updated_at        timestamptz not null default now()
 );
 
+-- min_ticket/max_ticket stay USD internally (Agent 5's ticket_overlap_score
+-- does real numeric range comparisons against an idea's estimated USD
+-- funding need — storing a mixed-currency raw number there would silently
+-- wreck matching). ticket_currency is display-only: which currency the
+-- investor typed their range in, so the frontend can convert the USD figure
+-- back for display instead of always showing dollars.
+alter table public.investor_listings add column if not exists ticket_currency text not null default 'USD';
+
 create index if not exists investor_listings_owner_user_id_idx on public.investor_listings (owner_user_id);
 
 alter table public.investor_listings enable row level security;

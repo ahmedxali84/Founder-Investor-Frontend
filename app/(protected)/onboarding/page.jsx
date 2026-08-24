@@ -8,6 +8,7 @@ import Notice from '../../../components/Notice.jsx'
 import AuthSidePanel from '../../../components/AuthSidePanel.jsx'
 import { Logo, SpinnerIcon, LinkedInMark, GitHubMark, CheckIcon, RocketIcon, BriefcaseIcon, CodeIcon } from '../../../components/icons.jsx'
 import { validateLinkedInUrl, validateGitHubUrl } from '../../../lib/validation.js'
+import { CURRENCIES, toUsd } from '../../../lib/currency.js'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api'
 
@@ -99,6 +100,7 @@ function OnboardingInner() {
   const [designation, setDesignation] = useState('')
   const [focusSectors, setFocusSectors] = useState('')
   const [minTicket, setMinTicket] = useState(100000)
+  const [ticketCurrency, setTicketCurrency] = useState('USD')
   const [maxTicket, setMaxTicket] = useState(1000000)
 
   // Status states
@@ -344,8 +346,9 @@ function OnboardingInner() {
       formData.append('firm', firm.trim())
       formData.append('designation', designation.trim())
       formData.append('focus_sectors', focusSectors.trim())
-      formData.append('min_ticket', String(minTicket))
-      formData.append('max_ticket', String(maxTicket))
+      formData.append('min_ticket', String(toUsd(minTicket, ticketCurrency)))
+      formData.append('max_ticket', String(toUsd(maxTicket, ticketCurrency)))
+      formData.append('ticket_currency', ticketCurrency)
       formData.append('additional', additional.trim())
       formData.append('linkedin_bio_text', linkedinBioText.trim())
       formData.append('country', country.trim())
@@ -941,9 +944,23 @@ function OnboardingInner() {
                       required
                     />
 
+                    <div>
+                      <label htmlFor="i-ticket-currency" className="field-label">Ticket Currency</label>
+                      <select
+                        id="i-ticket-currency"
+                        className="w-full rounded-lg border border-line dark:border-slate-700 bg-white dark:bg-slate-800 px-3 h-[38px] text-[13.5px] text-ink dark:text-slate-100 outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all"
+                        value={ticketCurrency}
+                        onChange={(e) => setTicketCurrency(e.target.value)}
+                      >
+                        {CURRENCIES.map((c) => (
+                          <option key={c.code} value={c.code}>{c.code} — {c.label}</option>
+                        ))}
+                      </select>
+                    </div>
+
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
-                        <label htmlFor="i-min-ticket" className="field-label">Min Ticket (USD)</label>
+                        <label htmlFor="i-min-ticket" className="field-label">Min Ticket ({ticketCurrency})</label>
                         <input
                           id="i-min-ticket"
                           type="number"
@@ -954,7 +971,7 @@ function OnboardingInner() {
                         />
                       </div>
                       <div>
-                        <label htmlFor="i-max-ticket" className="field-label">Max Ticket (USD)</label>
+                        <label htmlFor="i-max-ticket" className="field-label">Max Ticket ({ticketCurrency})</label>
                         <input
                           id="i-max-ticket"
                           type="number"

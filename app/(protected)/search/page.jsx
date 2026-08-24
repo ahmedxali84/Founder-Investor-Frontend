@@ -51,7 +51,7 @@ function ResultCard({ item, searchType }) {
           <InfoPill key={s} tone="slate">{s}</InfoPill>
         ))}
         {searchType === 'investors' && (item.min_ticket || item.max_ticket) && (
-          <InfoPill tone="emerald">{formatTicket(item.min_ticket, item.max_ticket)}</InfoPill>
+          <InfoPill tone="emerald">{formatTicket(item.min_ticket, item.max_ticket, item.ticket_currency)}</InfoPill>
         )}
         {searchType === 'ideas' && item.specialization && (
           <InfoPill tone="slate">{item.specialization}</InfoPill>
