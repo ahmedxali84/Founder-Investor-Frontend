@@ -98,6 +98,19 @@ function SearchPageInner() {
   const [district, setDistrict] = useState('')
   const [near, setNear] = useState('')
 
+  // Country/City/District here match onboarding's cascading selects exactly
+  // (see app/(protected)/onboarding/page.jsx) — "City" holds a real
+  // province/state name and "District" holds a real city name, sourced from
+  // the same /api/geo/* route handlers. countryIso/stateIso are just this
+  // cascade's own working state, never sent to /search.
+  const [countryIso, setCountryIso] = useState('')
+  const [stateIso, setStateIso] = useState('')
+  const [countryOptions, setCountryOptions] = useState([])
+  const [stateOptions, setStateOptions] = useState([])
+  const [cityOptions, setCityOptions] = useState([])
+  const [loadingStates, setLoadingStates] = useState(false)
+  const [loadingCities, setLoadingCities] = useState(false)
+
   const [results, setResults] = useState([])
   const [total, setTotal] = useState(0)
   const [hasMore, setHasMore] = useState(false)
@@ -197,6 +210,63 @@ function SearchPageInner() {
     observerRef.current.observe(node)
   }, [])
 
+  useEffect(() => {
+    fetch('/api/geo/countries')
+      .then((r) => r.json())
+      .then(setCountryOptions)
+      .catch(() => setCountryOptions([]))
+  }, [])
+
+  useEffect(() => {
+    if (!countryIso) {
+      setStateOptions([])
+      return
+    }
+    setLoadingStates(true)
+    fetch(`/api/geo/states?country=${countryIso}`)
+      .then((r) => r.json())
+      .then(setStateOptions)
+      .catch(() => setStateOptions([]))
+      .finally(() => setLoadingStates(false))
+  }, [countryIso])
+
+  useEffect(() => {
+    if (!countryIso || !stateIso) {
+      setCityOptions([])
+      return
+    }
+    setLoadingCities(true)
+    fetch(`/api/geo/cities?country=${countryIso}&state=${stateIso}`)
+      .then((r) => r.json())
+      .then(setCityOptions)
+      .catch(() => setCityOptions([]))
+      .finally(() => setLoadingCities(false))
+  }, [countryIso, stateIso])
+
+  function handleCountryChange(iso) {
+    setCountryIso(iso)
+    setCountry(countryOptions.find((c) => c.isoCode === iso)?.name || '')
+    setStateIso('')
+    setCity('')
+    setDistrict('')
+  }
+
+  function handleStateChange(iso) {
+    setStateIso(iso)
+    setCity(stateOptions.find((s) => s.isoCode === iso)?.name || '')
+    setDistrict('')
+  }
+
+  function clearFilters() {
+    setKeyword('')
+    setCountry('')
+    setCity('')
+    setDistrict('')
+    setNear('')
+    setCountryIso('')
+    setStateIso('')
+  }
+
   return (
     <AppShell active="search" userType={userType} userName={userName} userRole={userRole} avatarUrl={avatarUrl} onSignOut={signOut} notice={pollingError} profileData={profileData} statusData={statusData}>
       <div className="mb-6">
@@ -216,12 +286,27 @@ function SearchPageInner() {
         <div>
           <span className="text-[11px] font-bold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-2 block">Narrow by location (optional)</span>
           <div className="grid sm:grid-cols-3 gap-3">
-            <input type="text" placeholder="Country" value={country} onChange={(e) => setCountry(e.target.value)}
-              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 h-[38px] text-[13px] text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-blue-500/10 transition-all" />
-            <input type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)}
-              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 h-[38px] text-[13px] text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-blue-500/10 transition-all" />
-            <input type="text" placeholder="District" value={district} onChange={(e) => setDistrict(e.target.value)}
-              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 h-[38px] text-[13px] text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-blue-500/10 transition-all" />
+            <select value={countryIso} onChange={(e) => handleCountryChange(e.target.value)}
+              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 h-[38px] text-[13px] text-slate-800 dark:text-slate-100 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-blue-500/10 transition-all">
+              <option value="">Country</option>
+              {countryOptions.map((c) => (
+                <option key={c.isoCode} value={c.isoCode}>{c.name}</option>
+              ))}
+            </select>
+            <select value={stateIso} onChange={(e) => handleStateChange(e.target.value)} disabled={!countryIso || loadingStates}
+              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 h-[38px] text-[13px] text-slate-800 dark:text-slate-100 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-blue-500/10 transition-all disabled:opacity-40">
+              <option value="">{loadingStates ? 'Loading…' : !countryIso ? 'Province/State' : stateOptions.length === 0 ? 'No provinces listed' : 'Province/State'}</option>
+              {stateOptions.map((s) => (
+                <option key={s.isoCode} value={s.isoCode}>{s.name}</option>
+              ))}
+            </select>
+            <select value={district} onChange={(e) => setDistrict(e.target.value)} disabled={!stateIso || loadingCities}
+              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 h-[38px] text-[13px] text-slate-800 dark:text-slate-100 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-blue-500/10 transition-all disabled:opacity-40">
+              <option value="">{loadingCities ? 'Loading…' : !stateIso ? 'District/City' : cityOptions.length === 0 ? 'No cities listed' : 'District/City'}</option>
+              {cityOptions.map((name) => (
+                <option key={name} value={name}>{name}</option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -239,7 +324,7 @@ function SearchPageInner() {
             <SearchIcon className="w-4 h-4" /> {loading ? 'Searching…' : 'Search'}
           </button>
           {(keyword || country || city || district || near) && (
-            <button type="button" onClick={() => { setKeyword(''); setCountry(''); setCity(''); setDistrict(''); setNear('') }}
+            <button type="button" onClick={clearFilters}
               className="text-[12.5px] font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100">
               Clear filters
             </button>
@@ -281,7 +366,7 @@ function SearchPageInner() {
           <EmptyState
             icon={<PinIcon className="w-6 h-6" />}
             title={`No ${searchLabel} match this filter yet`}
-            subtitle="Try clearing the Country/City/District filters, or check back once more people onboard."
+            subtitle="Try clearing the Country/Province/District filters, or check back once more people onboard."
             className="h-56"
           />
         )

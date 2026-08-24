@@ -81,10 +81,20 @@ function OnboardingInner() {
 
   // Location — used by the location-search page (Country/City/District exact
   // filter + H3-based "nearby" radius search). Optional: search just won't
-  // surface someone who leaves it blank.
+  // surface someone who leaves it blank. `city`/`district` hold real
+  // province/state and city NAMES respectively (what actually gets
+  // submitted) — countryIso/stateIso below are just the cascade's own
+  // working state for driving the next fetch, never sent to the backend.
   const [country, setCountry] = useState('')
   const [city, setCity] = useState('')
   const [district, setDistrict] = useState('')
+  const [countryIso, setCountryIso] = useState('')
+  const [stateIso, setStateIso] = useState('')
+  const [countryOptions, setCountryOptions] = useState([])
+  const [stateOptions, setStateOptions] = useState([])
+  const [cityOptions, setCityOptions] = useState([])
+  const [loadingStates, setLoadingStates] = useState(false)
+  const [loadingCities, setLoadingCities] = useState(false)
 
   // Founder inputs
   const [github, setGithub] = useState('')
@@ -195,6 +205,57 @@ function OnboardingInner() {
     setGithubError('')
     setGithubSearchOpen(false)
     setGithubCandidates([])
+  }
+
+  // Country list is small (~250 entries) and never changes per-session —
+  // fetch once. Province/city lists are fetched fresh per selection, from
+  // Next.js's own /api/geo/* route handlers (not the Python backend) — see
+  // those files for why the country-state-city package stays server-side.
+  useEffect(() => {
+    fetch('/api/geo/countries')
+      .then((r) => r.json())
+      .then(setCountryOptions)
+      .catch(() => setCountryOptions([]))
+  }, [])
+
+  useEffect(() => {
+    if (!countryIso) {
+      setStateOptions([])
+      return
+    }
+    setLoadingStates(true)
+    fetch(`/api/geo/states?country=${countryIso}`)
+      .then((r) => r.json())
+      .then(setStateOptions)
+      .catch(() => setStateOptions([]))
+      .finally(() => setLoadingStates(false))
+  }, [countryIso])
+
+  useEffect(() => {
+    if (!countryIso || !stateIso) {
+      setCityOptions([])
+      return
+    }
+    setLoadingCities(true)
+    fetch(`/api/geo/cities?country=${countryIso}&state=${stateIso}`)
+      .then((r) => r.json())
+      .then(setCityOptions)
+      .catch(() => setCityOptions([]))
+      .finally(() => setLoadingCities(false))
+  }, [countryIso, stateIso])
+
+  function handleCountryChange(iso) {
+    setCountryIso(iso)
+    setCountry(countryOptions.find((c) => c.isoCode === iso)?.name || '')
+    setStateIso('')
+    setCity('')
+    setDistrict('')
+  }
+
+  function handleStateChange(iso) {
+    setStateIso(iso)
+    setCity(stateOptions.find((s) => s.isoCode === iso)?.name || '')
+    setDistrict('')
   }
 
   // Cycle through the loading checklist while the final submit is in flight —
@@ -697,27 +758,38 @@ function OnboardingInner() {
                         Location (optional — powers location-based search for investors)
                       </label>
                       <div className="grid grid-cols-3 gap-2">
-                        <input
-                          type="text"
-                          placeholder="Country"
-                          value={country}
-                          onChange={(e) => setCountry(e.target.value)}
-                          className="w-full rounded-lg border border-[#30363D] bg-[#161B22] px-3 py-2 text-[13px] text-white placeholder:text-white/30 outline-none focus:border-[#2DA44E] focus:ring-4 focus:ring-[#2DA44E]/15 transition-all"
-                        />
-                        <input
-                          type="text"
-                          placeholder="City"
-                          value={city}
-                          onChange={(e) => setCity(e.target.value)}
-                          className="w-full rounded-lg border border-[#30363D] bg-[#161B22] px-3 py-2 text-[13px] text-white placeholder:text-white/30 outline-none focus:border-[#2DA44E] focus:ring-4 focus:ring-[#2DA44E]/15 transition-all"
-                        />
-                        <input
-                          type="text"
-                          placeholder="District"
+                        <select
+                          value={countryIso}
+                          onChange={(e) => handleCountryChange(e.target.value)}
+                          className="w-full rounded-lg border border-[#30363D] bg-[#161B22] px-3 py-2 text-[13px] text-white outline-none focus:border-[#2DA44E] focus:ring-4 focus:ring-[#2DA44E]/15 transition-all"
+                        >
+                          <option value="">Country</option>
+                          {countryOptions.map((c) => (
+                            <option key={c.isoCode} value={c.isoCode}>{c.name}</option>
+                          ))}
+                        </select>
+                        <select
+                          value={stateIso}
+                          onChange={(e) => handleStateChange(e.target.value)}
+                          disabled={!countryIso || loadingStates}
+                          className="w-full rounded-lg border border-[#30363D] bg-[#161B22] px-3 py-2 text-[13px] text-white outline-none focus:border-[#2DA44E] focus:ring-4 focus:ring-[#2DA44E]/15 transition-all disabled:opacity-40"
+                        >
+                          <option value="">{loadingStates ? 'Loading…' : !countryIso ? 'Province/State' : stateOptions.length === 0 ? 'No provinces listed' : 'Province/State'}</option>
+                          {stateOptions.map((s) => (
+                            <option key={s.isoCode} value={s.isoCode}>{s.name}</option>
+                          ))}
+                        </select>
+                        <select
                           value={district}
                           onChange={(e) => setDistrict(e.target.value)}
-                          className="w-full rounded-lg border border-[#30363D] bg-[#161B22] px-3 py-2 text-[13px] text-white placeholder:text-white/30 outline-none focus:border-[#2DA44E] focus:ring-4 focus:ring-[#2DA44E]/15 transition-all"
-                        />
+                          disabled={!stateIso || loadingCities}
+                          className="w-full rounded-lg border border-[#30363D] bg-[#161B22] px-3 py-2 text-[13px] text-white outline-none focus:border-[#2DA44E] focus:ring-4 focus:ring-[#2DA44E]/15 transition-all disabled:opacity-40"
+                        >
+                          <option value="">{loadingCities ? 'Loading…' : !stateIso ? 'District/City' : cityOptions.length === 0 ? 'No cities listed' : 'District/City'}</option>
+                          {cityOptions.map((name) => (
+                            <option key={name} value={name}>{name}</option>
+                          ))}
+                        </select>
                       </div>
                     </div>
 
@@ -885,9 +957,41 @@ function OnboardingInner() {
                     <div>
                       <label className="field-label">Location (optional — powers location-based search)</label>
                       <div className="grid grid-cols-3 gap-3">
-                        <Field id="i-country" label="" placeholder="Country" value={country} onChange={setCountry} />
-                        <Field id="i-city" label="" placeholder="City" value={city} onChange={setCity} />
-                        <Field id="i-district" label="" placeholder="District" value={district} onChange={setDistrict} />
+                        <select
+                          id="i-country"
+                          value={countryIso}
+                          onChange={(e) => handleCountryChange(e.target.value)}
+                          className="w-full rounded-lg border border-line dark:border-slate-700 bg-white dark:bg-slate-800 px-3 h-[38px] text-[13.5px] text-ink dark:text-slate-100 outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all"
+                        >
+                          <option value="">Country</option>
+                          {countryOptions.map((c) => (
+                            <option key={c.isoCode} value={c.isoCode}>{c.name}</option>
+                          ))}
+                        </select>
+                        <select
+                          id="i-state"
+                          value={stateIso}
+                          onChange={(e) => handleStateChange(e.target.value)}
+                          disabled={!countryIso || loadingStates}
+                          className="w-full rounded-lg border border-line dark:border-slate-700 bg-white dark:bg-slate-800 px-3 h-[38px] text-[13.5px] text-ink dark:text-slate-100 outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all disabled:opacity-40"
+                        >
+                          <option value="">{loadingStates ? 'Loading…' : !countryIso ? 'Province/State' : stateOptions.length === 0 ? 'No provinces listed' : 'Province/State'}</option>
+                          {stateOptions.map((s) => (
+                            <option key={s.isoCode} value={s.isoCode}>{s.name}</option>
+                          ))}
+                        </select>
+                        <select
+                          id="i-district"
+                          value={district}
+                          onChange={(e) => setDistrict(e.target.value)}
+                          disabled={!stateIso || loadingCities}
+                          className="w-full rounded-lg border border-line dark:border-slate-700 bg-white dark:bg-slate-800 px-3 h-[38px] text-[13.5px] text-ink dark:text-slate-100 outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all disabled:opacity-40"
+                        >
+                          <option value="">{loadingCities ? 'Loading…' : !stateIso ? 'District/City' : cityOptions.length === 0 ? 'No cities listed' : 'District/City'}</option>
+                          {cityOptions.map((name) => (
+                            <option key={name} value={name}>{name}</option>
+                          ))}
+                        </select>
                       </div>
                     </div>
                     <div>
