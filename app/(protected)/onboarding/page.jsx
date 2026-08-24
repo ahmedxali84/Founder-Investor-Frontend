@@ -212,20 +212,19 @@ function OnboardingInner() {
   }, [submitting])
 
   function goToLinkedInStep() {
-    // OAuth-verified identity already satisfies this step even with no typed
-    // URL or pasted bio — real, verified data from LinkedIn itself already
-    // covers what the manual fallback below exists to provide.
-    if (linkedinVerifiedName) {
-      setStep(2)
-      return
+    // OAuth-verified identity already satisfies the URL requirement — real,
+    // verified data from LinkedIn itself covers what a typed URL is for.
+    if (!linkedinVerifiedName) {
+      const err = validateLinkedInUrl(linkedin)
+      setLinkedinError(err)
+      if (err) return
     }
-    const err = validateLinkedInUrl(linkedin)
-    setLinkedinError(err)
-    if (err) return
-    // A profile URL alone can't actually be read (LinkedIn blocks scraping)
-    // — without the pasted bio text too, Agent 2 has nothing real to analyze.
+    // LinkedIn's Sign In API (OpenID Connect) only ever returns name/email/
+    // picture — it cannot return the About/Experience section, verified or
+    // not. The pasted text is the only way Agent 2 ever gets real bio
+    // content to analyze, so this is required either way.
     if (!linkedinBioText.trim()) {
-      setFormError('Paste your real LinkedIn About/Experience text below, or sign in with LinkedIn above — a URL alone can\'t be read.')
+      setFormError('Paste your real LinkedIn About/Experience text below — LinkedIn sign-in verifies your identity but never returns your bio.')
       return
     }
     setFormError('')
@@ -264,11 +263,13 @@ function OnboardingInner() {
         setStep(1)
         return
       }
-      if (!linkedinBioText.trim()) {
-        setFormError('Paste your real LinkedIn About/Experience text, or sign in with LinkedIn — a URL alone can\'t be read.')
-        setStep(1)
-        return
-      }
+    }
+    // LinkedIn's Sign In API never returns bio/About text, verified or not —
+    // required either way, same as goToLinkedInStep.
+    if (!linkedinBioText.trim()) {
+      setFormError('Paste your real LinkedIn About/Experience text — LinkedIn sign-in verifies your identity but never returns your bio.')
+      setStep(1)
+      return
     }
     const ghErr = validateGitHubUrl(github)
     if (ghErr) {
@@ -326,8 +327,10 @@ function OnboardingInner() {
       setFormError('LinkedIn Profile URL is required (or sign in with LinkedIn above).')
       return
     }
-    if (!linkedinVerifiedName && !linkedinBioText.trim()) {
-      setFormError('Paste your real LinkedIn About/Experience text, or sign in with LinkedIn — a URL alone can\'t be read.')
+    // LinkedIn's Sign In API never returns bio/About text, verified or not —
+    // required either way, same as the founder flow.
+    if (!linkedinBioText.trim()) {
+      setFormError('Paste your real LinkedIn About/Experience text — LinkedIn sign-in verifies your identity but never returns your bio.')
       return
     }
     if (!firm.trim()) {
@@ -558,13 +561,14 @@ function OnboardingInner() {
                       error={linkedinError}
                     />
                     <p className="text-[11.5px] text-muted dark:text-slate-400 -mt-2">
-                      A profile URL alone can't be read — LinkedIn doesn't allow scraping. Sign in above, or
-                      paste your real About/Experience text below, for anything to actually be analyzed.
+                      A profile URL alone can't be read (LinkedIn doesn't allow scraping), and even signing in
+                      above only verifies your identity — LinkedIn's sign-in API never returns bio text either
+                      way. Paste your real About/Experience text below for anything to actually be analyzed.
                     </p>
 
                     <div>
                       <label htmlFor="f-linkedin-bio" className="block text-[12.5px] font-semibold text-ink dark:text-slate-300 mb-1">
-                        Paste your real LinkedIn About / Experience text{linkedinVerifiedName ? ' (optional if signed in above)' : ''}
+                        Paste your real LinkedIn About / Experience text
                       </label>
                       <textarea
                         id="f-linkedin-bio"
@@ -856,13 +860,14 @@ function OnboardingInner() {
                       required={!linkedinVerifiedName}
                     />
                     <p className="text-[11.5px] text-muted dark:text-slate-400 -mt-2">
-                      A profile URL alone can't be read — LinkedIn doesn't allow scraping. Sign in above, or
-                      paste your real About/Experience text below, for anything to actually be analyzed.
+                      A profile URL alone can't be read (LinkedIn doesn't allow scraping), and even signing in
+                      above only verifies your identity — LinkedIn's sign-in API never returns bio text either
+                      way. Paste your real About/Experience text below for anything to actually be analyzed.
                     </p>
 
                     <div>
                       <label htmlFor="i-bio" className="field-label">
-                        Paste your real LinkedIn About / Experience text{linkedinVerifiedName ? ' (optional if signed in above)' : ''}
+                        Paste your real LinkedIn About / Experience text
                       </label>
                       <textarea
                         id="i-bio"
@@ -912,11 +917,10 @@ function OnboardingInner() {
                             setFormError('Firm, designation, and LinkedIn (URL or sign-in) are required.')
                             return
                           }
-                          // A profile URL alone can't actually be read (LinkedIn
-                          // blocks scraping) — without the pasted bio text too,
-                          // Agent 2 has nothing real to analyze.
-                          if (!linkedinVerifiedName && !linkedinBioText.trim()) {
-                            setFormError('Paste your real LinkedIn About/Experience text below, or sign in with LinkedIn above — a URL alone can\'t be read.')
+                          // LinkedIn's Sign In API never returns bio/About text,
+                          // verified or not — required either way.
+                          if (!linkedinBioText.trim()) {
+                            setFormError('Paste your real LinkedIn About/Experience text below — LinkedIn sign-in verifies your identity but never returns your bio.')
                             return
                           }
                           setFormError('')
