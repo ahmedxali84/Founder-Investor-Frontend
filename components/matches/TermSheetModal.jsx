@@ -51,14 +51,22 @@ export default function TermSheetModal({ slotId, selfUserId, counterpartUserId, 
       try {
         let transcript = []
         if (selfUserId && counterpartUserId) {
-          const founderId = isFounder ? selfUserId : counterpartUserId
-          const investorId = isFounder ? counterpartUserId : selfUserId
-          const convo = await getOrCreateConversation(founderId, investorId, slotId)
-          const raw = await fetchMessages(convo.id)
-          transcript = raw.map((m) => ({
-            sender: m.sender_user_id === founderId ? 'Founder' : 'Investor',
-            text: m.text,
-          }))
+          try {
+            const founderId = isFounder ? selfUserId : counterpartUserId
+            const investorId = isFounder ? counterpartUserId : selfUserId
+            const convo = await getOrCreateConversation(founderId, investorId, slotId)
+            const raw = await fetchMessages(convo.id)
+            transcript = raw.map((m) => ({
+              sender: m.sender_user_id === founderId ? 'Founder' : 'Investor',
+              text: m.text,
+            }))
+          } catch {
+            // The deal-scoped chat transcript is a nice-to-have for Agent 7
+            // to draft from — never let it block generating a term sheet
+            // outright (e.g. the conversation row genuinely hasn't been
+            // created yet, or never was for an older deal). Falls back to
+            // drafting from the equity/amount fields alone.
+          }
         }
         const data = await generateAgreement(slotId, transcript, accessToken, {
           equityPercent: Number(equityPercent),
