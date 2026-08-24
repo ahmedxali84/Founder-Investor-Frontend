@@ -210,7 +210,9 @@ function OnboardingInner() {
   }, [submitting])
 
   function goToLinkedInStep() {
-    // OAuth-verified identity already satisfies this step even with no typed URL.
+    // OAuth-verified identity already satisfies this step even with no typed
+    // URL or pasted bio — real, verified data from LinkedIn itself already
+    // covers what the manual fallback below exists to provide.
     if (linkedinVerifiedName) {
       setStep(2)
       return
@@ -218,6 +220,13 @@ function OnboardingInner() {
     const err = validateLinkedInUrl(linkedin)
     setLinkedinError(err)
     if (err) return
+    // A profile URL alone can't actually be read (LinkedIn blocks scraping)
+    // — without the pasted bio text too, Agent 2 has nothing real to analyze.
+    if (!linkedinBioText.trim()) {
+      setFormError('Paste your real LinkedIn About/Experience text below, or sign in with LinkedIn above — a URL alone can\'t be read.')
+      return
+    }
+    setFormError('')
     setStep(2)
   }
 
@@ -250,6 +259,11 @@ function OnboardingInner() {
       const linkErr = validateLinkedInUrl(linkedin)
       if (linkErr) {
         setLinkedinError(linkErr)
+        setStep(1)
+        return
+      }
+      if (!linkedinBioText.trim()) {
+        setFormError('Paste your real LinkedIn About/Experience text, or sign in with LinkedIn — a URL alone can\'t be read.')
         setStep(1)
         return
       }
@@ -308,6 +322,10 @@ function OnboardingInner() {
     // OAuth has actually confirmed a real identity.
     if (!linkedinVerifiedName && !linkedin.trim()) {
       setFormError('LinkedIn Profile URL is required (or sign in with LinkedIn above).')
+      return
+    }
+    if (!linkedinVerifiedName && !linkedinBioText.trim()) {
+      setFormError('Paste your real LinkedIn About/Experience text, or sign in with LinkedIn — a URL alone can\'t be read.')
       return
     }
     if (!firm.trim()) {
@@ -543,7 +561,7 @@ function OnboardingInner() {
 
                     <div>
                       <label htmlFor="f-linkedin-bio" className="block text-[12.5px] font-semibold text-ink dark:text-slate-300 mb-1">
-                        Paste your real LinkedIn About / Experience text (optional)
+                        Paste your real LinkedIn About / Experience text{linkedinVerifiedName ? ' (optional if signed in above)' : ''}
                       </label>
                       <textarea
                         id="f-linkedin-bio"
@@ -551,7 +569,10 @@ function OnboardingInner() {
                         className="w-full rounded-lg border border-line dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-[13.5px] text-ink dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all resize-y"
                         placeholder="Copy-paste your actual About section here — the agent only extracts facts from real text you provide, it never invents your history."
                         value={linkedinBioText}
-                        onChange={(e) => setLinkedinBioText(e.target.value)}
+                        onChange={(e) => {
+                          setLinkedinBioText(e.target.value)
+                          if (formError) setFormError('')
+                        }}
                       />
                     </div>
 
@@ -837,14 +858,19 @@ function OnboardingInner() {
                     </p>
 
                     <div>
-                      <label htmlFor="i-bio" className="field-label">Paste your real LinkedIn About / Experience text (optional)</label>
+                      <label htmlFor="i-bio" className="field-label">
+                        Paste your real LinkedIn About / Experience text{linkedinVerifiedName ? ' (optional if signed in above)' : ''}
+                      </label>
                       <textarea
                         id="i-bio"
                         rows={3}
                         className="w-full rounded-lg border border-line dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-[13.5px] text-ink dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all resize-y"
                         placeholder="Copy-paste your actual About section here — the agent only extracts facts from real text you provide, it never invents your history."
                         value={linkedinBioText}
-                        onChange={(e) => setLinkedinBioText(e.target.value)}
+                        onChange={(e) => {
+                          setLinkedinBioText(e.target.value)
+                          if (formError) setFormError('')
+                        }}
                       />
                     </div>
 
@@ -881,6 +907,13 @@ function OnboardingInner() {
                         onClick={() => {
                           if ((!linkedinVerifiedName && !linkedin.trim()) || !firm.trim() || !designation.trim()) {
                             setFormError('Firm, designation, and LinkedIn (URL or sign-in) are required.')
+                            return
+                          }
+                          // A profile URL alone can't actually be read (LinkedIn
+                          // blocks scraping) — without the pasted bio text too,
+                          // Agent 2 has nothing real to analyze.
+                          if (!linkedinVerifiedName && !linkedinBioText.trim()) {
+                            setFormError('Paste your real LinkedIn About/Experience text below, or sign in with LinkedIn above — a URL alone can\'t be read.')
                             return
                           }
                           setFormError('')
