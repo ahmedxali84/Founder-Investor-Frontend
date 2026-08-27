@@ -1,22 +1,35 @@
 /**
- * The full lockup (pineapple mark + "KAVAN" wordmark + tagline) is baked
- * into one square image per theme — light-on-white for light mode,
- * gold-on-black for dark — rather than separate SVG/text pieces, so this
- * just swaps which one is visible via Tailwind's dark: class strategy
- * (same one every other dark: usage in this app relies on, toggled by
- * ThemeContext.jsx) instead of trying to theme an <img> src directly.
+ * "lg" (hero screens — auth panel, login/signup, forgot/reset password)
+ * renders the full square lockup: pineapple mark + "KAVAN" wordmark +
+ * tagline, stacked, baked into one image per theme. That's the right shape
+ * for a spacious hero moment, but wrong for a nav bar — a square asset with
+ * three stacked elements is always either too small to read or too tall for
+ * a slim header, no matter what height you scale it to (confirmed by
+ * rendering it at 36–96px: the tagline never becomes legible until ~80px,
+ * at which point it's taller than any sidebar header should be).
+ *
+ * "sm" (sidebar, onboarding top bar) instead uses icon + wordmark cropped
+ * out as separate images and laid out horizontally, tagline dropped
+ * entirely — the same fix real products use (Slack/Linear/Notion never put
+ * their full vertical lockup in a sidebar either). Icon and wordmark are
+ * cropped from the same source lockup per theme, not mixed across light/
+ * dark, so styling stays consistent within each theme.
  */
 export function Logo({ className = '', size = 'sm' }) {
-  // The lockup is a full square (mark + wordmark + tagline stacked), not a
-  // wide horizontal logo — shrinking it to a typical nav-bar height (~36px)
-  // makes the tagline an illegible blur and the wordmark itself blurry.
-  // Confirmed by rendering it at several heights side by side: the wordmark
-  // stays crisp from ~48px, the tagline only actually reads from ~80px.
-  const height = size === 'lg' ? 'h-20' : 'h-12'
+  if (size === 'lg') {
+    return (
+      <div className={`flex items-center ${className}`}>
+        <img src="/logo-light.png" alt="Kavan" className="h-20 w-auto dark:hidden" />
+        <img src="/logo-dark.png" alt="Kavan" className="h-20 w-auto hidden dark:block" />
+      </div>
+    )
+  }
   return (
-    <div className={`flex items-center ${className}`}>
-      <img src="/logo-light.png" alt="Kavan" className={`${height} w-auto dark:hidden`} />
-      <img src="/logo-dark.png" alt="Kavan" className={`${height} w-auto hidden dark:block`} />
+    <div className={`flex items-center gap-2.5 ${className}`}>
+      <img src="/icon-light.png" alt="" className="h-10 w-auto dark:hidden" />
+      <img src="/icon-dark.png" alt="" className="h-10 w-auto hidden dark:block" />
+      <img src="/wordmark-light.png" alt="Kavan" className="h-[22px] w-auto dark:hidden" />
+      <img src="/wordmark-dark.png" alt="Kavan" className="h-[22px] w-auto hidden dark:block" />
     </div>
   )
 }
