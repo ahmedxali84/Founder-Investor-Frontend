@@ -205,7 +205,7 @@ function NotificationBell({ profileData, statusData }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+8px)] w-[calc(100vw-2rem)] max-w-80 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-lg z-40 overflow-hidden animate-card-in">
+        <div className="fixed inset-x-4 top-16 sm:absolute sm:inset-x-auto sm:top-[calc(100%+8px)] sm:right-0 sm:w-[calc(100vw-2rem)] sm:max-w-80 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-lg z-40 overflow-hidden animate-card-in">
           <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800">
             <span className="text-[13px] font-bold text-slate-800 dark:text-slate-100">Notifications</span>
           </div>

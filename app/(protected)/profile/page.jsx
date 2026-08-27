@@ -277,7 +277,7 @@ export default function ProfilePage() {
                 <EmptyState icon={<GitHubMark className="w-6 h-6 [&>path]:fill-slate-400" />} title="No GitHub account verified yet" subtitle="Connect a real GitHub profile during onboarding to see live repo, star, and language data here." />
               ) : (
                 <>
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <StatTile label="Public repos" value={githubInsights.public_repos} icon={<RepoIcon className="w-[18px] h-[18px]" />} />
                     <StatTile label="Total stars" value={githubInsights.stars_count} icon={<StarIcon className="w-[18px] h-[18px]" />} tone="amber" />
                     <StatTile label="Followers" value={githubInsights.followers} icon={<ProfileIcon className="w-[18px] h-[18px]" />} tone="blue" />

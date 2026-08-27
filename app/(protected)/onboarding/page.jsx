@@ -757,7 +757,7 @@ function OnboardingInner() {
                       <label className="block text-[12.5px] font-semibold text-white/80 mb-1">
                         Location (optional — powers location-based search for investors)
                       </label>
-                      <div className="grid grid-cols-3 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                         <select
                           value={countryIso}
                           onChange={(e) => handleCountryChange(e.target.value)}
@@ -956,7 +956,7 @@ function OnboardingInner() {
 
                     <div>
                       <label className="field-label">Location (optional — powers location-based search)</label>
-                      <div className="grid grid-cols-3 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <select
                           id="i-country"
                           value={countryIso}
