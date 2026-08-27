@@ -30,7 +30,13 @@ export default function LoginPage() {
       {/* RIGHT — login form fills the entire right half */}
       <div className="w-full lg:w-1/2 min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 xl:px-20 py-12">
         <div className="lg:hidden mb-8">
-          <Logo size="lg" className="items-center" iconHeight={90} wordmarkHeight={50} taglineHeight={26} />
+          <Logo
+            size="lg"
+            className="items-center"
+            iconHeight="clamp(50px, 16vw, 90px)"
+            wordmarkHeight="clamp(28px, 9vw, 50px)"
+            taglineHeight="clamp(15px, 4.7vw, 26px)"
+          />
         </div>
 
         <div className="w-full max-w-[440px]">
@@ -44,6 +50,11 @@ export default function LoginPage() {
 
           <p className="mt-6 text-center text-[11.5px] text-slate-400 dark:text-slate-500">
             Protected by verified GitHub &amp; LinkedIn sign-in.
+          </p>
+          {/* Desktop already shows this via AuthSidePanel's own footer —
+              only needed here for the lg:hidden mobile view above. */}
+          <p className="lg:hidden mt-2 text-center text-[11px] text-slate-400/70 dark:text-slate-500/70">
+            © {new Date().getFullYear()} Kavan — a Techflix company.
           </p>
         </div>
       </div>

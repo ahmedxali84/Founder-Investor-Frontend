@@ -18,28 +18,29 @@
  * as its own strip underneath — real typography from the source file, not a
  * re-typed approximation.
  *
- * ICON_NUDGE_FRAC: the icon crop's bounding box isn't optically centered —
- * the leaves add height above the pineapple's body that plain
- * `items-center` doesn't account for, so naive centering makes the body
- * look like it's sinking below the wordmark. Measured directly from the
- * source art (the leaf/body split sits at ~72% down the icon's height, vs
- * 50% for a plain bounding-box center) and expressed as a negative
- * margin-top so it scales with iconHeight instead of being a fixed pixel
- * value that only happens to work at one size.
+ * ICON_NUDGE: the icon crop's bounding box isn't optically centered — the
+ * leaves add height above the pineapple's body that plain `items-center`
+ * doesn't account for, so naive centering makes the body look like it's
+ * sinking below the wordmark. Measured directly from the source art (the
+ * leaf/body split sits at ~72% down the icon's height, vs 50% for a plain
+ * bounding-box center) and expressed as `translateY(-21.8%)` — a CSS
+ * percentage transform is relative to the element's OWN rendered height, so
+ * this stays correct whether iconHeight is a plain pixel number or a
+ * responsive `clamp()` string (a JS-computed pixel offset can't react to a
+ * clamp() the way a CSS percentage does).
  *
  * Icon/wordmark/tagline are always cropped from the same theme's source
  * lockup, never mixed across light/dark, so styling stays consistent.
  */
-const ICON_NUDGE_FRAC = 0.218
+const ICON_NUDGE = { transform: 'translateY(-21.8%)' }
 
 export function Logo({ className = '', size = 'sm', badge, iconHeight = 68, wordmarkHeight = 38, taglineHeight = 20, showTagline = true }) {
   if (size === 'lg') {
-    const nudge = { marginTop: -Math.round(iconHeight * ICON_NUDGE_FRAC) }
     return (
       <div className={`flex flex-col ${className}`}>
         <div className="flex items-center gap-3.5">
-          <img src="/icon-light.png" alt="" style={{ height: iconHeight, ...nudge }} className="w-auto dark:hidden" />
-          <img src="/icon-dark.png" alt="" style={{ height: iconHeight, ...nudge }} className="w-auto hidden dark:block" />
+          <img src="/icon-light.png" alt="" style={{ height: iconHeight, ...ICON_NUDGE }} className="w-auto dark:hidden" />
+          <img src="/icon-dark.png" alt="" style={{ height: iconHeight, ...ICON_NUDGE }} className="w-auto hidden dark:block" />
           <img src="/wordmark-light.png" alt="Kavan" style={{ height: wordmarkHeight }} className="w-auto dark:hidden" />
           <img src="/wordmark-dark.png" alt="Kavan" style={{ height: wordmarkHeight }} className="w-auto hidden dark:block" />
           {badge}
@@ -53,11 +54,10 @@ export function Logo({ className = '', size = 'sm', badge, iconHeight = 68, word
       </div>
     )
   }
-  const smNudge = { marginTop: -Math.round(40 * ICON_NUDGE_FRAC) }
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      <img src="/icon-light.png" alt="" style={smNudge} className="h-10 w-auto dark:hidden" />
-      <img src="/icon-dark.png" alt="" style={smNudge} className="h-10 w-auto hidden dark:block" />
+      <img src="/icon-light.png" alt="" style={ICON_NUDGE} className="h-10 w-auto dark:hidden" />
+      <img src="/icon-dark.png" alt="" style={ICON_NUDGE} className="h-10 w-auto hidden dark:block" />
       <img src="/wordmark-light.png" alt="Kavan" className="h-[22px] w-auto dark:hidden" />
       <img src="/wordmark-dark.png" alt="Kavan" className="h-[22px] w-auto hidden dark:block" />
     </div>
