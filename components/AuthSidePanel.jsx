@@ -37,14 +37,7 @@ export default function AuthSidePanel() {
       }} />
 
       <div className="relative h-full flex flex-col justify-between p-10 xl:p-14">
-        <Logo
-          size="lg"
-          badge={
-            <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-ink/70 dark:text-slate-300 bg-white/70 dark:bg-slate-800/70 ring-1 ring-black/5 dark:ring-white/10 backdrop-blur px-2.5 py-1 rounded-full whitespace-nowrap">
-              By Techflix
-            </span>
-          }
-        />
+        <Logo size="lg" showTagline={false} />
 
         <div className="py-8 max-w-[440px]">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/70 dark:bg-slate-800/70 ring-1 ring-black/5 dark:ring-white/10 px-3 py-1.5 backdrop-blur">
@@ -78,20 +71,28 @@ export default function AuthSidePanel() {
           </ul>
         </div>
 
-        <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 shadow-sm px-4 py-3.5 max-w-[380px]">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-[12px] font-semibold text-ink dark:text-slate-100">
-              <CheckCircleIcon className="w-4 h-4 text-emerald-500" />
-              Match confirmed · both opted in
+        <div>
+          <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 shadow-sm px-4 py-3.5 max-w-[380px]">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-[12px] font-semibold text-ink dark:text-slate-100">
+                <CheckCircleIcon className="w-4 h-4 text-emerald-500" />
+                Match confirmed · both opted in
+              </div>
+              <div className="flex items-center gap-0.5 text-amber-400">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <StarIcon key={i} className="w-3.5 h-3.5" />
+                ))}
+              </div>
             </div>
-            <div className="flex items-center gap-0.5 text-amber-400">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <StarIcon key={i} className="w-3.5 h-3.5" />
-              ))}
-            </div>
+            <p className="mt-1.5 text-[11.5px] text-muted dark:text-slate-400">
+              Founders and investors are meeting on Kavan every week.
+            </p>
           </div>
-          <p className="mt-1.5 text-[11.5px] text-muted dark:text-slate-400">
-            Founders and investors are meeting on Kavan every week.
+
+          {/* Fiverr-style footer credit — company attribution tucked away as
+              quiet fine print instead of competing with the Kavan logo up top. */}
+          <p className="mt-6 text-[11px] text-muted/70 dark:text-slate-500">
+            © {new Date().getFullYear()} Kavan — a Techflix company.
           </p>
         </div>
       </div>

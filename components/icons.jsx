@@ -12,33 +12,52 @@
  * "sm" (sidebar, onboarding top bar): icon + wordmark only, no tagline —
  * the same pattern Slack/Linear/Notion use in their own sidebars.
  * "lg" (hero screens — auth panel, login/signup, forgot/reset password):
- * same icon + wordmark row, larger, with the tagline cropped out as its own
- * strip underneath (own real typography, not a re-typed approximation) and
- * an optional `badge` slot rendered inline in the icon+wordmark row so it
- * aligns against that single row instead of the whole block.
+ * same icon + wordmark row, larger, with an optional `badge` slot rendered
+ * inline in that row so it aligns against the single row instead of the
+ * whole block, and (unless `showTagline` is false) the tagline cropped out
+ * as its own strip underneath — real typography from the source file, not a
+ * re-typed approximation.
+ *
+ * ICON_NUDGE_FRAC: the icon crop's bounding box isn't optically centered —
+ * the leaves add height above the pineapple's body that plain
+ * `items-center` doesn't account for, so naive centering makes the body
+ * look like it's sinking below the wordmark. Measured directly from the
+ * source art (the leaf/body split sits at ~72% down the icon's height, vs
+ * 50% for a plain bounding-box center) and expressed as a negative
+ * margin-top so it scales with iconHeight instead of being a fixed pixel
+ * value that only happens to work at one size.
+ *
  * Icon/wordmark/tagline are always cropped from the same theme's source
  * lockup, never mixed across light/dark, so styling stays consistent.
  */
-export function Logo({ className = '', size = 'sm', badge }) {
+const ICON_NUDGE_FRAC = 0.218
+
+export function Logo({ className = '', size = 'sm', badge, iconHeight = 68, wordmarkHeight = 38, taglineHeight = 20, showTagline = true }) {
   if (size === 'lg') {
+    const nudge = { marginTop: -Math.round(iconHeight * ICON_NUDGE_FRAC) }
     return (
       <div className={`flex flex-col ${className}`}>
         <div className="flex items-center gap-3.5">
-          <img src="/icon-light.png" alt="" className="h-[68px] w-auto dark:hidden" />
-          <img src="/icon-dark.png" alt="" className="h-[68px] w-auto hidden dark:block" />
-          <img src="/wordmark-light.png" alt="Kavan" className="h-[38px] w-auto dark:hidden" />
-          <img src="/wordmark-dark.png" alt="Kavan" className="h-[38px] w-auto hidden dark:block" />
+          <img src="/icon-light.png" alt="" style={{ height: iconHeight, ...nudge }} className="w-auto dark:hidden" />
+          <img src="/icon-dark.png" alt="" style={{ height: iconHeight, ...nudge }} className="w-auto hidden dark:block" />
+          <img src="/wordmark-light.png" alt="Kavan" style={{ height: wordmarkHeight }} className="w-auto dark:hidden" />
+          <img src="/wordmark-dark.png" alt="Kavan" style={{ height: wordmarkHeight }} className="w-auto hidden dark:block" />
           {badge}
         </div>
-        <img src="/tagline-light.png" alt="Ideas. Connect. Grow." className="h-5 w-auto mt-2.5 dark:hidden" />
-        <img src="/tagline-dark.png" alt="Ideas. Connect. Grow." className="h-5 w-auto mt-2.5 hidden dark:block" />
+        {showTagline && (
+          <>
+            <img src="/tagline-light.png" alt="Ideas. Connect. Grow." style={{ height: taglineHeight }} className="w-auto mt-2.5 dark:hidden" />
+            <img src="/tagline-dark.png" alt="Ideas. Connect. Grow." style={{ height: taglineHeight }} className="w-auto mt-2.5 hidden dark:block" />
+          </>
+        )}
       </div>
     )
   }
+  const smNudge = { marginTop: -Math.round(40 * ICON_NUDGE_FRAC) }
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      <img src="/icon-light.png" alt="" className="h-10 w-auto dark:hidden" />
-      <img src="/icon-dark.png" alt="" className="h-10 w-auto hidden dark:block" />
+      <img src="/icon-light.png" alt="" style={smNudge} className="h-10 w-auto dark:hidden" />
+      <img src="/icon-dark.png" alt="" style={smNudge} className="h-10 w-auto hidden dark:block" />
       <img src="/wordmark-light.png" alt="Kavan" className="h-[22px] w-auto dark:hidden" />
       <img src="/wordmark-dark.png" alt="Kavan" className="h-[22px] w-auto hidden dark:block" />
     </div>
