@@ -24,6 +24,6 @@ export function useDocumentTitle() {
   const pathname = usePathname()
   useEffect(() => {
     const label = PAGE_TITLES[pathname]
-    document.title = label ? `Techflix — ${label}` : 'Techflix'
+    document.title = label ? `Kavan — ${label}` : 'Kavan'
   }, [pathname])
 }

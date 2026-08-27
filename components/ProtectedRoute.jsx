@@ -49,7 +49,7 @@ export default function ProtectedRoute({ children }) {
           borderRadius: '50%',
           animation: 'spin 0.8s linear infinite'
         }} />
-        <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>Loading TechFlixx…</p>
+        <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>Loading Kavan…</p>
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     )

@@ -1,20 +1,22 @@
-export function Logo({ className = '' }) {
+/**
+ * The full lockup (pineapple mark + "KAVAN" wordmark + tagline) is baked
+ * into one square image per theme — light-on-white for light mode,
+ * gold-on-black for dark — rather than separate SVG/text pieces, so this
+ * just swaps which one is visible via Tailwind's dark: class strategy
+ * (same one every other dark: usage in this app relies on, toggled by
+ * ThemeContext.jsx) instead of trying to theme an <img> src directly.
+ */
+export function Logo({ className = '', size = 'sm' }) {
+  // The lockup is a full square (mark + wordmark + tagline stacked), not a
+  // wide horizontal logo — shrinking it to a typical nav-bar height (~36px)
+  // makes the tagline an illegible blur and the wordmark itself blurry.
+  // Confirmed by rendering it at several heights side by side: the wordmark
+  // stays crisp from ~48px, the tagline only actually reads from ~80px.
+  const height = size === 'lg' ? 'h-20' : 'h-12'
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
-      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect x="4" y="9" width="24" height="18" rx="6" fill="#2F6BFF" />
-        <rect x="14.6" y="2" width="2.8" height="6" rx="1.4" fill="#2F6BFF" />
-        <circle cx="16" cy="2.6" r="2.2" fill="#2F6BFF" />
-        <circle cx="11.5" cy="17" r="2.6" fill="#fff" />
-        <circle cx="20.5" cy="17" r="2.6" fill="#fff" />
-        <rect x="12.5" y="22" width="7" height="1.8" rx="0.9" fill="#fff" opacity="0.7" />
-        <rect x="0.5" y="14" width="3" height="7" rx="1.5" fill="#8FB0FF" />
-        <rect x="28.5" y="14" width="3" height="7" rx="1.5" fill="#8FB0FF" />
-      </svg>
-      <span className="text-[19px] font-extrabold tracking-tight text-ink dark:text-slate-100">Techflix</span>
-      <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-        <path d="M6 0l1.3 3.6L11 5 7.3 6.3 6 10 4.7 6.3 1 5l3.7-1.4L6 0z" fill="#F5B544" />
-      </svg>
+    <div className={`flex items-center ${className}`}>
+      <img src="/logo-light.png" alt="Kavan" className={`${height} w-auto dark:hidden`} />
+      <img src="/logo-dark.png" alt="Kavan" className={`${height} w-auto hidden dark:block`} />
     </div>
   )
 }

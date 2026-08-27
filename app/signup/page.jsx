@@ -32,7 +32,7 @@ export default function SignupPage() {
       {/* RIGHT — signup form fills the entire right half */}
       <div className="w-full lg:w-1/2 min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 xl:px-20 py-12">
         <div className="lg:hidden mb-8">
-          <Logo />
+          <Logo size="lg" />
         </div>
 
         <div className="w-full max-w-[440px]">

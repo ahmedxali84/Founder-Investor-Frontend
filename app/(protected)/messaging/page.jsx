@@ -752,7 +752,7 @@ function MessagingPageInner() {
           <div className="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-sm border border-slate-200/70 dark:border-slate-800 max-w-md text-center">
             <h2 className="text-title text-slate-800 dark:text-slate-100 mb-2">No one else has joined yet</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-              Once another account signs up on Techflix, they'll show up here and you can start messaging them in real time.
+              Once another account signs up on Kavan, they'll show up here and you can start messaging them in real time.
             </p>
             <button
               onClick={() => setShowNewChatModal(true)}

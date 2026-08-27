@@ -272,7 +272,7 @@ function SearchPageInner() {
       <div className="mb-6">
         <h1 className="text-page md:text-page-lg text-slate-900 dark:text-slate-100 tracking-tight">Location Search</h1>
         <p className="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5 capitalize">
-          Every {searchLabel} on Techflix, closest to you first.
+          Every {searchLabel} on Kavan, closest to you first.
         </p>
       </div>
 

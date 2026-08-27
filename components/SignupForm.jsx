@@ -80,7 +80,7 @@ export default function SignupForm() {
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col">
       <h2 className="text-page tracking-[-0.01em] text-ink dark:text-slate-100">Create your account</h2>
-      <p className="mt-1 text-[12.5px] text-muted dark:text-slate-400">Select your role & get started with Techflix</p>
+      <p className="mt-1 text-[12.5px] text-muted dark:text-slate-400">Select your role & get started with Kavan</p>
 
       {/* Dual Role Selector Tabs */}
       <div className="mt-4 grid grid-cols-2 gap-2 p-1 bg-[#F5F2EC] dark:bg-slate-800 rounded-xl border border-line dark:border-slate-700">

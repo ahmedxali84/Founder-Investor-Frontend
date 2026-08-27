@@ -34,7 +34,7 @@ export default function ForgotPassword() {
   return (
     <div className="min-h-screen bg-[#F5F7FB] dark:bg-slate-950 grid place-items-center px-5 py-12">
       <div className="w-full max-w-[420px]">
-        <Logo className="justify-center" />
+        <Logo className="justify-center" size="lg" />
         <div className="mt-7 rounded-[22px] border border-slate-200/70 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-[0_20px_60px_-24px_rgba(15,23,42,0.28),0_2px_8px_-2px_rgba(15,23,42,0.06)] px-7 py-8">
           <h1 className="text-page tracking-[-0.01em] text-ink dark:text-slate-100">Reset your password</h1>
           <p className="mt-1.5 text-[13px] text-muted dark:text-slate-400">

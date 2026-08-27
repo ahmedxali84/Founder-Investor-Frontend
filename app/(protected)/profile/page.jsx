@@ -115,7 +115,7 @@ export default function ProfilePage() {
   // GitHub account yet, we show an honest empty state instead of invented stats.
   const githubInsights = founderData?.github_insights || {}
   const hasGithubData = Boolean(githubInsights.verified)
-  const displayName = founderData.linkedin_verified?.name || user?.user_metadata?.full_name || founderData.name || 'TechFlixx Member'
+  const displayName = founderData.linkedin_verified?.name || user?.user_metadata?.full_name || founderData.name || 'Kavan Member'
   // Prefer the real LinkedIn OAuth photo — it's the literal PFP the person
   // uses professionally, which is a stronger identity signal than GitHub's.
   const avatarUrl = founderData.linkedin_verified?.picture || githubInsights.avatar_url || null

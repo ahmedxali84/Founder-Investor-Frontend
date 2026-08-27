@@ -37,7 +37,12 @@ export default function AuthSidePanel() {
       }} />
 
       <div className="relative h-full flex flex-col justify-between p-10 xl:p-14">
-        <Logo />
+        <div className="flex items-center gap-3">
+          <Logo size="lg" />
+          <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-ink/70 dark:text-slate-300 bg-white/70 dark:bg-slate-800/70 ring-1 ring-black/5 dark:ring-white/10 backdrop-blur px-2.5 py-1 rounded-full whitespace-nowrap">
+            By Techflix
+          </span>
+        </div>
 
         <div className="py-8 max-w-[440px]">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/70 dark:bg-slate-800/70 ring-1 ring-black/5 dark:ring-white/10 px-3 py-1.5 backdrop-blur">
@@ -53,7 +58,7 @@ export default function AuthSidePanel() {
             </span>
           </h1>
           <p className="mt-3 max-w-[360px] text-[14px] leading-relaxed text-muted dark:text-slate-400">
-            Techflix pairs startups and investors using live, verified data — so every introduction is one worth taking.
+            Kavan pairs startups and investors using live, verified data — so every introduction is one worth taking.
           </p>
 
           <ul className="mt-8 space-y-4">
@@ -84,7 +89,7 @@ export default function AuthSidePanel() {
             </div>
           </div>
           <p className="mt-1.5 text-[11.5px] text-muted dark:text-slate-400">
-            Founders and investors are meeting on Techflix every week.
+            Founders and investors are meeting on Kavan every week.
           </p>
         </div>
       </div>

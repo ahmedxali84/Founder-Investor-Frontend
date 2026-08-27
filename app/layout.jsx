@@ -3,7 +3,7 @@ import Providers from './providers.jsx'
 import './globals.css'
 
 export const metadata = {
-  title: 'Techflix',
+  title: 'Kavan',
 }
 
 export const viewport = {
