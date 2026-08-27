@@ -356,9 +356,9 @@ function SidebarBody({ active, userType, unreadContactsCount, aiManagementItems,
   return (
     <>
       <div>
-        <div className="p-5 border-b border-slate-100 dark:border-slate-800">
+        <Link href="/dashboard" onClick={onNavigate} className="block p-5 border-b border-slate-100 dark:border-slate-800">
           <Logo />
-        </div>
+        </Link>
 
         <nav className="p-3 space-y-6 overflow-y-auto">
           <div className="space-y-1">
@@ -511,16 +511,18 @@ export default function AppShell({ active, userType, userName, userRole, avatarU
             <HelpMenu />
 
             <div className="flex items-center gap-2.5 pl-2 sm:pl-3 sm:border-l border-slate-200 dark:border-slate-800">
-              <img
-                src={avatarUrl || fallbackAvatar}
-                alt={userName}
-                className="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 object-cover transition-transform hover:scale-105"
-                onError={(e) => { e.currentTarget.src = fallbackAvatar }}
-              />
-              <div className="hidden sm:block text-left leading-tight">
-                <span className="text-[13px] font-bold text-slate-800 dark:text-slate-100 block">{userName}</span>
-                <span className="text-[10px] text-slate-400 dark:text-slate-500 block capitalize">{userRole}</span>
-              </div>
+              <Link href="/profile" className="flex items-center gap-2.5">
+                <img
+                  src={avatarUrl || fallbackAvatar}
+                  alt={userName}
+                  className="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 object-cover transition-transform hover:scale-105"
+                  onError={(e) => { e.currentTarget.src = fallbackAvatar }}
+                />
+                <div className="hidden sm:block text-left leading-tight">
+                  <span className="text-[13px] font-bold text-slate-800 dark:text-slate-100 block">{userName}</span>
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 block capitalize">{userRole}</span>
+                </div>
+              </Link>
               <button
                 onClick={onSignOut}
                 className="ml-1 sm:ml-2 text-[12px] font-semibold text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 transition-colors"
