@@ -45,7 +45,7 @@ export default function MvpGateBanner({ onUnlocked }) {
         Investors only take meetings with founders who have something real to show. Paste a reachable URL to your
         working prototype and we'll verify it's live.
       </p>
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <input
           type="url"
           placeholder="https://your-prototype.com"
@@ -56,7 +56,7 @@ export default function MvpGateBanner({ onUnlocked }) {
         <button
           onClick={handleValidate}
           disabled={busy}
-          className="btn-accent flex items-center gap-2 shrink-0"
+          className="btn-accent flex items-center justify-center gap-2 sm:shrink-0"
         >
           {busy && <SpinnerIcon className="w-3.5 h-3.5" />}
           Verify & Unlock
