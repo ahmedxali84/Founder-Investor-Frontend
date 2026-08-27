@@ -1,26 +1,37 @@
 /**
- * "lg" (hero screens — auth panel, login/signup, forgot/reset password)
- * renders the full square lockup: pineapple mark + "KAVAN" wordmark +
- * tagline, stacked, baked into one image per theme. That's the right shape
- * for a spacious hero moment, but wrong for a nav bar — a square asset with
- * three stacked elements is always either too small to read or too tall for
- * a slim header, no matter what height you scale it to (confirmed by
- * rendering it at 36–96px: the tagline never becomes legible until ~80px,
- * at which point it's taller than any sidebar header should be).
+ * Both sizes use the icon + wordmark cropped out as separate images and laid
+ * out horizontally, never the original full square lockup (icon + wordmark
+ * + tagline, all stacked into one image) — that shape only works when
+ * nothing else needs to sit next to it. Stacked next to a single-row element
+ * like the "By Techflix" badge, a 3-row-tall block never aligns naturally;
+ * the badge ends up floating at the vertical middle instead of looking
+ * attached to anything. Confirmed by rendering the full lockup at 36–96px:
+ * the tagline never becomes legible until ~80px, at which point it's also
+ * too tall to pair cleanly with anything beside it.
  *
- * "sm" (sidebar, onboarding top bar) instead uses icon + wordmark cropped
- * out as separate images and laid out horizontally, tagline dropped
- * entirely — the same fix real products use (Slack/Linear/Notion never put
- * their full vertical lockup in a sidebar either). Icon and wordmark are
- * cropped from the same source lockup per theme, not mixed across light/
- * dark, so styling stays consistent within each theme.
+ * "sm" (sidebar, onboarding top bar): icon + wordmark only, no tagline —
+ * the same pattern Slack/Linear/Notion use in their own sidebars.
+ * "lg" (hero screens — auth panel, login/signup, forgot/reset password):
+ * same icon + wordmark row, larger, with the tagline cropped out as its own
+ * strip underneath (own real typography, not a re-typed approximation) and
+ * an optional `badge` slot rendered inline in the icon+wordmark row so it
+ * aligns against that single row instead of the whole block.
+ * Icon/wordmark/tagline are always cropped from the same theme's source
+ * lockup, never mixed across light/dark, so styling stays consistent.
  */
-export function Logo({ className = '', size = 'sm' }) {
+export function Logo({ className = '', size = 'sm', badge }) {
   if (size === 'lg') {
     return (
-      <div className={`flex items-center ${className}`}>
-        <img src="/logo-light.png" alt="Kavan" className="h-20 w-auto dark:hidden" />
-        <img src="/logo-dark.png" alt="Kavan" className="h-20 w-auto hidden dark:block" />
+      <div className={`flex flex-col ${className}`}>
+        <div className="flex items-center gap-3.5">
+          <img src="/icon-light.png" alt="" className="h-[68px] w-auto dark:hidden" />
+          <img src="/icon-dark.png" alt="" className="h-[68px] w-auto hidden dark:block" />
+          <img src="/wordmark-light.png" alt="Kavan" className="h-[38px] w-auto dark:hidden" />
+          <img src="/wordmark-dark.png" alt="Kavan" className="h-[38px] w-auto hidden dark:block" />
+          {badge}
+        </div>
+        <img src="/tagline-light.png" alt="Ideas. Connect. Grow." className="h-5 w-auto mt-2.5 dark:hidden" />
+        <img src="/tagline-dark.png" alt="Ideas. Connect. Grow." className="h-5 w-auto mt-2.5 hidden dark:block" />
       </div>
     )
   }

@@ -37,12 +37,14 @@ export default function AuthSidePanel() {
       }} />
 
       <div className="relative h-full flex flex-col justify-between p-10 xl:p-14">
-        <div className="flex items-center gap-3">
-          <Logo size="lg" />
-          <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-ink/70 dark:text-slate-300 bg-white/70 dark:bg-slate-800/70 ring-1 ring-black/5 dark:ring-white/10 backdrop-blur px-2.5 py-1 rounded-full whitespace-nowrap">
-            By Techflix
-          </span>
-        </div>
+        <Logo
+          size="lg"
+          badge={
+            <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-ink/70 dark:text-slate-300 bg-white/70 dark:bg-slate-800/70 ring-1 ring-black/5 dark:ring-white/10 backdrop-blur px-2.5 py-1 rounded-full whitespace-nowrap">
+              By Techflix
+            </span>
+          }
+        />
 
         <div className="py-8 max-w-[440px]">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/70 dark:bg-slate-800/70 ring-1 ring-black/5 dark:ring-white/10 px-3 py-1.5 backdrop-blur">
