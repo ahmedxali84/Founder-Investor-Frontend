@@ -408,11 +408,9 @@ function SidebarBody({ active, userType, unreadContactsCount, aiManagementItems,
 
       <div className="p-3 border-t border-slate-100 dark:border-slate-800">
         <SettingsMenu />
-        <div className="mt-2 flex justify-center">
-          <span className="text-[8.5px] font-bold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/70 ring-1 ring-slate-200/70 dark:ring-white/10 px-2 py-0.5 rounded-full">
-            By Techflix
-          </span>
-        </div>
+        <p className="mt-2 text-center text-[10px] text-slate-400/70 dark:text-slate-500/70">
+          © {new Date().getFullYear()} Kavan — a Techflix company.
+        </p>
       </div>
     </>
   )
