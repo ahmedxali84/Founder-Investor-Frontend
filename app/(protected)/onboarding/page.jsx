@@ -6,6 +6,7 @@ import { useAuth } from '../../../context/AuthContext.jsx'
 import Field from '../../../components/Field.jsx'
 import Notice from '../../../components/Notice.jsx'
 import AuthSidePanel from '../../../components/AuthSidePanel.jsx'
+import BrandLoader from '../../../components/BrandLoader.jsx'
 import { Logo, SpinnerIcon, LinkedInMark, GitHubMark, CheckIcon, RocketIcon, BriefcaseIcon, CodeIcon } from '../../../components/icons.jsx'
 import { validateLinkedInUrl, validateGitHubUrl } from '../../../lib/validation.js'
 import { CURRENCIES, toUsd } from '../../../lib/currency.js'
@@ -447,12 +448,7 @@ function OnboardingInner() {
   const totalSteps = 2
 
   if (checkingExisting) {
-    return (
-      <div className="min-h-screen bg-cream dark:bg-slate-950 flex flex-col items-center justify-center">
-        <SpinnerIcon className="w-8 h-8 text-brand" />
-        <p className="mt-3 text-sm font-semibold text-muted dark:text-slate-400">Checking your account...</p>
-      </div>
-    )
+    return <BrandLoader message="Checking your account…" />
   }
 
   return (
@@ -1122,11 +1118,7 @@ function OnboardingInner() {
 
 export default function Onboarding() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-cream dark:bg-slate-950 flex flex-col items-center justify-center">
-        <SpinnerIcon className="w-8 h-8 text-brand" />
-      </div>
-    }>
+    <Suspense fallback={<BrandLoader message="Loading Kavan…" />}>
       <OnboardingInner />
     </Suspense>
   )

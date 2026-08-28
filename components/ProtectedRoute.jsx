@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '../context/AuthContext.jsx'
+import BrandLoader from './BrandLoader.jsx'
 
 /**
  * Blocks a page until Supabase confirms there is a session.
@@ -30,29 +31,7 @@ export default function ProtectedRoute({ children }) {
   }
 
   if (loading) {
-    return (
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #0f0c29, #302b63, #24243e)',
-        color: '#fff',
-        gap: '16px',
-        fontFamily: 'Inter, sans-serif'
-      }}>
-        <div style={{
-          width: '48px', height: '48px',
-          border: '4px solid rgba(255,255,255,0.2)',
-          borderTopColor: '#7c6fff',
-          borderRadius: '50%',
-          animation: 'spin 0.8s linear infinite'
-        }} />
-        <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>Loading Kavan…</p>
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-      </div>
-    )
+    return <BrandLoader message="Loading Kavan…" />
   }
 
   if (!user) {
