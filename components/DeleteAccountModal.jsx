@@ -83,9 +83,22 @@ export default function DeleteAccountModal({ onClose }) {
               value={confirmText}
               onChange={(e) => setConfirmText(e.target.value)}
               disabled={deleting}
-              placeholder={CONFIRM_PHRASE}
-              className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 rounded-xl text-sm font-mono focus:outline-none focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 transition-all"
+              placeholder="Type the phrase above…"
+              // The placeholder used to be the exact confirm phrase itself —
+              // an empty field showing that gray placeholder text looked
+              // indistinguishable from having already typed it, so the
+              // Delete button silently stayed disabled and clicking it did
+              // nothing. Distinct placeholder + an explicit "confirmed"
+              // indicator below make the empty-vs-armed state unambiguous.
+              className={`w-full px-3 py-2 border rounded-xl text-sm font-mono dark:bg-slate-800 dark:text-slate-100 focus:outline-none focus:ring-4 transition-all ${
+                confirmText === CONFIRM_PHRASE
+                  ? 'border-emerald-400 dark:border-emerald-500/60 focus:border-emerald-500 focus:ring-emerald-500/10'
+                  : 'border-slate-200 dark:border-slate-700 focus:border-rose-500 focus:ring-rose-500/10'
+              }`}
             />
+            {confirmText === CONFIRM_PHRASE && (
+              <p className="mt-1.5 text-[11.5px] font-semibold text-emerald-600 dark:text-emerald-400">✓ Confirmed — deletion is now enabled.</p>
+            )}
           </div>
         </div>
 
