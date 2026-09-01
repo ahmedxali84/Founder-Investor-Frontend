@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { MenuIcon, CloseIcon } from './icons.jsx'
+import { MenuIcon, CloseIcon, SunIcon, MoonIcon } from './icons.jsx'
+import { useTheme } from '../context/ThemeContext.jsx'
 
 /**
  * Below `md` the navbar's section links have nowhere to live — hiding them
@@ -13,6 +14,7 @@ import { MenuIcon, CloseIcon } from './icons.jsx'
  */
 export default function MobileNav({ links }) {
   const [open, setOpen] = useState(false)
+  const { theme, toggleTheme } = useTheme()
 
   useEffect(() => {
     if (!open) return
@@ -47,13 +49,34 @@ export default function MobileNav({ links }) {
               {l.label}
             </a>
           ))}
-          <Link
-            href="/login"
-            onClick={() => setOpen(false)}
-            className="mt-1 pt-3 border-t border-line/70 dark:border-slate-800 text-nav font-semibold text-ink dark:text-slate-100"
+          <div className="mt-1 pt-3 border-t border-line/70 dark:border-slate-800 flex items-center gap-3">
+            <Link
+              href="/login"
+              onClick={() => setOpen(false)}
+              className="flex-1 text-center h-10 grid place-items-center rounded-xl border border-line dark:border-slate-700 text-nav font-semibold text-ink dark:text-slate-100"
+            >
+              Log in
+            </Link>
+            <Link
+              href="/signup"
+              onClick={() => setOpen(false)}
+              className="flex-1 text-center h-10 grid place-items-center rounded-xl bg-brand hover:bg-brand-hover text-white text-nav font-semibold shadow-glow"
+            >
+              Sign up
+            </Link>
+          </div>
+
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="flex items-center justify-between pt-3 border-t border-line/70 dark:border-slate-800 text-nav font-semibold text-ink dark:text-slate-100"
           >
-            Log in
-          </Link>
+            <span>Theme</span>
+            <span className="inline-flex items-center gap-1.5 text-[13px] text-ink/60 dark:text-slate-400">
+              {theme === 'dark' ? <MoonIcon className="w-4 h-4 text-slate-300" /> : <SunIcon className="w-4 h-4 text-amber-500" />}
+              {theme === 'dark' ? 'Dark' : 'Light'}
+            </span>
+          </button>
         </div>
       )}
     </div>

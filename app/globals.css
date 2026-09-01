@@ -63,6 +63,24 @@ body {
   }
 }
 
+/* Landing page: "For Founders" / "For Investors" nav links anchor-scroll to
+   #founders / #investors, but landing on a section that looks identical
+   either way doesn't feel like the click did anything specific. A brief
+   pulse on the actual :target element makes it visible which card the link
+   pointed at, without needing JS to track which nav link was clicked. */
+#founders:target,
+#investors:target {
+  animation: target-pulse 1.8s ease-out;
+}
+@keyframes target-pulse {
+  0% {
+    box-shadow: 0 0 0 4px rgba(45, 102, 242, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 4px rgba(45, 102, 242, 0);
+  }
+}
+
 @keyframes notice-in {
   from {
     opacity: 0;

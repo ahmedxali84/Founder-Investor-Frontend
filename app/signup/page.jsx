@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '../../context/AuthContext.jsx'
 import AuthSidePanel from '../../components/AuthSidePanel.jsx'
@@ -48,7 +48,12 @@ export default function SignupPage() {
               <code className="font-mono">.env.local</code> to enable sign-up.
             </Notice>
           )}
-          <SignupForm />
+          {/* useSearchParams() (for the ?role= pre-select) requires a
+              Suspense boundary, or Next.js can't prerender this route as
+              static HTML at build time. */}
+          <Suspense fallback={<div className="h-[520px]" />}>
+            <SignupForm />
+          </Suspense>
 
           <p className="mt-6 text-center text-[11.5px] text-slate-400 dark:text-slate-400">
             Free to join. Verified profiles only.

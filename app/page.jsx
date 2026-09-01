@@ -3,6 +3,7 @@ import { Logo } from '../components/icons.jsx'
 import Reveal from '../components/Reveal.jsx'
 import MobileNav from '../components/MobileNav.jsx'
 import HeroMatchCard from '../components/HeroMatchCard.jsx'
+import ThemeToggle from '../components/ThemeToggle.jsx'
 import {
   RocketIcon, HandshakeIcon, ShieldIcon, DocIcon, BulbIcon, BriefcaseIcon,
   LinkedInMark, GitHubMark, RobotIcon, CheckCircleIcon, ArrowRightIcon,
@@ -87,7 +88,9 @@ function Navbar() {
   return (
     <header className="sticky top-0 z-30 bg-cream/90 dark:bg-slate-950/90 backdrop-blur border-b border-line/70 dark:border-slate-800">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
-        <Logo className="shrink-0" compact />
+        <a href="#" aria-label="Back to top" className="shrink-0">
+          <Logo compact />
+        </a>
         <nav className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((l) => (
             <a key={l.href} href={l.href} className="text-nav text-ink/70 dark:text-slate-300 hover:text-ink dark:hover:text-white transition-colors">{l.label}</a>
@@ -100,6 +103,7 @@ function Navbar() {
               "Get Started" stays visible at every width: it's the one action
               this page actually wants a mobile visitor to take, and burying
               the only CTA behind a menu tap would cost more than it saves. */}
+          <ThemeToggle className="hidden md:grid" />
           <Link href="/login" className="hidden md:inline-block text-nav text-ink dark:text-slate-100 px-2 sm:px-3 py-2 whitespace-nowrap hover:text-brand dark:hover:text-blue-400 transition-colors">
             Log in
           </Link>
@@ -214,10 +218,10 @@ function DualAudience() {
       </Reveal>
 
       <div className="mt-10 grid sm:grid-cols-2 gap-6">
-        <Reveal id="founders" variant="left" className="rounded-3xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-sm p-7 scroll-mt-24">
+        <Reveal id="founders" variant="left" className="flex flex-col min-w-0 rounded-3xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-sm p-7 scroll-mt-24">
           <span className="grid place-items-center w-11 h-11 rounded-2xl bg-brand-soft text-brand dark:bg-blue-500/10 dark:text-blue-400"><BulbIcon className="w-5 h-5" /></span>
           <h3 className="mt-4 text-title text-ink dark:text-slate-100">For Founders</h3>
-          <ul className="mt-3 space-y-2.5">
+          <ul className="mt-3 mb-5 space-y-2.5">
             {[
               'Connect LinkedIn + GitHub and post your idea — Agent 1 scopes your MVP and roadmap for you.',
               'Get matched with one exclusive, real investor at a time, not a cold list to cold-email.',
@@ -229,15 +233,18 @@ function DualAudience() {
               </li>
             ))}
           </ul>
-          <Link href="/signup" className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-brand dark:text-blue-400 hover:underline">
+          <Link
+            href="/signup?role=founder"
+            className="mt-auto self-start w-[250px] max-w-full inline-flex items-center justify-center gap-2 h-12 px-6 rounded-xl bg-brand hover:bg-brand-hover text-white text-btn shadow-glow transition-all active:scale-[0.98]"
+          >
             Post your idea <ArrowRightIcon className="w-3.5 h-3.5" />
           </Link>
         </Reveal>
 
-        <Reveal delay={120} id="investors" variant="right" className="rounded-3xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-sm p-7 scroll-mt-24">
+        <Reveal delay={120} id="investors" variant="right" className="flex flex-col min-w-0 rounded-3xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-sm p-7 scroll-mt-24">
           <span className="grid place-items-center w-11 h-11 rounded-2xl bg-brand-soft text-brand dark:bg-blue-500/10 dark:text-blue-400"><BriefcaseIcon className="w-5 h-5" /></span>
           <h3 className="mt-4 text-title text-ink dark:text-slate-100">For Investors</h3>
-          <ul className="mt-3 space-y-2.5">
+          <ul className="mt-3 mb-5 space-y-2.5">
             {[
               'Set your firm, focus sectors, and ticket size — in whichever of 10 currencies you actually write checks in.',
               'See one exclusive top-ranked startup at a time, backed by real GitHub activity, not a pitch deck alone.',
@@ -249,7 +256,10 @@ function DualAudience() {
               </li>
             ))}
           </ul>
-          <Link href="/signup" className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-brand dark:text-blue-400 hover:underline">
+          <Link
+            href="/signup?role=investor"
+            className="mt-auto self-start w-[250px] max-w-full inline-flex items-center justify-center gap-2 h-12 px-6 rounded-xl bg-brand hover:bg-brand-hover text-white text-btn shadow-glow transition-all active:scale-[0.98]"
+          >
             Find your next investment <ArrowRightIcon className="w-3.5 h-3.5" />
           </Link>
         </Reveal>
@@ -273,31 +283,28 @@ function Features() {
           </Reveal>
 
           <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {FEATURES.map(({ Icon, title, body }, i) => {
-              const standout = title === 'Verified, not invented'
-              return (
-                <Reveal
-                  key={title}
-                  delay={i * 90}
-                  variant="scale"
-                  className={`rounded-2xl p-6 hover-lift ${
-                    standout
-                      ? 'bg-white dark:bg-slate-900 ring-2 ring-brand/40 dark:ring-blue-500/40 shadow-glow'
-                      : 'bg-cream dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10'
-                  }`}
-                >
-                  <span className={`grid place-items-center w-10 h-10 rounded-xl shadow-sm ${
-                    standout
-                      ? 'bg-brand text-white'
-                      : 'bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 text-brand dark:text-blue-400'
-                  }`}>
+            {FEATURES.map(({ Icon, title, body }, i) => (
+              <Reveal key={title} delay={i * 90} variant="scale">
+                {/* The hover/active response lives on this inner div, not on
+                    Reveal's own element — Reveal already animates transform
+                    (translate/scale) for the scroll-in effect via Tailwind's
+                    shared --tw-translate-y custom property, and a second,
+                    competing set of transform utilities on that SAME element
+                    silently lost the cascade battle (confirmed: the hover
+                    transform never took effect even though :hover matched).
+                    Splitting the two onto separate elements avoids the clash
+                    entirely. [-webkit-tap-highlight-color] turns off the
+                    browser's own gray flash on tap, which otherwise muddies
+                    this animation on mobile Chrome/Safari. */}
+                <div className="cursor-pointer rounded-2xl p-6 bg-cream dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 shadow-sm [-webkit-tap-highlight-color:transparent] transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-20px_rgba(15,23,42,0.25)] hover:ring-brand/20 dark:hover:ring-blue-400/20 active:translate-y-0 active:scale-[0.97] active:shadow-sm active:duration-75">
+                  <span className="grid place-items-center w-10 h-10 rounded-xl shadow-sm bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 text-brand dark:text-blue-400">
                     <Icon className="w-[18px] h-[18px]" />
                   </span>
                   <h3 className="mt-4 text-[14px] font-bold text-ink dark:text-slate-100">{title}</h3>
                   <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted dark:text-slate-400">{body}</p>
-                </Reveal>
-              )
-            })}
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </div>

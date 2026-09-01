@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '../context/AuthContext.jsx'
 import { validateSignup, passwordStrength, humanizeAuthError } from '../lib/validation.js'
 import { checkAccountExists } from '../lib/authApi.js'
@@ -14,8 +14,13 @@ import { MailIcon, LockIcon, UserIcon, GoogleIcon, SpinnerIcon, RocketIcon, Brie
 export default function SignupForm() {
   const { signUp, signInWithGoogle, isSupabaseConfigured } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
 
-  const [role, setRole] = useState('founder') // 'founder' | 'investor'
+  // Lets the landing page's "For Founders"/"For Investors" cards link
+  // straight to /signup?role=founder or ?role=investor and land on the
+  // matching tab already selected, instead of everyone landing on the
+  // founder tab regardless of which card they clicked.
+  const [role, setRole] = useState(() => (searchParams.get('role') === 'investor' ? 'investor' : 'founder'))
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
