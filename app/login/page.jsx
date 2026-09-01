@@ -48,12 +48,12 @@ export default function LoginPage() {
           )}
           <LoginForm />
 
-          <p className="mt-6 text-center text-[11.5px] text-slate-400 dark:text-slate-500">
+          <p className="mt-6 text-center text-[11.5px] text-slate-400 dark:text-slate-400">
             Protected by verified GitHub &amp; LinkedIn sign-in.
           </p>
           {/* Desktop already shows this via AuthSidePanel's own footer —
               only needed here for the lg:hidden mobile view above. */}
-          <p className="lg:hidden mt-2 text-center text-[11px] text-slate-400/70 dark:text-slate-500/70">
+          <p className="lg:hidden mt-2 text-center text-[11px] text-muted dark:text-slate-400">
             © {new Date().getFullYear()} Kavan — a Techflix company.
           </p>
         </div>

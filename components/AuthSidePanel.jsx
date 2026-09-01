@@ -91,7 +91,7 @@ export default function AuthSidePanel() {
 
           {/* Fiverr-style footer credit — company attribution tucked away as
               quiet fine print instead of competing with the Kavan logo up top. */}
-          <p className="mt-6 text-[11px] text-muted/70 dark:text-slate-500">
+          <p className="mt-6 text-[11px] text-muted dark:text-slate-400">
             © {new Date().getFullYear()} Kavan — a Techflix company.
           </p>
         </div>

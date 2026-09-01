@@ -812,10 +812,10 @@ function MessagingPageInner() {
             <div className="space-y-2 flex-1">
               {sortedContacts.length === 0 ? (
                 searchQuery.trim() ? (
-                  <p className="text-xs text-slate-400 dark:text-slate-500 text-center mt-4">No one matches &quot;{searchQuery}&quot;.</p>
+                  <p className="text-xs text-slate-400 dark:text-slate-400 text-center mt-4">No one matches &quot;{searchQuery}&quot;.</p>
                 ) : (
                   <div className="text-center mt-6 px-2">
-                    <p className="text-xs text-slate-400 dark:text-slate-500 mb-3">No conversations yet.</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-400 mb-3">No conversations yet.</p>
                     <button
                       onClick={() => setShowNewChatModal(true)}
                       className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 inline-flex items-center gap-1">
@@ -845,7 +845,7 @@ function MessagingPageInner() {
                             {displayName(contact)}
                           </span>
                           {last && (
-                            <span className="text-[10px] text-slate-400 dark:text-slate-500 shrink-0">{formatMessageTime(last.created_at)}</span>
+                            <span className="text-[10px] text-slate-400 dark:text-slate-400 shrink-0">{formatMessageTime(last.created_at)}</span>
                           )}
                         </div>
                         <div className="flex items-center justify-between gap-1.5 mt-0.5">
@@ -870,7 +870,7 @@ function MessagingPageInner() {
           <div className={`${mobileView === 'list' ? 'hidden md:flex' : 'flex'} md:col-span-8 bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/70 dark:border-slate-800 flex-col overflow-hidden h-full`}>
             {!currentContact ? (
               <div className="flex-1 flex items-center justify-center text-center p-8">
-                <p className="text-sm text-slate-400 dark:text-slate-500">Select someone from the list to start messaging.</p>
+                <p className="text-sm text-slate-400 dark:text-slate-400">Select someone from the list to start messaging.</p>
               </div>
             ) : (
               <>
@@ -887,14 +887,14 @@ function MessagingPageInner() {
                   </div>
                   <div>
                     <h3 className="text-title text-slate-800 dark:text-slate-100">{displayName(currentContact)}</h3>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500">{currentContact.email}</p>
+                    <p className="text-[11px] text-slate-400 dark:text-slate-400">{currentContact.email}</p>
                   </div>
                 </div>
 
                 <div className="flex-1 p-4 overflow-y-auto bg-slate-50/60 dark:bg-slate-800/30">
                   {conversation.length === 0 ? (
                     <div className="h-full flex items-center justify-center text-center">
-                      <p className="text-xs text-slate-400 dark:text-slate-500 max-w-[220px]">
+                      <p className="text-xs text-slate-400 dark:text-slate-400 max-w-[220px]">
                         Start the conversation with {displayName(currentContact)}.
                       </p>
                     </div>
@@ -920,7 +920,7 @@ function MessagingPageInner() {
                         <div key={msg.id}>
                           {showDateDivider && (
                             <div className="flex items-center justify-center my-3">
-                              <span className="text-[10px] text-slate-400 dark:text-slate-500 bg-white dark:bg-slate-900 px-3 py-1 rounded-full border border-slate-100 dark:border-slate-800">
+                              <span className="text-[10px] text-slate-400 dark:text-slate-400 bg-white dark:bg-slate-900 px-3 py-1 rounded-full border border-slate-100 dark:border-slate-800">
                                 {formatDateDivider(msg.created_at)}
                               </span>
                             </div>
@@ -960,7 +960,7 @@ function MessagingPageInner() {
                       onClick={() => fileInputRef.current?.click()}
                       disabled={uploading || sending}
                       title="Attach a file"
-                      className="flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-200 dark:hover:border-blue-500/40 disabled:opacity-50 w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 shrink-0 transition-all"
+                      className="flex items-center justify-center text-slate-400 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-200 dark:hover:border-blue-500/40 disabled:opacity-50 w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 shrink-0 transition-all"
                     >
                       <PlusIcon className="w-4 h-4" />
                     </button>
@@ -1115,7 +1115,7 @@ function MessageBubble({
               className="text-xs p-2 rounded-xl border border-blue-300 dark:border-blue-500/40 dark:bg-slate-800 dark:text-slate-100 focus:outline-none resize-none"
             />
             <div className="flex gap-3 justify-end text-[10px]">
-              <button onClick={() => { setIsEditing(false); setEditValue(msg.text || '') }} className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300">
+              <button onClick={() => { setIsEditing(false); setEditValue(msg.text || '') }} className="text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
                 Cancel
               </button>
               <button onClick={submitEdit} className="text-blue-600 dark:text-blue-400 font-semibold hover:text-blue-700 dark:hover:text-blue-300">
@@ -1163,7 +1163,7 @@ function MessageBubble({
         )}
 
         {isLastInGroup && !isEditing && (
-          <span className={`text-[10px] text-slate-400 dark:text-slate-500 flex items-center gap-1 ${isMine ? 'justify-end' : 'justify-start'}`}>
+          <span className={`text-[10px] text-slate-400 dark:text-slate-400 flex items-center gap-1 ${isMine ? 'justify-end' : 'justify-start'}`}>
             {msg.pending ? 'Sending...' : formatMessageTime(msg.created_at)}
             {msg.edited_at && !isDeleted && <span className="italic">(edited)</span>}
             {showSeen && <span className="text-blue-500 font-semibold">· Seen {timeAgo(msg.read_at)}</span>}
@@ -1221,11 +1221,11 @@ function NewChatModal({ query, setQuery, results, loading, searched, onClose, on
 
         <div className="max-h-72 overflow-y-auto px-2 pb-4">
           {!trimmed ? (
-            <p className="text-xs text-slate-400 dark:text-slate-500 text-center py-6">Start typing to search for someone to message.</p>
+            <p className="text-xs text-slate-400 dark:text-slate-400 text-center py-6">Start typing to search for someone to message.</p>
           ) : loading ? (
-            <p className="text-xs text-slate-400 dark:text-slate-500 text-center py-6">Searching...</p>
+            <p className="text-xs text-slate-400 dark:text-slate-400 text-center py-6">Searching...</p>
           ) : showEmptyState ? (
-            <p className="text-xs text-slate-400 dark:text-slate-500 text-center py-6">User not found. Double-check the name or email.</p>
+            <p className="text-xs text-slate-400 dark:text-slate-400 text-center py-6">User not found. Double-check the name or email.</p>
           ) : (
             <div className="space-y-1">
               {results.map((profile) => (

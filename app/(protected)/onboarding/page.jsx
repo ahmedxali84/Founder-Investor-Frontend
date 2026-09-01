@@ -540,7 +540,7 @@ function OnboardingInner() {
                         />
                       ))}
                     </div>
-                    <div className={`mt-1.5 flex justify-between text-[10.5px] font-semibold uppercase tracking-wide ${isGithubStep ? 'text-white/40' : 'text-gray-400 dark:text-slate-500'}`}>
+                    <div className={`mt-1.5 flex justify-between text-[10.5px] font-semibold uppercase tracking-wide ${isGithubStep ? 'text-white/40' : 'text-gray-400 dark:text-slate-400'}`}>
                       {stepLabels.map((label, i) => (
                         <span key={label} className={i + 1 === step ? (isGithubStep ? 'text-[#2DA44E]' : 'text-brand') : ''}>
                           {label}
@@ -601,7 +601,7 @@ function OnboardingInner() {
 
                     <div className="relative flex items-center py-1">
                       <div className="flex-1 border-t border-line dark:border-slate-700" />
-                      <span className="px-3 text-[11px] font-semibold uppercase text-gray-400 dark:text-slate-500">or add manually</span>
+                      <span className="px-3 text-[11px] font-semibold uppercase text-gray-400 dark:text-slate-400">or add manually</span>
                       <div className="flex-1 border-t border-line dark:border-slate-700" />
                     </div>
 
@@ -914,7 +914,7 @@ function OnboardingInner() {
 
                     <div className="relative flex items-center py-1">
                       <div className="flex-1 border-t border-line dark:border-slate-700" />
-                      <span className="px-3 text-[11px] font-semibold uppercase text-gray-400 dark:text-slate-500">or add manually</span>
+                      <span className="px-3 text-[11px] font-semibold uppercase text-gray-400 dark:text-slate-400">or add manually</span>
                       <div className="flex-1 border-t border-line dark:border-slate-700" />
                     </div>
 

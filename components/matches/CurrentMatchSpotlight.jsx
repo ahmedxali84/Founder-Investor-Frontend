@@ -86,8 +86,8 @@ export default function CurrentMatchSpotlight({ currentMatch, mvpUrlValid, meeti
       </div>
 
       <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-100 dark:border-slate-800">
-        <span className="inline-flex items-center gap-1.5"><TicketIcon className="w-4 h-4 text-slate-400 dark:text-slate-500" /> {formatTicket(investor.min_ticket, investor.max_ticket, investor.ticket_currency)}</span>
-        {currentMatch.reason && <span className="text-slate-400 dark:text-slate-500 font-normal italic">"{currentMatch.reason}"</span>}
+        <span className="inline-flex items-center gap-1.5"><TicketIcon className="w-4 h-4 text-slate-400 dark:text-slate-400" /> {formatTicket(investor.min_ticket, investor.max_ticket, investor.ticket_currency)}</span>
+        {currentMatch.reason && <span className="text-slate-400 dark:text-slate-400 font-normal italic">"{currentMatch.reason}"</span>}
       </div>
 
       {error && <Notice tone="error">{error}</Notice>}

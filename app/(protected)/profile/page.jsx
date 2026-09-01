@@ -249,7 +249,7 @@ export default function ProfilePage() {
                       <ArrowUpRightIcon className="w-4 h-4" /> {downloadingResume ? 'Downloading…' : 'Download resume'}
                     </button>
                   ) : (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-700">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 text-slate-400 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
                       <ArrowUpRightIcon className="w-4 h-4" /> Resume building…
                     </span>
                   )
@@ -308,7 +308,7 @@ export default function ProfilePage() {
                       <div className="flex flex-wrap gap-2">
                         {githubInsights.recent_repos.map((repo) => (
                           <span key={repo} className="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-semibold">
-                            <RepoIcon className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 inline mr-1 -mt-0.5" />{repo}
+                            <RepoIcon className="w-3.5 h-3.5 text-slate-400 dark:text-slate-400 inline mr-1 -mt-0.5" />{repo}
                           </span>
                         ))}
                       </div>
@@ -332,7 +332,7 @@ export default function ProfilePage() {
               <div className="grid sm:grid-cols-2 gap-3 pt-1">
                 {founderData.experience && (
                   <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-100 dark:border-slate-800">
-                    <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase block">Experience Level</span>
+                    <span className="text-[10px] font-bold text-slate-400 dark:text-slate-400 uppercase block">Experience Level</span>
                     <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                       {founderData.experience}
                       {founderData.years_of_experience ? ` · ${founderData.years_of_experience} yrs` : ''}
@@ -341,7 +341,7 @@ export default function ProfilePage() {
                 )}
                 {founderData.education && (
                   <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-100 dark:border-slate-800">
-                    <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase block">Education</span>
+                    <span className="text-[10px] font-bold text-slate-400 dark:text-slate-400 uppercase block">Education</span>
                     <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{founderData.education}</span>
                   </div>
                 )}
@@ -430,7 +430,7 @@ export default function ProfilePage() {
                         </div>
                         <div>
                           <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200">{user?.user_metadata?.full_name || 'Founder'}</h4>
-                          <span className="text-[10px] text-slate-400 dark:text-slate-500">
+                          <span className="text-[10px] text-slate-400 dark:text-slate-400">
                             Published on {new Date(post.created_at).toLocaleDateString()}
                           </span>
                         </div>
@@ -497,10 +497,10 @@ export default function ProfilePage() {
             <h3 className="text-meta text-slate-800 dark:text-slate-100 uppercase tracking-wider">Quick Links</h3>
             <div className="flex flex-col gap-2">
               <Link href="/matches" className="w-full text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                <span className="flex items-center gap-2"><HandshakeIcon className="w-[18px] h-[18px] text-slate-400 dark:text-slate-500" /> View matches</span><ArrowRightIcon className="w-4 h-4 text-slate-300 dark:text-slate-600" />
+                <span className="flex items-center gap-2"><HandshakeIcon className="w-[18px] h-[18px] text-slate-400 dark:text-slate-400" /> View matches</span><ArrowRightIcon className="w-4 h-4 text-slate-300 dark:text-slate-600" />
               </Link>
               <Link href="/dashboard" className="w-full text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                <span className="flex items-center gap-2"><HomeIcon className="w-[18px] h-[18px] text-slate-400 dark:text-slate-500" /> Control center</span><ArrowRightIcon className="w-4 h-4 text-slate-300 dark:text-slate-600" />
+                <span className="flex items-center gap-2"><HomeIcon className="w-[18px] h-[18px] text-slate-400 dark:text-slate-400" /> Control center</span><ArrowRightIcon className="w-4 h-4 text-slate-300 dark:text-slate-600" />
               </Link>
               <Link href="/ideas" className="w-full text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-blue-600 dark:text-blue-400 border border-slate-100 dark:border-slate-800 flex items-center justify-between">
                 <span className="flex items-center gap-2"><BulbIcon className="w-[18px] h-[18px] text-blue-500 dark:text-blue-400" /> {userType === 'investor' ? 'Startup shortlist' : 'My ideas'}</span><ArrowRightIcon className="w-4 h-4 text-blue-300 dark:text-blue-500" />

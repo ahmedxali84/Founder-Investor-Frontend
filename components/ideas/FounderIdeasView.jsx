@@ -390,7 +390,7 @@ export default function FounderIdeasView() {
                 />
                 {pdfExtracting && <SpinnerIcon className="w-3.5 h-3.5 text-blue-500" />}
                 {!pdfExtracting && pdfFileName && (
-                  <span className="text-[11px] text-slate-400 dark:text-slate-500 truncate max-w-[200px]">{pdfFileName}</span>
+                  <span className="text-[11px] text-slate-400 dark:text-slate-400 truncate max-w-[200px]">{pdfFileName}</span>
                 )}
               </div>
               {pdfError && <p className="mt-1 text-[11px] text-rose-600 dark:text-rose-400">{pdfError}</p>}
@@ -429,7 +429,7 @@ export default function FounderIdeasView() {
               <div className="flex items-start justify-between gap-3 flex-wrap">
                 <div>
                   <h3 className="text-title text-slate-900 dark:text-slate-100">{post.title}</h3>
-                  <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">Posted {new Date(post.created_at).toLocaleDateString()}</p>
+                  <p className="text-[11px] text-slate-400 dark:text-slate-400 mt-0.5">Posted {new Date(post.created_at).toLocaleDateString()}</p>
                 </div>
                 <div className="flex items-center flex-wrap gap-2">
                   {post.is_live && <InfoPill tone="emerald" dot>Live for matching</InfoPill>}
@@ -516,7 +516,7 @@ export default function FounderIdeasView() {
                       <ul className="space-y-1">
                         {(ideaDetails.features_nice_to_have || []).map((f, i) => (
                           <li key={i} className="text-xs text-slate-600 dark:text-slate-300 flex gap-1.5">
-                            <span className="text-slate-400 dark:text-slate-500">•</span> {f}
+                            <span className="text-slate-400 dark:text-slate-400">•</span> {f}
                           </li>
                         ))}
                       </ul>

@@ -2,7 +2,7 @@ const TONE = {
   emerald: { text: 'text-emerald-600 dark:text-emerald-400', chip: 'bg-emerald-50 text-emerald-600 ring-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20' },
   blue: { text: 'text-blue-600 dark:text-blue-400', chip: 'bg-blue-50 text-blue-600 ring-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:ring-blue-500/20' },
   amber: { text: 'text-amber-600 dark:text-amber-400', chip: 'bg-amber-50 text-amber-600 ring-amber-100 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20' },
-  slate: { text: 'text-slate-400 dark:text-slate-500', chip: 'bg-slate-100 text-slate-500 ring-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:ring-slate-700' },
+  slate: { text: 'text-slate-400 dark:text-slate-400', chip: 'bg-slate-100 text-slate-500 ring-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:ring-slate-700' },
   rose: { text: 'text-rose-600 dark:text-rose-400', chip: 'bg-rose-50 text-rose-600 ring-rose-100 dark:bg-rose-500/10 dark:text-rose-400 dark:ring-rose-500/20' },
 }
 
@@ -27,7 +27,7 @@ export default function StatTile({ icon, label, value, delta, deltaMuted, tone =
       {delta && (
         <div className={`mt-1.5 text-[11px] font-semibold flex items-center gap-1 ${t.text}`}>
           <span>{delta}</span>
-          {deltaMuted && <span className="text-slate-400 dark:text-slate-500 font-normal">· {deltaMuted}</span>}
+          {deltaMuted && <span className="text-slate-400 dark:text-slate-400 font-normal">· {deltaMuted}</span>}
         </div>
       )}
     </div>

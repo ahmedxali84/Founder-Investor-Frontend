@@ -81,7 +81,7 @@ function ShortlistCard({ idea, slot, onRaised }) {
       </div>
 
       {idea.ai_reason && (
-        <p className="text-[11px] text-slate-400 dark:text-slate-500 italic">"{idea.ai_reason}"</p>
+        <p className="text-[11px] text-slate-400 dark:text-slate-400 italic">"{idea.ai_reason}"</p>
       )}
 
       <p className={`text-xs text-slate-600 dark:text-slate-300 leading-relaxed ${expanded ? 'whitespace-pre-wrap' : 'line-clamp-2'}`}>
@@ -228,7 +228,7 @@ export default function InvestorShortlistView({ ready, topIdeas, meetingRequests
       )}
 
       {ready && ideas.length > 0 && confirmedCount > 0 && (
-        <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-4 text-center">
+        <p className="text-[11px] text-slate-400 dark:text-slate-400 mt-4 text-center">
           Confirmed a meeting? Head to <Link href="/messaging" className="text-blue-600 dark:text-blue-400 hover:underline font-semibold">Messages</Link> to start the conversation.
         </p>
       )}

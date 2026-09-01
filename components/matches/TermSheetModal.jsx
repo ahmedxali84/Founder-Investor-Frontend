@@ -136,7 +136,7 @@ export default function TermSheetModal({ slotId, selfUserId, counterpartUserId, 
                   Amount to invest (USD)
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-sm">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-400 text-sm">$</span>
                   <input
                     id="amount-usd"
                     type="number"

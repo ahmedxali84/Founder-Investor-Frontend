@@ -93,13 +93,13 @@ export default function Dashboard() {
                   <div className="w-36 h-36 rounded-full p-[14px]" style={ringStyle}>
                     <div className="w-full h-full rounded-full bg-white dark:bg-slate-900 flex flex-col items-center justify-center shadow-inner">
                       <span className="text-xl font-black text-slate-900 dark:text-slate-100 tabular-nums">{publicRepos}</span>
-                      <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Live repos</span>
+                      <span className="text-[10px] font-bold text-slate-400 dark:text-slate-400 uppercase tracking-wider">Live repos</span>
                     </div>
                   </div>
                 </div>
                 <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-[12px] font-semibold">
                   {langEntries.length === 0 ? (
-                    <div className="text-center text-[12px] text-slate-400 dark:text-slate-500 py-2">
+                    <div className="text-center text-[12px] text-slate-400 dark:text-slate-400 py-2">
                       Connect GitHub during onboarding to fetch a live language ratio.
                     </div>
                   ) : (
@@ -116,7 +116,7 @@ export default function Dashboard() {
 
               <div className="md:col-span-7 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm space-y-4">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-title text-slate-800 dark:text-slate-100">Live public repositories <span className="text-slate-400 dark:text-slate-500 font-semibold">({repoDetails.length})</span></h3>
+                  <h3 className="text-title text-slate-800 dark:text-slate-100">Live public repositories <span className="text-slate-400 dark:text-slate-400 font-semibold">({repoDetails.length})</span></h3>
                   <Link href="/profile" className="text-[12px] font-bold text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1">
                     Profile <ArrowUpRightIcon className="w-3.5 h-3.5" />
                   </Link>
@@ -129,7 +129,7 @@ export default function Dashboard() {
                       <div key={r.name} className="p-3 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 text-xs hover:border-slate-200 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-800 transition-colors">
                         <div className="min-w-0">
                           <a href={r.url} target="_blank" rel="noreferrer" className="font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1.5">
-                            <RepoIcon className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
+                            <RepoIcon className="w-3.5 h-3.5 text-slate-400 dark:text-slate-400 shrink-0" />
                             <span className="truncate">{r.name}</span>
                           </a>
                           <span className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5 block">{r.description}</span>
@@ -210,19 +210,19 @@ export default function Dashboard() {
               {isInvestor ? (
                 <>
                   {investorLocation && (
-                    <div className="flex items-center gap-2"><PinIcon className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" /> {investorLocation}</div>
+                    <div className="flex items-center gap-2"><PinIcon className="w-3.5 h-3.5 text-slate-400 dark:text-slate-400" /> {investorLocation}</div>
                   )}
                   {investorProfile?.firm && (
-                    <div className="flex items-center gap-2"><BuildingIcon className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" /> {investorProfile.firm}</div>
+                    <div className="flex items-center gap-2"><BuildingIcon className="w-3.5 h-3.5 text-slate-400 dark:text-slate-400" /> {investorProfile.firm}</div>
                   )}
                 </>
               ) : (
                 <>
                   {githubInsights.location && (
-                    <div className="flex items-center gap-2"><PinIcon className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" /> {githubInsights.location}</div>
+                    <div className="flex items-center gap-2"><PinIcon className="w-3.5 h-3.5 text-slate-400 dark:text-slate-400" /> {githubInsights.location}</div>
                   )}
                   {githubInsights.company && (
-                    <div className="flex items-center gap-2"><BuildingIcon className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" /> {githubInsights.company}</div>
+                    <div className="flex items-center gap-2"><BuildingIcon className="w-3.5 h-3.5 text-slate-400 dark:text-slate-400" /> {githubInsights.company}</div>
                   )}
                 </>
               )}
@@ -245,7 +245,7 @@ export default function Dashboard() {
               { to: '/agents', Icon: RobotIcon, label: 'Agent activity' },
             ].map(({ to, Icon, label }) => (
               <Link key={to} href={to} className="group flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-[12px] font-semibold text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-800 transition-colors">
-                <Icon className="w-[18px] h-[18px] text-slate-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+                <Icon className="w-[18px] h-[18px] text-slate-400 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
                 <span>{label}</span>
                 <ArrowRightIcon className="w-4 h-4 ml-auto text-slate-300 dark:text-slate-600 group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors" />
               </Link>

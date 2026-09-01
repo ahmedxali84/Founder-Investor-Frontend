@@ -78,7 +78,7 @@ function NavLink({ item, active, onNavigate, badgeCount }) {
       {isActive && (
         <span className="absolute left-0 top-2 bottom-2 w-[3px] rounded-full bg-accent-gradient" />
       )}
-      <Icon className={`w-[18px] h-[18px] shrink-0 ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300'}`} />
+      <Icon className={`w-[18px] h-[18px] shrink-0 ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 group-hover:text-slate-600 dark:text-slate-400 dark:group-hover:text-slate-300'}`} />
       <span>{item.label}</span>
       {badgeCount > 0 && (
         <span className="ml-auto min-w-[18px] h-[18px] px-1 rounded-full bg-blue-600 text-white text-[10px] font-bold leading-[18px] text-center shrink-0">
@@ -211,7 +211,7 @@ function NotificationBell({ profileData, statusData }) {
           </div>
           {notifications.length === 0 ? (
             <div className="px-4 py-8 text-center">
-              <span className="text-xs text-slate-400 dark:text-slate-500">You're all caught up — no notifications yet.</span>
+              <span className="text-xs text-slate-400 dark:text-slate-400">You're all caught up — no notifications yet.</span>
             </div>
           ) : (
             <ul className="max-h-80 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
@@ -228,7 +228,7 @@ function NotificationBell({ profileData, statusData }) {
                       <span className="min-w-0 flex-1">
                         <span className="text-xs text-slate-600 dark:text-slate-300 block">{n.text}</span>
                         <span className="mt-0.5 flex items-center gap-1.5">
-                          {n.updatedAt && <span className="text-[10px] text-slate-400 dark:text-slate-500">{timeAgo(n.updatedAt)}</span>}
+                          {n.updatedAt && <span className="text-[10px] text-slate-400 dark:text-slate-400">{timeAgo(n.updatedAt)}</span>}
                           {isNew && <span className="w-1.5 h-1.5 rounded-full bg-blue-500" aria-label="New" />}
                         </span>
                       </span>
@@ -309,7 +309,7 @@ function SettingsMenu() {
         aria-label="Settings"
         aria-expanded={open}
       >
-        <GearIcon className="w-[18px] h-[18px] shrink-0 text-slate-400 dark:text-slate-500" />
+        <GearIcon className="w-[18px] h-[18px] shrink-0 text-slate-400 dark:text-slate-400" />
         <span>Settings</span>
       </button>
 
@@ -323,7 +323,7 @@ function SettingsMenu() {
               {theme === 'dark' ? <MoonIcon className="w-4 h-4 text-slate-400" /> : <SunIcon className="w-4 h-4 text-amber-500" />}
               Theme
             </span>
-            <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 capitalize">{theme}</span>
+            <span className="text-[11px] font-bold text-slate-400 dark:text-slate-400 capitalize">{theme}</span>
           </button>
           <div className="border-t border-slate-100 dark:border-slate-800" />
           <button
@@ -374,7 +374,7 @@ function SidebarBody({ active, userType, unreadContactsCount, aiManagementItems,
           </div>
 
           <div className="space-y-1">
-            <span className="px-3.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.14em] block mb-2">
+            <span className="px-3.5 text-[10px] font-bold text-slate-400 dark:text-slate-400 uppercase tracking-[0.14em] block mb-2">
               AI Management
             </span>
             {aiManagementItems.map((item) => (
@@ -383,7 +383,7 @@ function SidebarBody({ active, userType, unreadContactsCount, aiManagementItems,
           </div>
 
           <div className="space-y-1">
-            <span className="px-3.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.14em] block mb-2">
+            <span className="px-3.5 text-[10px] font-bold text-slate-400 dark:text-slate-400 uppercase tracking-[0.14em] block mb-2">
               Integrations
             </span>
             {/* Investors are never asked to connect GitHub — Agent 2's
@@ -408,7 +408,7 @@ function SidebarBody({ active, userType, unreadContactsCount, aiManagementItems,
 
       <div className="p-3 border-t border-slate-100 dark:border-slate-800">
         <SettingsMenu />
-        <p className="mt-2 text-center text-[10px] text-slate-400/70 dark:text-slate-500/70">
+        <p className="mt-2 text-center text-[10px] text-muted dark:text-slate-400">
           © {new Date().getFullYear()} Kavan — a Techflix company.
         </p>
       </div>
@@ -489,7 +489,7 @@ export default function AppShell({ active, userType, userName, userRole, avatarU
             </button>
 
             <form onSubmit={runHeaderSearch} className="w-full max-w-md relative hidden sm:block">
-              <SearchIcon className="w-[18px] h-[18px] absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+              <SearchIcon className="w-[18px] h-[18px] absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-400" />
               <input
                 ref={searchInputRef}
                 type="text"
@@ -499,7 +499,7 @@ export default function AppShell({ active, userType, userName, userRole, avatarU
                 className="w-full pl-10 pr-12 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[13px] text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-blue-500/10 transition-all duration-150"
               />
               {!searchQuery && (
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700 font-bold pointer-events-none">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-400 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700 font-bold pointer-events-none">
                   ⌘K
                 </span>
               )}
@@ -520,7 +520,7 @@ export default function AppShell({ active, userType, userName, userRole, avatarU
                 />
                 <div className="hidden sm:block text-left leading-tight">
                   <span className="text-[13px] font-bold text-slate-800 dark:text-slate-100 block">{userName}</span>
-                  <span className="text-[10px] text-slate-400 dark:text-slate-500 block capitalize">{userRole}</span>
+                  <span className="text-[10px] text-slate-400 dark:text-slate-400 block capitalize">{userRole}</span>
                 </div>
               </Link>
               <button

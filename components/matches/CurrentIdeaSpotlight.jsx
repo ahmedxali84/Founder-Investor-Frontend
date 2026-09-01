@@ -141,7 +141,7 @@ export default function CurrentIdeaSpotlight({ currentMatch, meetingSlot, onActi
                       <ul className="space-y-1">
                         {idea.features_nice_to_have.map((f, i) => (
                           <li key={i} className="text-xs text-slate-600 dark:text-slate-300 flex gap-1.5">
-                            <span className="text-slate-400 dark:text-slate-500">•</span> {f}
+                            <span className="text-slate-400 dark:text-slate-400">•</span> {f}
                           </li>
                         ))}
                       </ul>
@@ -186,7 +186,7 @@ export default function CurrentIdeaSpotlight({ currentMatch, meetingSlot, onActi
             )}
             {safeHref(founder.mvp_url) && <a href={safeHref(founder.mvp_url)} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><ArrowUpRightIcon className="w-3.5 h-3.5" /> View live MVP</a>}
             {safeHref(founder.repo_url) && <a href={safeHref(founder.repo_url)} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><RepoIcon className="w-3.5 h-3.5" /> View repo</a>}
-            {currentMatch.reason && <span className="text-slate-400 dark:text-slate-500 font-normal italic">"{currentMatch.reason}"</span>}
+            {currentMatch.reason && <span className="text-slate-400 dark:text-slate-400 font-normal italic">"{currentMatch.reason}"</span>}
           </div>
         </>
       )}

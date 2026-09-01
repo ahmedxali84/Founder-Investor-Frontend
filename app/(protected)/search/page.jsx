@@ -59,7 +59,7 @@ function ResultCard({ item, searchType }) {
       </div>
 
       {loc && (
-        <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-3 flex items-center gap-1">
+        <p className="text-[11px] text-slate-400 dark:text-slate-400 mt-3 flex items-center gap-1">
           <PinIcon className="w-3 h-3 shrink-0" /> {loc}
         </p>
       )}
@@ -278,13 +278,13 @@ function SearchPageInner() {
 
       <form onSubmit={runSearch} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm p-5 mb-6 space-y-4">
         <div>
-          <span className="text-[11px] font-bold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-2 block">Keyword (optional)</span>
+          <span className="text-[11px] font-bold uppercase tracking-wide text-slate-400 dark:text-slate-400 mb-2 block">Keyword (optional)</span>
           <input type="text" placeholder={searchType === 'investors' ? 'Name, firm, sector…' : 'Idea title, skill, specialization…'} value={keyword} onChange={(e) => setKeyword(e.target.value)}
             className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 h-[38px] text-[13px] text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-blue-500/10 transition-all" />
         </div>
 
         <div>
-          <span className="text-[11px] font-bold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-2 block">Narrow by location (optional)</span>
+          <span className="text-[11px] font-bold uppercase tracking-wide text-slate-400 dark:text-slate-400 mb-2 block">Narrow by location (optional)</span>
           <div className="grid sm:grid-cols-3 gap-3">
             <select value={countryIso} onChange={(e) => handleCountryChange(e.target.value)}
               className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 h-[38px] text-[13px] text-slate-800 dark:text-slate-100 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-blue-500/10 transition-all">
@@ -311,7 +311,7 @@ function SearchPageInner() {
         </div>
 
         <div>
-          <span className="text-[11px] font-bold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-2 block">
+          <span className="text-[11px] font-bold uppercase tracking-wide text-slate-400 dark:text-slate-400 mb-2 block">
             Measure distance from (optional — defaults to your own saved location)
           </span>
           <input type="text" placeholder="e.g. Lahore, Pakistan" value={near} onChange={(e) => setNear(e.target.value)}
@@ -353,7 +353,7 @@ function SearchPageInner() {
             {/* Sentinel for infinite scroll — loads the next 10 when it enters view. */}
             <div ref={sentinelCallbackRef} className="h-10 flex items-center justify-center mt-4">
               {loadingMore && (
-                <span className="inline-flex items-center gap-2 text-[12px] text-slate-400 dark:text-slate-500 font-medium">
+                <span className="inline-flex items-center gap-2 text-[12px] text-slate-400 dark:text-slate-400 font-medium">
                   <SpinnerIcon className="w-4 h-4" /> Loading more…
                 </span>
               )}

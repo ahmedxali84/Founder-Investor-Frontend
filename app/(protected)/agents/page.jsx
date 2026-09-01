@@ -295,7 +295,7 @@ export default function AgentsDashboard() {
                     status === 'done' ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
                       : status === 'running' ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400'
                       : status === 'failed' ? 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400'
-                      : 'bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
+                      : 'bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-400'
                   }`}>
                     <StepIcon className="w-5 h-5" />
                   </div>
@@ -333,7 +333,7 @@ export default function AgentsDashboard() {
                     )}
 
                     {step.agent?.updated_at && (status === 'done' || status === 'failed') && (
-                      <p className="text-[10.5px] text-slate-400 dark:text-slate-500 mt-1.5">{timeAgo(step.agent.updated_at)}</p>
+                      <p className="text-[10.5px] text-slate-400 dark:text-slate-400 mt-1.5">{timeAgo(step.agent.updated_at)}</p>
                     )}
                   </div>
                 </div>
