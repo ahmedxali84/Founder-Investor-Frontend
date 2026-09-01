@@ -34,7 +34,7 @@
  */
 const ICON_NUDGE = { transform: 'translateY(-21.8%)' }
 
-export function Logo({ className = '', size = 'sm', badge, iconHeight = 68, wordmarkHeight = 38, taglineHeight = 20, showTagline = true }) {
+export function Logo({ className = '', size = 'sm', badge, iconHeight = 68, wordmarkHeight = 38, taglineHeight = 20, showTagline = true, compact = false }) {
   if (size === 'lg') {
     return (
       <div className={`flex flex-col ${className}`}>
@@ -56,10 +56,14 @@ export function Logo({ className = '', size = 'sm', badge, iconHeight = 68, word
   }
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      <img src="/icon-light.png" alt="" style={ICON_NUDGE} className="h-10 w-auto dark:hidden" />
-      <img src="/icon-dark.png" alt="" style={ICON_NUDGE} className="h-10 w-auto hidden dark:block" />
-      <img src="/wordmark-light.png" alt="Kavan" className="h-[22px] w-auto dark:hidden" />
-      <img src="/wordmark-dark.png" alt="Kavan" className="h-[22px] w-auto hidden dark:block" />
+      {/* In compact mode the wordmark can disappear below 380px, so the icon
+          carries the accessible name instead — one source of truth for the
+          a11y label at every width, rather than an image that's sometimes
+          the only thing on screen and sometimes announced alongside text. */}
+      <img src="/icon-light.png" alt={compact ? 'Kavan' : ''} style={ICON_NUDGE} className="h-10 w-auto dark:hidden" />
+      <img src="/icon-dark.png" alt={compact ? 'Kavan' : ''} style={ICON_NUDGE} className="h-10 w-auto hidden dark:block" />
+      <img src="/wordmark-light.png" alt={compact ? '' : 'Kavan'} className={`h-[22px] w-auto dark:hidden ${compact ? 'max-[380px]:hidden' : ''}`} />
+      <img src="/wordmark-dark.png" alt="" className={`h-[22px] w-auto hidden dark:block ${compact ? 'max-[380px]:hidden' : ''}`} />
     </div>
   )
 }
