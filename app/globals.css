@@ -22,7 +22,7 @@ body {
 
 /* Visible keyboard focus everywhere */
 :focus-visible {
-  outline: 2px solid #2f6bff;
+  outline: 2px solid #2d66f2;
   outline-offset: 2px;
   border-radius: 6px;
 }

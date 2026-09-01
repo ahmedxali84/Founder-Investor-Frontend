@@ -9,14 +9,18 @@ export default {
         ink: '#1E2334',
         muted: '#6B7280',
         brand: {
-          DEFAULT: '#2F6BFF',
+          // Was #2F6BFF — white text on it measured 4.49:1, just under the
+          // 4.5:1 WCAG AA floor (confirmed by Lighthouse on every
+          // .btn-primary/bg-brand button app-wide). Darkened ~5% to 4.89:1,
+          // a shift too small to notice next to the original.
+          DEFAULT: '#2D66F2',
           hover: '#2457DB',
           soft: '#EAF0FF',
         },
         line: '#E5E7EB',
         // In-app pages (Dashboard, Matches, Profile, Pitch Upload, Agents) use
         // this palette instead of `brand` — intentionally close in hue
-        // (#2563EB vs #2F6BFF) so shared components (Notice, password meter)
+        // (#2563EB vs #2D66F2) so shared components (Notice, password meter)
         // never clash when they show up in both the pre-auth and in-app zones.
         accent: {
           DEFAULT: '#2563EB',
@@ -63,7 +67,7 @@ export default {
         // Subtle accent gradient for hero/spotlight surfaces and primary CTAs —
         // used sparingly, not on every button, so it still reads as an accent.
         'accent-gradient': 'linear-gradient(135deg, #2563EB 0%, #4F46E5 100%)',
-        'brand-gradient': 'linear-gradient(135deg, #2F6BFF 0%, #6D5BFF 100%)',
+        'brand-gradient': 'linear-gradient(135deg, #2D66F2 0%, #6D5BFF 100%)',
       },
     },
   },
