@@ -14,6 +14,12 @@ const NAV_LINKS = [
   { href: '#investors', label: 'For Investors' },
 ]
 
+export const metadata = {
+  title: 'Kavan — Real matches, verified by AI',
+  description:
+    'Kavan pairs founders and investors using live, verified GitHub and LinkedIn data — one exclusive, MVP-ready match at a time, not a cold list to scroll through.',
+}
+
 /**
  * Public marketing page — the actual `/` route now, replacing the old
  * straight-to-/login redirect. Reuses the pre-auth zone's own design
@@ -155,7 +161,7 @@ function Hero() {
           {/* Trust diagram — shows the verification chain rather than just
               naming it, since "verified, not invented" is a claim this page
               should back up visually, not only in a sentence. */}
-          <div className="mt-8 inline-flex flex-wrap items-center gap-2 text-[11px] font-semibold text-muted dark:text-slate-500">
+          <div className="mt-8 inline-flex flex-wrap items-center gap-2 text-[11px] font-semibold text-muted dark:text-slate-400">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/70 dark:bg-slate-800/70 ring-1 ring-black/5 dark:ring-white/10 pl-1.5 pr-2.5 py-1">
               <LinkedInMark className="w-4 h-4 rounded" /> LinkedIn
             </span>
@@ -190,7 +196,7 @@ function Hero() {
             </span>
             <div>
               <p className="text-[12px] font-bold text-slate-800 dark:text-slate-100">Agent 5 ranked this match</p>
-              <p className="text-[10.5px] text-slate-400 dark:text-slate-500">just now</p>
+              <p className="text-[10.5px] text-slate-400 dark:text-slate-400">just now</p>
             </div>
           </div>
         </Reveal>
@@ -331,7 +337,7 @@ function HowItWorks() {
                 )}
               </span>
               <div className="lg:mt-3">
-                <p className="text-[11px] font-bold text-slate-400 dark:text-slate-500">STEP {i + 1}</p>
+                <p className="text-[11px] font-bold text-slate-400 dark:text-slate-400">STEP {i + 1}</p>
                 <h3 className="text-[14.5px] font-bold text-ink dark:text-slate-100">{step.title}</h3>
                 <p className="mt-1 text-[12.5px] leading-relaxed text-muted dark:text-slate-400 lg:max-w-[220px]">{step.body}</p>
               </div>
@@ -382,7 +388,7 @@ function Footer() {
       <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex flex-col items-center sm:items-start gap-1">
           <Logo />
-          <p className="text-[11px] text-muted dark:text-slate-500">© {new Date().getFullYear()} Kavan — a Techflix company.</p>
+          <p className="text-[11px] text-muted dark:text-slate-400">© {new Date().getFullYear()} Kavan — a Techflix company.</p>
         </div>
         <nav className="flex items-center gap-6">
           <a href="#how-it-works" className="text-[12.5px] font-semibold text-slate-500 dark:text-slate-400 hover:text-ink dark:hover:text-white transition-colors">How it works</a>
@@ -398,11 +404,13 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-cream dark:bg-slate-950">
       <Navbar />
-      <Hero />
-      <DualAudience />
-      <Features />
-      <HowItWorks />
-      <FinalCta />
+      <main>
+        <Hero />
+        <DualAudience />
+        <Features />
+        <HowItWorks />
+        <FinalCta />
+      </main>
       <Footer />
     </div>
   )

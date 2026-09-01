@@ -1,6 +1,21 @@
 import Script from 'next/script'
+import { Inter } from 'next/font/google'
 import Providers from './providers.jsx'
 import './globals.css'
+
+// Self-hosted via next/font (rather than a <link> to Google Fonts) so the
+// font ships from this origin with the rest of the build instead of being a
+// separate render-blocking request — Lighthouse flagged the old <link>
+// approach as ~730ms of render-blocking time. `variable` exposes it as
+// --font-inter for tailwind.config.js's fontFamily.sans, since next/font
+// doesn't register a literal 'Inter' family name the way the Google Fonts
+// stylesheet did.
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+  variable: '--font-inter',
+})
 
 export const metadata = {
   title: 'Kavan',
@@ -13,14 +28,8 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
         {/*
           Applies the dark class before first paint, mirroring
           ThemeContext.jsx's loadInitialTheme() (same 'techflix_theme'

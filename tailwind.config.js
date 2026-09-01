@@ -26,9 +26,11 @@ export default {
       },
       fontFamily: {
         // Inter — the same typeface family used across Google's and OpenAI's
-        // product UIs (loaded via Google Fonts in index.html). System fonts
-        // stay as fallbacks for the brief window before the webfont loads.
-        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'system-ui', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        // product UIs, self-hosted via next/font/google (app/layout.jsx),
+        // which exposes it as the --font-inter CSS variable rather than a
+        // literal family name. System fonts stay as fallbacks for the brief
+        // window before the webfont loads.
+        sans: ['var(--font-inter)', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'system-ui', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
       // App-wide typography scale. `-lg` variants are the upper end of the
       // size range, applied at a breakpoint (e.g. `text-hero xl:text-hero-lg`)

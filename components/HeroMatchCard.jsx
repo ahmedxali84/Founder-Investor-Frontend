@@ -72,7 +72,7 @@ export default function HeroMatchCard() {
   return (
     <div ref={ref} className="relative rounded-3xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-card p-6 -rotate-1">
       <div className="flex items-center justify-between">
-        <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Your top match</span>
+        <span className="text-[11px] font-bold text-slate-400 dark:text-slate-400 uppercase tracking-wider">Your top match</span>
         <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400">
           <span className="w-1.5 h-1.5 rounded-full bg-current" /> Both opted in
         </span>
@@ -89,7 +89,7 @@ export default function HeroMatchCard() {
       <div className="mt-5 grid grid-cols-3 gap-2.5">
         {STATS.map((s, i) => (
           <div key={s.label} className="rounded-xl bg-slate-50 dark:bg-slate-800/60 p-3">
-            <p className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase">{s.label}</p>
+            <p className="text-[10px] font-semibold text-slate-400 dark:text-slate-400 uppercase">{s.label}</p>
             <p className={`mt-1 text-lg font-black tabular-nums ${s.cls}`}>{counts[i]}</p>
           </div>
         ))}
