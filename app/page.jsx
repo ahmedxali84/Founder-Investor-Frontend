@@ -89,7 +89,7 @@ function Navbar() {
     <header className="sticky top-0 z-30 bg-cream/90 dark:bg-slate-950/90 backdrop-blur border-b border-line/70 dark:border-slate-800">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
         <a href="#" aria-label="Back to top" className="shrink-0">
-          <Logo compact />
+          <Logo />
         </a>
         <nav className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((l) => (
