@@ -355,12 +355,20 @@ function SettingsMenu() {
 function SidebarBody({ active, userType, unreadContactsCount, aiManagementItems, onNavigate }) {
   return (
     <>
-      <div>
-        <Link href="/dashboard" onClick={onNavigate} className="block p-5 border-b border-slate-100 dark:border-slate-800">
+      {/* flex-1/min-h-0 here (not on the outer <aside>) is what actually
+          makes this scrollable — <aside> used to be flex-col justify-between
+          with overflow-y-auto on itself, but justify-content values other
+          than flex-start break a flex container's scrollable overflow once
+          content exceeds its height (a well-known Flexbox gotcha): instead
+          of scrolling, the excess just gets clipped. Scoping the scroll to
+          just the nav region also means Logo and Settings/logout stay
+          permanently visible instead of scrolling out of view with the rest. */}
+      <div className="flex-1 min-h-0 flex flex-col">
+        <Link href="/dashboard" onClick={onNavigate} className="block p-5 border-b border-slate-100 dark:border-slate-800 shrink-0">
           <Logo />
         </Link>
 
-        <nav className="p-3 space-y-6 overflow-y-auto">
+        <nav className="flex-1 min-h-0 overflow-y-auto p-3 space-y-6">
           <div className="space-y-1">
             {NAV_ITEMS.map((item) => (
               <NavLink
@@ -406,7 +414,7 @@ function SidebarBody({ active, userType, unreadContactsCount, aiManagementItems,
         </nav>
       </div>
 
-      <div className="p-3 border-t border-slate-100 dark:border-slate-800">
+      <div className="p-3 border-t border-slate-100 dark:border-slate-800 shrink-0">
         <SettingsMenu />
         <p className="mt-2 text-center text-[10px] text-muted dark:text-slate-400">
           © {new Date().getFullYear()} Kavan — a Techflix company.
@@ -450,7 +458,7 @@ export default function AppShell({ active, userType, userName, userRole, avatarU
   return (
     <div className="min-h-screen bg-[#F7F9FC] dark:bg-slate-950 flex font-sans text-slate-800 dark:text-slate-100 antialiased selection:bg-blue-100">
       {/* DESKTOP SIDEBAR */}
-      <aside className="w-64 bg-white dark:bg-slate-900 border-r border-slate-200/70 dark:border-slate-800 flex-col justify-between shrink-0 hidden md:flex sticky top-0 h-screen overflow-y-auto z-20">
+      <aside className="w-64 bg-white dark:bg-slate-900 border-r border-slate-200/70 dark:border-slate-800 flex-col shrink-0 hidden md:flex sticky top-0 h-screen z-20">
         <SidebarBody active={active} userType={userType} unreadContactsCount={unreadContactsCount} aiManagementItems={aiManagementItems} />
       </aside>
 
@@ -461,7 +469,7 @@ export default function AppShell({ active, userType, userName, userRole, avatarU
             className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
           />
-          <aside className="absolute left-0 top-0 h-full w-72 max-w-[85vw] bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between animate-card-in overflow-y-auto">
+          <aside className="absolute left-0 top-0 h-full w-72 max-w-[85vw] bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col animate-card-in">
             <div className="absolute right-3 top-3">
               <button
                 onClick={() => setMobileOpen(false)}
