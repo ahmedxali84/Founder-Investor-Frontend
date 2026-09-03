@@ -496,7 +496,7 @@ function OnboardingInner() {
                   Choose your role to get started. We analyze your real profiles — nothing invented.
                 </p>
 
-                <div className="mt-8 w-full grid sm:grid-cols-2 gap-4">
+                <div className="mt-8 w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <button
                     type="button"
                     onClick={() => setRole('founder')}
@@ -871,7 +871,7 @@ function OnboardingInner() {
                 {step === 1 && (
                   <div className="space-y-4">
                     <h3 className="text-meta text-ink dark:text-slate-100 uppercase tracking-wider mb-2">Step 1 — Professional Bio</h3>
-                    <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <Field
                         id="i-firm"
                         label="Firm Name"
@@ -1062,7 +1062,7 @@ function OnboardingInner() {
                       </select>
                     </div>
 
-                    <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="i-min-ticket" className="field-label">Min Ticket ({ticketCurrency})</label>
                         <input

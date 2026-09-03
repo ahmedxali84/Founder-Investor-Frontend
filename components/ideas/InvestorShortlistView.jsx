@@ -220,7 +220,7 @@ export default function InvestorShortlistView({ ready, topIdeas, meetingRequests
           className="h-56 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm"
         />
       ) : (
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {ideas.map((idea) => (
             <ShortlistCard key={idea.id} idea={idea} slot={slotsById[idea.id]} onRaised={onRefetch} />
           ))}

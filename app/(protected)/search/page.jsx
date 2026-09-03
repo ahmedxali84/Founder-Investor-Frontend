@@ -285,7 +285,7 @@ function SearchPageInner() {
 
         <div>
           <span className="text-[11px] font-bold uppercase tracking-wide text-slate-400 dark:text-slate-400 mb-2 block">Narrow by location (optional)</span>
-          <div className="grid sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <select value={countryIso} onChange={(e) => handleCountryChange(e.target.value)}
               className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 h-[38px] text-[13px] text-slate-800 dark:text-slate-100 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-blue-500/10 transition-all">
               <option value="">Country</option>
@@ -337,7 +337,7 @@ function SearchPageInner() {
       )}
 
       {loading && (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-36 rounded-2xl" />)}
         </div>
       )}
@@ -346,7 +346,7 @@ function SearchPageInner() {
         results.length > 0 ? (
           <>
             <p className="text-[12px] text-slate-500 dark:text-slate-400 mb-3">{total} result{total === 1 ? '' : 's'}</p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {results.map((item) => <ResultCard key={item.id} item={item} searchType={searchType} />)}
             </div>
 

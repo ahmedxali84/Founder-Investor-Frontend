@@ -148,7 +148,7 @@ export default function ProfilePage() {
 
   return (
     <AppShell active="profile" userType={userType} userName={displayName} userRole={userType === 'investor' ? (founderData.designation || 'Investor') : (founderData.role || founderData.specialization || 'Founder')} avatarUrl={avatarUrl} onSignOut={signOut} profileData={profileData} statusData={statusData}>
-      <div className="grid md:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* LEFT / TOP: LinkedIn Style Profile Card */}
         <div className="md:col-span-8 space-y-6">
           {/* Hero Banner & Avatar Card */}
@@ -329,7 +329,7 @@ export default function ProfilePage() {
             </p>
 
             {(founderData.experience || founderData.education) && (
-              <div className="grid sm:grid-cols-2 gap-3 pt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                 {founderData.experience && (
                   <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-100 dark:border-slate-800">
                     <span className="text-[10px] font-bold text-slate-400 dark:text-slate-400 uppercase block">Experience Level</span>

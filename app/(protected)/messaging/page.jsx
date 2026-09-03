@@ -727,7 +727,7 @@ function MessagingPageInner() {
   return (
     <AppShell active="messages" userType={userType} userName={userName} userRole={userRole} avatarUrl={avatarUrl} onSignOut={signOut} profileData={profileData} statusData={statusData}>
       {loading || !currentUser ? (
-        <div className="grid md:grid-cols-12 gap-6 h-[75vh] min-h-[560px] animate-pulse">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-[75vh] min-h-[560px] animate-pulse">
           <div className="md:col-span-4 bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200/70 dark:border-slate-800 space-y-3">
             <div className="h-4 w-2/3 bg-slate-200 dark:bg-slate-800 rounded" />
             <div className="h-3 w-1/2 bg-slate-100 dark:bg-slate-800/60 rounded mb-4" />
@@ -775,7 +775,7 @@ function MessagingPageInner() {
           )}
         </div>
       ) : (
-        <div className="grid md:grid-cols-12 gap-6 h-[75vh] min-h-[560px]">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-[75vh] min-h-[560px]">
 
           {/* LEFT PANEL: Contacts */}
           <div className={`${mobileView === 'chat' ? 'hidden md:flex' : 'flex'} md:col-span-4 bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200/70 dark:border-slate-800 flex-col overflow-y-auto`}>

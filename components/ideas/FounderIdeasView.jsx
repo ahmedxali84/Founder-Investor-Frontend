@@ -502,7 +502,7 @@ export default function FounderIdeasView() {
                     <RocketIcon className="w-3.5 h-3.5 text-blue-500" /> Agent 1 — Roadmap & MVP Scope
                   </div>
 
-                  <div className="grid sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div className="p-3 rounded-2xl bg-emerald-50/60 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20">
                       <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider mb-1.5">Must-have (MVP)</p>
                       <ul className="space-y-1">
@@ -566,7 +566,7 @@ export default function FounderIdeasView() {
                     </div>
                   )}
 
-                  <div className="grid sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
                       type="url" placeholder="https://your-mvp-app.vercel.app"
                       value={mvpUrl} onChange={(e) => setMvpUrl(e.target.value)}

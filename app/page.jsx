@@ -332,7 +332,7 @@ function HowItWorks() {
         <div className="hidden lg:block absolute top-6 left-[12.5%] right-[12.5%] border-t-2 border-dashed border-brand/25 dark:border-blue-500/25" />
         <div className="lg:hidden absolute top-6 bottom-6 left-6 border-l-2 border-dashed border-brand/25 dark:border-blue-500/25" />
 
-        <div className="grid lg:grid-cols-4 gap-10 lg:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10 lg:gap-6">
           {STEPS.map((step, i) => (
             <Reveal key={step.title} delay={i * 100} variant="left" className="relative flex items-start gap-4 lg:flex-col lg:items-center lg:gap-0 lg:text-center">
               <span className="relative z-10 grid place-items-center w-12 h-12 rounded-full bg-white dark:bg-slate-950 ring-2 ring-brand dark:ring-blue-500 text-brand dark:text-blue-400 shrink-0">
