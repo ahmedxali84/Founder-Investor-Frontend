@@ -450,7 +450,7 @@ export default function AppShell({ active, userType, userName, userRole, avatarU
   return (
     <div className="min-h-screen bg-[#F7F9FC] dark:bg-slate-950 flex font-sans text-slate-800 dark:text-slate-100 antialiased selection:bg-blue-100">
       {/* DESKTOP SIDEBAR */}
-      <aside className="w-64 bg-white dark:bg-slate-900 border-r border-slate-200/70 dark:border-slate-800 flex-col justify-between shrink-0 hidden md:flex sticky top-0 h-screen z-20">
+      <aside className="w-64 bg-white dark:bg-slate-900 border-r border-slate-200/70 dark:border-slate-800 flex-col justify-between shrink-0 hidden md:flex sticky top-0 h-screen overflow-y-auto z-20">
         <SidebarBody active={active} userType={userType} unreadContactsCount={unreadContactsCount} aiManagementItems={aiManagementItems} />
       </aside>
 
