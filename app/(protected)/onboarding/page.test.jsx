@@ -46,9 +46,11 @@ describe('Onboarding — founder step 2 submitting overlay', () => {
 
     await waitFor(() => expect(screen.queryByText(/connect your linkedin/i)).toBeInTheDocument())
 
-    // Step 1 -> Step 2: a valid LinkedIn URL is required for goToLinkedInStep
-    // to actually advance (no OAuth session in this test).
+    // Step 1 -> Step 2: goToLinkedInStep requires both a valid LinkedIn URL
+    // (no OAuth session in this test) and the pasted bio text — LinkedIn's
+    // Sign In API never returns About/Experience content, verified or not.
     await user.type(screen.getByLabelText(/linkedin profile url/i), 'https://linkedin.com/in/testuser')
+    await user.type(screen.getByLabelText(/paste your real linkedin about/i), 'Founder with 5 years building fintech products.')
     await user.click(screen.getByRole('button', { name: /continue/i }))
 
     await waitFor(() => expect(screen.queryByText(/connect your github/i)).toBeInTheDocument())
@@ -99,6 +101,7 @@ describe('Onboarding — recovers when /founder/profile errors but actually save
     await waitFor(() => expect(screen.queryByText(/connect your linkedin/i)).toBeInTheDocument())
 
     await user.type(screen.getByLabelText(/linkedin profile url/i), 'https://linkedin.com/in/testuser')
+    await user.type(screen.getByLabelText(/paste your real linkedin about/i), 'Founder with 5 years building fintech products.')
     await user.click(screen.getByRole('button', { name: /continue/i }))
 
     await waitFor(() => expect(screen.queryByText(/connect your github/i)).toBeInTheDocument())

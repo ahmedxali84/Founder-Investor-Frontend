@@ -966,7 +966,7 @@ function MessagingPageInner() {
                     </button>
                     <textarea
                       rows={1}
-                      placeholder="Type a message..."
+                      placeholder={`Message ${displayName(currentContact)}...`}
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                       onKeyDown={handleComposerKeyDown}
