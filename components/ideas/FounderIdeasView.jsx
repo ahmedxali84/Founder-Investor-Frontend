@@ -448,12 +448,15 @@ export default function FounderIdeasView() {
                 <img src={safeHref(post.screenshot_url)} alt={`${post.title} screenshot`} className="w-full max-h-64 object-cover rounded-2xl border border-slate-100 dark:border-slate-800" />
               )}
 
-              <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+              {/* flex-wrap — up to 2 links plus 3 action buttons ("Refresh
+                  matches" / "Edit details" / delete) here never fit one
+                  non-wrapping row at mobile widths. */}
+              <div className="flex items-center justify-between gap-2 flex-wrap pt-2 border-t border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-3 text-[11px] font-semibold">
                   {safeHref(post.mvp_url) && <a href={safeHref(post.mvp_url)} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><ArrowUpRightIcon className="w-3.5 h-3.5" /> MVP link</a>}
                   {safeHref(post.repo_url) && <a href={safeHref(post.repo_url)} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><RepoIcon className="w-3.5 h-3.5" /> Repo</a>}
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center flex-wrap gap-2">
                   {!post.is_live && goLiveId !== post.id && (
                     <button
                       onClick={() => openGoLive(post)}

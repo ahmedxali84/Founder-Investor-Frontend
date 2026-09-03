@@ -885,9 +885,12 @@ function MessagingPageInner() {
                   <div className={`w-9 h-9 rounded-full ${colorForId(currentContact.id)} text-white text-xs font-bold flex items-center justify-center shrink-0`}>
                     {initialsFor(currentContact)}
                   </div>
-                  <div>
-                    <h3 className="text-title text-slate-800 dark:text-slate-100">{displayName(currentContact)}</h3>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-400">{currentContact.email}</p>
+                  {/* min-w-0 lets this shrink inside the flex row — the email
+                      below is one unbreakable token, so without it the header
+                      forces the whole bar wider than the viewport on mobile. */}
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-title text-slate-800 dark:text-slate-100 truncate">{displayName(currentContact)}</h3>
+                    <p className="text-[11px] text-slate-400 dark:text-slate-400 truncate">{currentContact.email}</p>
                   </div>
                 </div>
 
