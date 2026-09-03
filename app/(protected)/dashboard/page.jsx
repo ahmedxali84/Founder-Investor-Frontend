@@ -87,7 +87,7 @@ export default function Dashboard() {
               doesn't apply to their onboarding. */}
           {!isInvestor && (
             <div className="grid md:grid-cols-12 gap-6">
-              <div className="md:col-span-5 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm space-y-4">
+              <div className="md:col-span-5 min-w-0 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm space-y-4">
                 <h3 className="text-title text-slate-800 dark:text-slate-100">GitHub tech-stack ratio</h3>
                 <div className="flex items-center justify-center relative py-3">
                   <div className="w-36 h-36 rounded-full p-[14px]" style={ringStyle}>
@@ -114,7 +114,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="md:col-span-7 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm space-y-4">
+              <div className="md:col-span-7 min-w-0 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm space-y-4">
                 <div className="flex justify-between items-center">
                   <h3 className="text-title text-slate-800 dark:text-slate-100">Live public repositories <span className="text-slate-400 dark:text-slate-400 font-semibold">({repoDetails.length})</span></h3>
                   <Link href="/profile" className="text-[12px] font-bold text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1">
