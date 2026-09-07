@@ -214,9 +214,9 @@ export default function ProfilePage() {
               </div>
 
               <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold">
-                {rawData.linkedin && (
+                {safeHref(rawData.linkedin) && (
                   <a
-                    href={rawData.linkedin}
+                    href={safeHref(rawData.linkedin)}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-500/30 hover:bg-blue-100 dark:hover:bg-blue-500/20 transition-all"
@@ -224,9 +224,9 @@ export default function ProfilePage() {
                     <LinkedInMark className="w-4 h-4" /> LinkedIn Profile
                   </a>
                 )}
-                {userType !== 'investor' && rawData.github && (
+                {userType !== 'investor' && safeHref(rawData.github) && (
                   <a
-                    href={rawData.github}
+                    href={safeHref(rawData.github)}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
