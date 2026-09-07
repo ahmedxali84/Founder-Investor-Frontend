@@ -56,16 +56,16 @@ export default function CurrentMatchSpotlight({ currentMatch, mvpUrlValid, meeti
       <div className="h-1.5 bg-accent-gradient" />
       <div className="p-6 space-y-4">
       <div className="flex items-start justify-between gap-3 flex-wrap">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 min-w-0">
           <div className="w-11 h-11 rounded-2xl bg-accent-gradient flex items-center justify-center text-white font-black text-base shrink-0 shadow-glow">
             {confirmed ? (investor.name?.[0]?.toUpperCase() || '?') : <LockIcon />}
           </div>
-          <div>
+          <div className="min-w-0">
             <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">Your Top Match</span>
-            <h2 className="text-title text-slate-900 dark:text-slate-100 mt-0.5 leading-tight">
+            <h2 className="text-title text-slate-900 dark:text-slate-100 mt-0.5 leading-tight truncate">
               {confirmed ? investor.name : 'Confidential Investor Match'}
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
               {confirmed ? `${investor.designation} at ${investor.firm}` : 'Identity unlocks once the meeting is confirmed'}
             </p>
           </div>

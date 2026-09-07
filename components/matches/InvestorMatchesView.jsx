@@ -49,12 +49,12 @@ function PendingIdeaCard({ slot, onActionDone }) {
           <div className="w-11 h-11 rounded-2xl bg-accent-gradient flex items-center justify-center text-white font-black text-base shrink-0 shadow-glow">
             {founder.name?.[0]?.toUpperCase() || '?'}
           </div>
-          <div>
+          <div className="min-w-0 flex-1">
             <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest inline-flex items-center gap-1">
               <HandRaiseIcon className="w-3 h-3" /> Founder Requested a Meeting
             </span>
-            <h2 className="text-title text-slate-900 dark:text-slate-100 mt-0.5 leading-tight">{idea.title || 'A startup'}</h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{founder.name || 'A founder'} · {founder.specialization || idea.domain}</p>
+            <h2 className="text-title text-slate-900 dark:text-slate-100 mt-0.5 leading-tight truncate">{idea.title || 'A startup'}</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">{founder.name || 'A founder'} · {founder.specialization || idea.domain}</p>
           </div>
         </div>
 

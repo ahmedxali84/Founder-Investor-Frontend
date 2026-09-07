@@ -1127,7 +1127,7 @@ function MessageBubble({
             </div>
           </div>
         ) : (
-          <div className={`rounded-2xl text-xs leading-relaxed ${
+          <div className={`rounded-2xl text-xs leading-relaxed break-words ${
             msg.attachment_name && !isDeleted ? 'p-2' : 'p-3'
           } ${
             isMine

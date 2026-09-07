@@ -116,7 +116,7 @@ export default function RealtimeChatPanel({ selfUserId, counterpartUserId, count
             ) : (
               messages.map((m) => (
                 <div key={m.id} className={`flex ${m.sender_user_id === selfUserId ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[75%] px-3 py-2 rounded-xl text-xs ${
+                  <div className={`max-w-[75%] px-3 py-2 rounded-xl text-xs break-words ${
                     m.sender_user_id === selfUserId ? 'bg-blue-600 text-white' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200'
                   }`}>
                     {m.text}

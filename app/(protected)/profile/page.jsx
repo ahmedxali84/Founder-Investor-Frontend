@@ -187,7 +187,7 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <h1 className="text-page md:text-page-lg text-slate-900 dark:text-slate-100">{displayName}</h1>
+                <h1 className="text-page md:text-page-lg text-slate-900 dark:text-slate-100 break-words">{displayName}</h1>
                 <p className="text-xs text-slate-600 dark:text-slate-400 font-medium mt-0.5">
                   {/* role/specialization are founder-only fields — an investor's
                       profile never has them, so falling back straight to the
@@ -423,13 +423,13 @@ export default function ProfilePage() {
               <div className="space-y-4">
                 {pitchPosts.map((post) => (
                   <div key={post.id} className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0">
                           {user?.email?.[0]?.toUpperCase() || 'U'}
                         </div>
-                        <div>
-                          <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200">{user?.user_metadata?.full_name || 'Founder'}</h4>
+                        <div className="min-w-0">
+                          <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{user?.user_metadata?.full_name || 'Founder'}</h4>
                           <span className="text-[10px] text-slate-400 dark:text-slate-400">
                             Published on {new Date(post.created_at).toLocaleDateString()}
                           </span>

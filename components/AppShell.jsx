@@ -526,9 +526,9 @@ export default function AppShell({ active, userType, userName, userRole, avatarU
                   className="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 object-cover transition-transform hover:scale-105"
                   onError={(e) => { e.currentTarget.src = fallbackAvatar }}
                 />
-                <div className="hidden sm:block text-left leading-tight">
-                  <span className="text-[13px] font-bold text-slate-800 dark:text-slate-100 block">{userName}</span>
-                  <span className="text-[10px] text-slate-400 dark:text-slate-400 block capitalize">{userRole}</span>
+                <div className="hidden sm:block text-left leading-tight max-w-[160px]">
+                  <span className="text-[13px] font-bold text-slate-800 dark:text-slate-100 block truncate">{userName}</span>
+                  <span className="text-[10px] text-slate-400 dark:text-slate-400 block capitalize truncate">{userRole}</span>
                 </div>
               </Link>
               <button

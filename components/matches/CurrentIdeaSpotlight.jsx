@@ -64,16 +64,16 @@ export default function CurrentIdeaSpotlight({ currentMatch, meetingSlot, onActi
       <div className="h-1.5 bg-accent-gradient" />
       <div className="p-6 space-y-4">
       <div className="flex items-start justify-between gap-3 flex-wrap">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 min-w-0">
           <div className="w-11 h-11 rounded-2xl bg-accent-gradient flex items-center justify-center text-white font-black text-base shrink-0 shadow-glow">
             {founder.name?.[0]?.toUpperCase() || '?'}
           </div>
-          <div>
+          <div className="min-w-0">
             <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">Your Exclusive Top Match</span>
-            <h2 className="text-title text-slate-900 dark:text-slate-100 mt-0.5 leading-tight">
+            <h2 className="text-title text-slate-900 dark:text-slate-100 mt-0.5 leading-tight truncate">
               {revealed ? idea.title : 'Confidential Startup Match'}
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{founder.name} · {founder.specialization} · {idea.domain}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">{founder.name} · {founder.specialization} · {idea.domain}</p>
           </div>
         </div>
         <InfoPill tone={tone.bg.includes('emerald') ? 'emerald' : tone.bg.includes('blue') ? 'blue' : 'amber'}>
@@ -113,8 +113,8 @@ export default function CurrentIdeaSpotlight({ currentMatch, meetingSlot, onActi
         </button>
       ) : (
         <>
-          <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{idea.problem}</p>
-          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{idea.solution}</p>
+          <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed break-words">{idea.problem}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed break-words">{idea.solution}</p>
 
           {(idea.features_must_have?.length > 0 || idea.roadmap?.length > 0) && (
             <div className="space-y-3 pt-1">

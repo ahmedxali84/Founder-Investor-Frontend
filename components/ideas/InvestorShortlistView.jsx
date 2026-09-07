@@ -84,11 +84,11 @@ function ShortlistCard({ idea, slot, onRaised }) {
         <p className="text-[11px] text-slate-400 dark:text-slate-400 italic">"{idea.ai_reason}"</p>
       )}
 
-      <p className={`text-xs text-slate-600 dark:text-slate-300 leading-relaxed ${expanded ? 'whitespace-pre-wrap' : 'line-clamp-2'}`}>
+      <p className={`text-xs text-slate-600 dark:text-slate-300 leading-relaxed break-words ${expanded ? 'whitespace-pre-wrap' : 'line-clamp-2'}`}>
         {idea.problem}
       </p>
       {expanded && idea.solution && (
-        <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">{idea.solution}</p>
+        <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap break-words">{idea.solution}</p>
       )}
       {(idea.problem?.length > 140 || idea.solution) && (
         <button

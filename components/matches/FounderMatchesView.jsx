@@ -51,14 +51,14 @@ function PendingInterestCard({ slot, mvpUrlValid, onActionDone }) {
           <div className="w-11 h-11 rounded-2xl bg-accent-gradient flex items-center justify-center text-white font-black text-base shrink-0 shadow-glow">
             {confirmed ? (investor.name?.[0]?.toUpperCase() || '?') : <LockIcon />}
           </div>
-          <div>
+          <div className="min-w-0 flex-1">
             <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest inline-flex items-center gap-1">
               <HandRaiseIcon className="w-3 h-3" /> Interested Investor
             </span>
-            <h2 className="text-title text-slate-900 dark:text-slate-100 mt-0.5 leading-tight">
+            <h2 className="text-title text-slate-900 dark:text-slate-100 mt-0.5 leading-tight truncate">
               {confirmed ? (investor.name || 'An investor') : 'Confidential Investor'}
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
               {confirmed
                 ? `${investor.designation}${investor.designation && investor.firm ? ' at ' : ''}${investor.firm}`
                 : 'Identity unlocks once the meeting is confirmed'}
