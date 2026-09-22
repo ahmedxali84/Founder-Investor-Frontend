@@ -356,6 +356,99 @@ function HowItWorks() {
   )
 }
 
+const TRUST_PHOTOS = [
+  {
+    src: '/trust-intro.jpg',
+    alt: 'Two founders and investors shaking hands, with their teams standing behind them',
+    tag: 'Meet',
+    ratio: 'aspect-[3/2]',
+    caption: 'Real introductions, not cold outreach',
+    sub: 'Every match starts with agents pairing you to someone worth meeting.',
+  },
+  {
+    src: '/trust-collab.jpg',
+    alt: 'A founding team gathered around a laptop, reviewing their product together',
+    tag: 'Build',
+    ratio: 'aspect-video',
+    caption: "Real collaboration once you're matched",
+  },
+  {
+    src: '/trust-close.jpg',
+    alt: 'An investor and founder shaking hands to close a deal',
+    tag: 'Close',
+    ratio: 'aspect-video',
+    caption: 'Real deals, closed on your terms',
+  },
+]
+
+/**
+ * Bento photo grid tying the marketing page back to what a match actually
+ * leads to. Tint overlay pulls these (originally teal/gold) photos toward
+ * the brand's blue/indigo so they don't clash with every button and badge
+ * on the page — same trick as the Hero's own glow, just applied on top of a
+ * photo instead of behind a card. Word tags (Meet/Build/Close), not numbers
+ * — this sits directly under How It Works' own STEP 1-4 circles, and a
+ * second 01/02/03 sequence there read as a confusing continuation of it.
+ */
+function TrustPhotoCard({ photo, delay, variant }) {
+  return (
+    <Reveal delay={delay} variant={variant} className="group relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_40px_-20px_rgba(15,23,42,0.25)]">
+      <div className={`${photo.ratio} overflow-hidden`}>
+        <img
+          src={photo.src}
+          alt={photo.alt}
+          loading="lazy"
+          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.045]"
+        />
+      </div>
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(45,102,242,.4)_0%,rgba(79,70,229,.2)_55%,rgba(45,102,242,0)_100%)] dark:bg-[linear-gradient(135deg,rgba(91,140,255,.34)_0%,rgba(129,140,248,.22)_55%,rgba(91,140,255,0)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(2,6,23,.78)_0%,rgba(2,6,23,.32)_38%,transparent_68%)]" />
+      <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 h-[26px] px-2.5 rounded-full bg-slate-950/55 backdrop-blur-sm ring-1 ring-white/35 text-white text-[10.5px] font-extrabold uppercase tracking-wider">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> {photo.tag}
+      </span>
+      <p className="absolute left-5 right-5 bottom-[18px] text-white font-bold text-[15px] leading-snug [text-shadow:0_1px_12px_rgba(0,0,0,0.25)]">
+        {photo.caption}
+        {photo.sub && <span className="block mt-1 text-[12.5px] font-medium text-white/80">{photo.sub}</span>}
+      </p>
+    </Reveal>
+  )
+}
+
+function Trust() {
+  const [lead, ...rest] = TRUST_PHOTOS
+  return (
+    <section className="relative overflow-hidden">
+      <div className="pointer-events-none absolute -top-16 right-0 w-[420px] h-[420px] rounded-full bg-[radial-gradient(circle,rgba(45,102,242,0.18)_0%,transparent_70%)] dark:bg-[radial-gradient(circle,rgba(91,140,255,0.16)_0%,transparent_70%)] blur-2xl" />
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-72 opacity-[0.35] dark:opacity-[0.12]"
+        style={{
+          backgroundImage: 'radial-gradient(#E5DAC5 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+          maskImage: 'radial-gradient(ellipse 60% 100% at 50% 0%, black 0%, transparent 75%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 60% 100% at 50% 0%, black 0%, transparent 75%)',
+        }}
+      />
+
+      <div className="relative max-w-6xl mx-auto px-6 py-16 lg:py-20">
+        <Reveal className="text-center max-w-xl mx-auto">
+          <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">After the match</span>
+          <h2 className="mt-2 text-page text-ink dark:text-slate-100 tracking-tight">Where matches become deals</h2>
+          <p className="mt-2 text-[14.5px] text-muted dark:text-slate-400">What happens once the algorithm makes the introduction.</p>
+        </Reveal>
+
+        <div className="mt-10">
+          <TrustPhotoCard photo={lead} delay={0} variant="scale" />
+          <div className="mt-4 md:mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+            {rest.map((photo, i) => (
+              <TrustPhotoCard key={photo.tag} photo={photo} delay={(i + 1) * 90} variant="up" />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function FinalCta() {
   return (
     <section className="max-w-6xl mx-auto px-6 pb-16 lg:pb-20">
@@ -416,6 +509,7 @@ export default function LandingPage() {
         <DualAudience />
         <Features />
         <HowItWorks />
+        <Trust />
         <FinalCta />
       </main>
       <Footer />
