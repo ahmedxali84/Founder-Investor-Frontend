@@ -39,16 +39,35 @@ export default function MobileNav({ links }) {
 
       {open && (
         <div className="absolute top-16 inset-x-0 z-40 bg-cream dark:bg-slate-950 border-b border-line/70 dark:border-slate-800 shadow-soft px-6 py-5 flex flex-col gap-4">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={() => setOpen(false)}
-              className="text-nav font-semibold text-ink dark:text-slate-100"
-            >
-              {l.label}
-            </a>
-          ))}
+          {links.map((l) =>
+            l.dropdown ? (
+              // No second layer of dropdown-within-drawer here — the drawer
+              // already has room, so both items just show directly under a
+              // small label instead of needing an extra tap to reveal them.
+              <div key={l.label} className="flex flex-col gap-2.5">
+                <span className="text-[11px] font-bold text-ink/40 dark:text-slate-500 uppercase tracking-wider">{l.label}</span>
+                {l.dropdown.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className="text-nav font-semibold text-ink dark:text-slate-100 pl-1"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="text-nav font-semibold text-ink dark:text-slate-100"
+              >
+                {l.label}
+              </a>
+            )
+          )}
           <div className="mt-1 pt-3 border-t border-line/70 dark:border-slate-800 flex items-center gap-3">
             <Link
               href="/login"

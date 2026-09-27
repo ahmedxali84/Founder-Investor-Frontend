@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Logo } from '../components/icons.jsx'
 import Reveal from '../components/Reveal.jsx'
 import MobileNav from '../components/MobileNav.jsx'
+import NavDropdown from '../components/NavDropdown.jsx'
 import HeroMatchCard from '../components/HeroMatchCard.jsx'
 import ThemeToggle from '../components/ThemeToggle.jsx'
 import {
@@ -10,7 +11,14 @@ import {
 } from '../components/icons.jsx'
 
 const NAV_LINKS = [
-  { href: '#about', label: 'About' },
+  {
+    label: 'Why Kavan',
+    dropdown: [
+      { href: '#about', label: 'What is Kavan' },
+      { href: '#benefits', label: 'Benefits' },
+      { href: '#why-different', label: "Why it's different" },
+    ],
+  },
   { href: '#how-it-works', label: 'How it works' },
   { href: '#founders', label: 'For Founders' },
   { href: '#investors', label: 'For Investors' },
@@ -93,9 +101,13 @@ function Navbar() {
           <Logo />
         </a>
         <nav className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((l) => (
-            <a key={l.href} href={l.href} className="text-nav text-ink/70 dark:text-slate-300 hover:text-ink dark:hover:text-white transition-colors">{l.label}</a>
-          ))}
+          {NAV_LINKS.map((l) =>
+            l.dropdown ? (
+              <NavDropdown key={l.label} label={l.label} items={l.dropdown} />
+            ) : (
+              <a key={l.href} href={l.href} className="text-nav text-ink/70 dark:text-slate-300 hover:text-ink dark:hover:text-white transition-colors">{l.label}</a>
+            )
+          )}
         </nav>
         <div className="flex items-center gap-1 sm:gap-3 shrink-0">
           {/* "Log in" and the section links live inside the hamburger below
@@ -337,9 +349,70 @@ function DualAudience() {
   )
 }
 
+const BENEFITS_FOUNDERS = [
+  'Investors come to you once you’re ready — no more cold emailing them.',
+  'You get noticed for your real work (GitHub, your MVP), not just a fancy pitch.',
+  'You’re told exactly what to build next.',
+  'No wasted meetings — the investor already likes your idea before you talk.',
+]
+
+const BENEFITS_INVESTORS = [
+  'No inbox full of random pitches.',
+  'You only see real startups with real work already done.',
+  'You’re shown one strong match at a time, not a big pile to sort through.',
+  'A fast path from a first chat to paperwork, with AI help writing the term sheet.',
+]
+
+/**
+ * "What you actually get" — deliberately distinct from Features below, which
+ * covers what the product DOES (multi-agent matching, verified data, ...).
+ * This is the outcome-framed version of the same facts, split by role like
+ * DualAudience above, so a visitor sees the personal payoff right after
+ * seeing which side of the table they're on.
+ */
+function Benefits() {
+  return (
+    <section id="benefits" className="max-w-6xl mx-auto px-6 py-16 lg:py-20 scroll-mt-24">
+      <Reveal className="text-center max-w-xl mx-auto">
+        <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">Why join</span>
+        <h2 className="mt-2 text-page text-ink dark:text-slate-100 tracking-tight">What you actually get</h2>
+        <p className="mt-2 text-[14.5px] text-muted dark:text-slate-400">Not features — the real difference it makes for you.</p>
+      </Reveal>
+
+      <div className="mt-10 grid sm:grid-cols-2 gap-6">
+        <Reveal variant="left" className="rounded-3xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-sm p-7">
+          <span className="grid place-items-center w-11 h-11 rounded-2xl bg-brand-soft text-brand dark:bg-blue-500/10 dark:text-blue-400"><BulbIcon className="w-5 h-5" /></span>
+          <h3 className="mt-4 text-title text-ink dark:text-slate-100">If you're a founder</h3>
+          <ul className="mt-3 space-y-2.5">
+            {BENEFITS_FOUNDERS.map((t) => (
+              <li key={t} className="flex gap-2.5 text-[13.5px] text-slate-600 dark:text-slate-300">
+                <CheckCircleIcon className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                {t}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <Reveal delay={120} variant="right" className="rounded-3xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-sm p-7">
+          <span className="grid place-items-center w-11 h-11 rounded-2xl bg-brand-soft text-brand dark:bg-blue-500/10 dark:text-blue-400"><BriefcaseIcon className="w-5 h-5" /></span>
+          <h3 className="mt-4 text-title text-ink dark:text-slate-100">If you're an investor</h3>
+          <ul className="mt-3 space-y-2.5">
+            {BENEFITS_INVESTORS.map((t) => (
+              <li key={t} className="flex gap-2.5 text-[13.5px] text-slate-600 dark:text-slate-300">
+                <CheckCircleIcon className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                {t}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
 function Features() {
   return (
-    <section className="relative">
+    <section id="why-different" className="relative scroll-mt-24">
       {/* Soft gradient seams instead of hard borders on either side, so the
           page reads as one continuous flow rather than a stack of
           rectangles stapled together. */}
@@ -577,6 +650,7 @@ export default function LandingPage() {
         <Hero />
         <AboutKavan />
         <DualAudience />
+        <Benefits />
         <Features />
         <HowItWorks />
         <Trust />
