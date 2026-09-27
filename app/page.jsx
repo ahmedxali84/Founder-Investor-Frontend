@@ -5,6 +5,10 @@ import MobileNav from '../components/MobileNav.jsx'
 import NavDropdown from '../components/NavDropdown.jsx'
 import HeroMatchCard from '../components/HeroMatchCard.jsx'
 import ThemeToggle from '../components/ThemeToggle.jsx'
+import AboutIllustration from '../components/illustrations/AboutIllustration.jsx'
+import BenefitsIllustration from '../components/illustrations/BenefitsIllustration.jsx'
+import WhyDifferentIllustration from '../components/illustrations/WhyDifferentIllustration.jsx'
+import PrivacyIllustration from '../components/illustrations/PrivacyIllustration.jsx'
 import {
   RocketIcon, HandshakeIcon, ShieldIcon, DocIcon, BulbIcon, BriefcaseIcon,
   LinkedInMark, GitHubMark, RobotIcon, CheckCircleIcon, ArrowRightIcon,
@@ -249,6 +253,24 @@ const ABOUT_ITEMS = [
 ]
 
 /**
+ * Shared visual frame for each "Why Kavan" section's illustration — same
+ * cream/dot-pattern canvas as the Hero and NavDropdown's intro panel, so a
+ * hand-drawn SVG dropped into it automatically looks native to the page
+ * instead of like a pasted-in graphic.
+ */
+function IllustrationCard({ children }) {
+  return (
+    <div className="relative rounded-3xl bg-cream dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 shadow-sm overflow-hidden p-6 sm:p-10">
+      <div className="pointer-events-none absolute inset-0 opacity-[0.35] dark:opacity-[0.08]" style={{
+        backgroundImage: 'radial-gradient(#E5DAC5 1px, transparent 1px)',
+        backgroundSize: '22px 22px',
+      }} />
+      <div className="relative max-w-[300px] mx-auto">{children}</div>
+    </div>
+  )
+}
+
+/**
  * Plain-language "what is this, actually" explainer — sits right after the
  * Hero's punchy tagline and before the more detailed Features/HowItWorks
  * sections below, for a visitor who wants the concept spelled out in one
@@ -258,19 +280,26 @@ const ABOUT_ITEMS = [
 function AboutKavan() {
   return (
     <section id="about" className="max-w-6xl mx-auto px-6 py-16 lg:py-20 scroll-mt-24">
-      <Reveal className="max-w-2xl">
-        <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">What is Kavan?</span>
-        <h2 className="mt-2 text-page md:text-page-lg text-ink dark:text-slate-100 tracking-tight">
-          Where startup founders and investors actually find each other
-        </h2>
-        <p className="mt-3 text-[15px] leading-relaxed text-muted dark:text-slate-400">
-          Kavan connects two kinds of people: <strong className="text-ink dark:text-slate-200 font-semibold">founders</strong> building
-          a startup, and <strong className="text-ink dark:text-slate-200 font-semibold">investors</strong> looking to fund one. Normally,
-          finding the right person means cold emails, guesswork, and hoping someone's profile isn't exaggerated. Kavan skips all of
-          that — it verifies who you both really are, then its AI figures out who you'd actually be a good fit for, and introduces
-          you to just that one person at a time.
-        </p>
-      </Reveal>
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <Reveal>
+          <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">What is Kavan?</span>
+          <h2 className="mt-2 text-page md:text-page-lg text-ink dark:text-slate-100 tracking-tight">
+            Where startup founders and investors actually find each other
+          </h2>
+          <p className="mt-3 text-[15px] leading-relaxed text-muted dark:text-slate-400">
+            Kavan connects two kinds of people: <strong className="text-ink dark:text-slate-200 font-semibold">founders</strong> building
+            a startup, and <strong className="text-ink dark:text-slate-200 font-semibold">investors</strong> looking to fund one. Normally,
+            finding the right person means cold emails, guesswork, and hoping someone's profile isn't exaggerated. Kavan skips all of
+            that — it verifies who you both really are, then its AI figures out who you'd actually be a good fit for, and introduces
+            you to just that one person at a time.
+          </p>
+        </Reveal>
+        <Reveal delay={120} variant="scale">
+          <IllustrationCard>
+            <AboutIllustration />
+          </IllustrationCard>
+        </Reveal>
+      </div>
 
       <div className="mt-10 space-y-5">
         {ABOUT_ITEMS.map(({ Icon, title, body }, i) => (
@@ -381,11 +410,18 @@ const BENEFITS_INVESTORS = [
 function Benefits() {
   return (
     <section id="benefits" className="max-w-6xl mx-auto px-6 py-16 lg:py-20 scroll-mt-24">
-      <Reveal className="text-center max-w-xl mx-auto">
-        <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">Why join</span>
-        <h2 className="mt-2 text-page text-ink dark:text-slate-100 tracking-tight">What you actually get</h2>
-        <p className="mt-2 text-[14.5px] text-muted dark:text-slate-400">Not features — the real difference it makes for you.</p>
-      </Reveal>
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <Reveal variant="scale">
+          <IllustrationCard>
+            <BenefitsIllustration />
+          </IllustrationCard>
+        </Reveal>
+        <Reveal delay={120}>
+          <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">Why join</span>
+          <h2 className="mt-2 text-page text-ink dark:text-slate-100 tracking-tight">What you actually get</h2>
+          <p className="mt-2 text-[14.5px] text-muted dark:text-slate-400">Not features — the real difference it makes for you.</p>
+        </Reveal>
+      </div>
 
       <div className="mt-10 grid sm:grid-cols-2 gap-6">
         <Reveal variant="left" className="rounded-3xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-sm p-7">
@@ -427,10 +463,17 @@ function Features() {
       <div className="pointer-events-none h-16 bg-gradient-to-b from-cream dark:from-slate-950 to-white dark:to-slate-900/60" />
       <div className="bg-white dark:bg-slate-900/60">
         <div className="max-w-6xl mx-auto px-6 pb-16 lg:pb-20">
-          <Reveal className="text-center max-w-xl mx-auto">
-            <h2 className="text-page text-ink dark:text-slate-100 tracking-tight">Why Kavan feels different</h2>
-            <p className="mt-2 text-[14.5px] text-muted dark:text-slate-400">The same principles running under every match, every time.</p>
-          </Reveal>
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+            <Reveal>
+              <h2 className="text-page text-ink dark:text-slate-100 tracking-tight">Why Kavan feels different</h2>
+              <p className="mt-2 text-[14.5px] text-muted dark:text-slate-400">The same principles running under every match, every time.</p>
+            </Reveal>
+            <Reveal delay={120} variant="scale">
+              <IllustrationCard>
+                <WhyDifferentIllustration />
+              </IllustrationCard>
+            </Reveal>
+          </div>
 
           <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {FEATURES.map(({ Icon, title, body }, i) => (
@@ -492,11 +535,18 @@ const PRIVACY_ITEMS = [
 function PrivacyTrust() {
   return (
     <section id="privacy-trust" className="max-w-6xl mx-auto px-6 py-16 lg:py-20 scroll-mt-24">
-      <Reveal className="text-center max-w-xl mx-auto">
-        <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">Privacy &amp; Trust</span>
-        <h2 className="mt-2 text-page text-ink dark:text-slate-100 tracking-tight">Built to protect you, not just promise to</h2>
-        <p className="mt-2 text-[14.5px] text-muted dark:text-slate-400">What actually happens with your data — not a vague "we take privacy seriously" line.</p>
-      </Reveal>
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <Reveal variant="scale">
+          <IllustrationCard>
+            <PrivacyIllustration />
+          </IllustrationCard>
+        </Reveal>
+        <Reveal delay={120}>
+          <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">Privacy &amp; Trust</span>
+          <h2 className="mt-2 text-page text-ink dark:text-slate-100 tracking-tight">Built to protect you, not just promise to</h2>
+          <p className="mt-2 text-[14.5px] text-muted dark:text-slate-400">What actually happens with your data — not a vague "we take privacy seriously" line.</p>
+        </Reveal>
+      </div>
 
       <div className="mt-10 grid sm:grid-cols-3 gap-5">
         {PRIVACY_ITEMS.map(({ Icon, title, body }, i) => (
