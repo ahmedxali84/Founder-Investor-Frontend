@@ -279,7 +279,7 @@ function AboutKavan() {
           <div className="pointer-events-none absolute -inset-5 bg-gradient-to-br from-brand/20 via-indigo-400/10 to-transparent blur-2xl rounded-[2.5rem]" />
           <div className="relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 aspect-[5/3]">
             <img
-              src="/about-match-scene.png"
+              src="/about-match-scene.webp"
               alt="A founder and an investor talking at a table, with floating Founder and Investor profile cards connected by a verified match badge above them"
               className="w-full h-full object-cover"
             />
@@ -414,7 +414,7 @@ function Benefits() {
           <div className="pointer-events-none absolute -inset-5 bg-gradient-to-br from-brand/20 via-indigo-400/10 to-transparent blur-2xl rounded-[2.5rem]" />
           <div className="relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 aspect-[5/3]">
             <img
-              src="/benefits-match-scene.png"
+              src="/benefits-match-scene.webp"
               alt="A founder's desk with a laptop and a Kavan mug, with floating Founder and Investor profile cards connected through the Kavan pineapple mark above it"
               className="w-full h-full object-cover"
             />
@@ -473,7 +473,7 @@ function Features() {
               <div className="pointer-events-none absolute -inset-5 bg-gradient-to-br from-brand/20 via-indigo-400/10 to-transparent blur-2xl rounded-[2.5rem]" />
               <div className="relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 aspect-[5/3]">
                 <img
-                  src="/why-different-scene.png"
+                  src="/why-different-scene.webp"
                   alt="A blue verified shield with a checkmark, next to a faded rejected X card, on a desk with a 'Good Principles Build Great Matches' poster behind it"
                   className="w-full h-full object-cover"
                 />
@@ -547,7 +547,7 @@ function PrivacyTrust() {
           <div className="pointer-events-none absolute -inset-5 bg-gradient-to-br from-brand/20 via-indigo-400/10 to-transparent blur-2xl rounded-[2.5rem]" />
           <div className="relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 aspect-[5/3]">
             <img
-              src="/privacy-trust-scene.png"
+              src="/privacy-trust-scene.webp"
               alt="A laptop showing Kavan's privacy settings — private until both say yes, delete anytime, only you decide — next to a glowing shield and padlock"
               className="w-full h-full object-cover"
             />
@@ -596,7 +596,7 @@ function HowItWorks() {
               wider ratio would crop off the top/bottom of the phone screen. */}
           <div className="relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 aspect-[4/3] max-w-[360px] mx-auto lg:max-w-none">
             <img
-              src="/how-it-works-scene.png"
+              src="/how-it-works-scene.webp"
               alt="A phone showing the Kavan sign-in screen with Continue with LinkedIn and Continue with GitHub buttons, next to a laptop showing the Kavan landing page"
               className="w-full h-full object-cover"
             />
