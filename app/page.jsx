@@ -742,20 +742,29 @@ function FinalCta() {
           <p className="mt-3 text-[14.5px] text-white/60 max-w-md mx-auto">
             One exclusive introduction, verified from real data — not another list to scroll through.
           </p>
+          {/* Two role-specific buttons, not one generic "Get Started Free" —
+              by this point in the page a visitor already knows which side
+              of the table they're on (the whole page has been split that
+              way since DualAudience), so asking them to pick a role again
+              after clicking through just adds a step this CTA can skip. */}
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             <Link
-              href="/signup"
+              href="/signup?role=founder"
               className="inline-flex items-center gap-2 h-12 px-6 rounded-xl bg-brand hover:bg-brand-hover text-white text-btn shadow-glow transition-all active:scale-[0.98]"
             >
-              Get Started Free <ArrowRightIcon className="w-4 h-4" />
+              <RocketIcon className="w-4 h-4" /> I'm a Founder <ArrowRightIcon className="w-4 h-4" />
             </Link>
             <Link
-              href="/login"
-              className="inline-flex items-center h-12 px-6 rounded-xl border border-white/15 text-white text-btn hover:bg-white/5 transition-all"
+              href="/signup?role=investor"
+              className="inline-flex items-center gap-2 h-12 px-6 rounded-xl border border-white/15 text-white text-btn hover:bg-white/5 transition-all active:scale-[0.98]"
             >
-              Log in
+              <BriefcaseIcon className="w-4 h-4" /> I'm an Investor <ArrowRightIcon className="w-4 h-4" />
             </Link>
           </div>
+          <p className="mt-5 text-[12.5px] text-white/50">
+            Already have an account?{' '}
+            <Link href="/login" className="font-semibold text-white hover:underline">Log in</Link>
+          </p>
         </div>
       </Reveal>
     </section>
