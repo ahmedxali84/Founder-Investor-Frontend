@@ -68,11 +68,15 @@ export default function NavDropdown({ label, intro, items }) {
           <div className="relative grid grid-cols-[168px_1fr]">
             {/* Left — intro panel, same warm cream/dot-pattern language as
                 the Hero/AuthSidePanel rather than a plain gray sidebar. */}
-            <div className="relative hidden sm:flex flex-col justify-center gap-2 bg-cream dark:bg-slate-800/60 border-r border-slate-100 dark:border-slate-800 p-5 overflow-hidden">
+            <div className="relative hidden sm:flex flex-col justify-center gap-2.5 bg-cream dark:bg-slate-800/60 border-r border-slate-100 dark:border-slate-800 p-5 overflow-hidden">
               <div className="pointer-events-none absolute inset-0 opacity-[0.4] dark:opacity-[0.08]" style={{
                 backgroundImage: 'radial-gradient(#E5DAC5 1px, transparent 1px)',
                 backgroundSize: '18px 18px',
               }} />
+              {/* The actual brand mark, not just text — gives the panel a
+                  logo to anchor on instead of reading as a generic sidebar. */}
+              <img src="/icon-light.png" alt="" className="relative w-8 h-8 dark:hidden" />
+              <img src="/icon-dark.png" alt="" className="relative w-8 h-8 hidden dark:block" />
               <span className="relative text-[10.5px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">Learn about Kavan</span>
               {intro && <p className="relative text-[12px] leading-relaxed text-muted dark:text-slate-400">{intro}</p>}
             </div>
@@ -86,12 +90,12 @@ export default function NavDropdown({ label, intro, items }) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className={`flex items-start gap-3 rounded-xl px-3.5 py-3 hover:bg-brand-soft/60 dark:hover:bg-blue-500/10 transition-colors ${
+                  className={`group flex items-start gap-3 rounded-xl px-3.5 py-3 hover:bg-brand-soft/60 dark:hover:bg-blue-500/10 transition-colors ${
                     i !== items.length - 1 ? 'mb-0.5' : ''
                   }`}
                 >
                   {item.icon && (
-                    <span className="shrink-0 grid place-items-center w-9 h-9 rounded-xl bg-brand-soft text-brand dark:bg-blue-500/10 dark:text-blue-400">
+                    <span className="shrink-0 grid place-items-center w-10 h-10 rounded-2xl bg-accent-gradient text-white shadow-sm transition-transform group-hover:scale-105">
                       {item.icon}
                     </span>
                   )}

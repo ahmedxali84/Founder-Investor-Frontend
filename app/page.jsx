@@ -8,6 +8,7 @@ import ThemeToggle from '../components/ThemeToggle.jsx'
 import {
   RocketIcon, HandshakeIcon, ShieldIcon, DocIcon, BulbIcon, BriefcaseIcon,
   LinkedInMark, GitHubMark, RobotIcon, CheckCircleIcon, ArrowRightIcon,
+  LockIcon, TrashIcon,
 } from '../components/icons.jsx'
 
 const NAV_LINKS = [
@@ -23,6 +24,7 @@ const NAV_LINKS = [
       { href: '#about', label: 'What is Kavan', description: 'The 2-minute explainer', icon: <BulbIcon className="w-4 h-4" /> },
       { href: '#benefits', label: 'Benefits', description: 'What you actually get', icon: <HandshakeIcon className="w-4 h-4" /> },
       { href: '#why-different', label: "Why it's different", description: 'Verified, not invented', icon: <ShieldIcon className="w-4 h-4" /> },
+      { href: '#privacy-trust', label: 'Privacy & Trust', description: 'Your data, protected — for real', icon: <LockIcon className="w-4 h-4" /> },
     ],
   },
   { href: '#how-it-works', label: 'How it works' },
@@ -461,6 +463,58 @@ function Features() {
   )
 }
 
+const PRIVACY_ITEMS = [
+  {
+    Icon: LockIcon,
+    title: 'Your identity stays private until you both say yes',
+    body: "Neither side sees who the other actually is — just a confidential match — until a meeting is confirmed on both ends. No browsing to peek at who's who.",
+  },
+  {
+    Icon: TrashIcon,
+    title: "Delete your account anytime — and it's actually gone",
+    body: 'One confirmed click permanently removes your account, ideas or shortlist, matches, meeting requests, and every message you’re part of. Nothing lingers behind.',
+  },
+  {
+    Icon: ShieldIcon,
+    title: 'Only you — and whoever you’re matched with — can see your data',
+    body: "Your private details aren't visible to random visitors, or to other users you haven't actually been matched or messaged with.",
+  },
+]
+
+/**
+ * Deliberately doesn't repeat "profiles are real, verified" — that's already
+ * covered by AboutKavan and Features above. This is specifically about data
+ * handling: who can see what, and what happens when you leave. Every claim
+ * here is real, enforced behavior (see DeleteAccountModal.jsx, the
+ * confidential-match rendering in components/matches/*, and supabase/
+ * schema.sql's RLS policies) — nothing here is a generic trust badge.
+ */
+function PrivacyTrust() {
+  return (
+    <section id="privacy-trust" className="max-w-6xl mx-auto px-6 py-16 lg:py-20 scroll-mt-24">
+      <Reveal className="text-center max-w-xl mx-auto">
+        <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">Privacy &amp; Trust</span>
+        <h2 className="mt-2 text-page text-ink dark:text-slate-100 tracking-tight">Built to protect you, not just promise to</h2>
+        <p className="mt-2 text-[14.5px] text-muted dark:text-slate-400">What actually happens with your data — not a vague "we take privacy seriously" line.</p>
+      </Reveal>
+
+      <div className="mt-10 grid sm:grid-cols-3 gap-5">
+        {PRIVACY_ITEMS.map(({ Icon, title, body }, i) => (
+          <Reveal key={title} delay={i * 100} variant="scale">
+            <div className="h-full rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-sm p-6">
+              <span className="grid place-items-center w-11 h-11 rounded-2xl bg-accent-gradient text-white shadow-sm">
+                <Icon className="w-[18px] h-[18px]" />
+              </span>
+              <h3 className="mt-4 text-[14.5px] font-bold text-ink dark:text-slate-100">{title}</h3>
+              <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted dark:text-slate-400">{body}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function HowItWorks() {
   return (
     <section id="how-it-works" className="max-w-6xl mx-auto px-6 py-16 lg:py-20 scroll-mt-16">
@@ -658,6 +712,7 @@ export default function LandingPage() {
         <DualAudience />
         <Benefits />
         <Features />
+        <PrivacyTrust />
         <HowItWorks />
         <Trust />
         <FinalCta />
