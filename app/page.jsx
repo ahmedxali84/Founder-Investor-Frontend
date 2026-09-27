@@ -287,7 +287,7 @@ function AboutKavan() {
         </Reveal>
       </div>
 
-      <div className="mt-10 space-y-5">
+      <div className="mt-14 space-y-5">
         {ABOUT_ITEMS.map(({ Icon, title, body }, i) => (
           <Reveal key={title} delay={i * 100} variant="left">
             <div className="flex items-start gap-4 rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-sm p-5">
