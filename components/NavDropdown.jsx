@@ -51,17 +51,36 @@ export default function NavDropdown({ label, items }) {
       </button>
 
       {open && (
-        <div className="absolute left-0 top-[calc(100%+10px)] w-56 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-lg overflow-hidden animate-card-in z-40">
-          {items.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              onClick={() => setOpen(false)}
-              className="block px-4 py-2.5 text-[13px] font-semibold text-ink/80 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-ink dark:hover:text-white transition-colors"
-            >
-              {item.label}
-            </a>
-          ))}
+        <div className="absolute left-1/2 -translate-x-1/2 top-[calc(100%+12px)] w-72 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/70 dark:border-slate-700 ring-1 ring-black/5 dark:ring-white/10 shadow-lg overflow-hidden animate-card-in z-40">
+          {/* Small triangle pointing back at the trigger button — a floating
+              panel with no visible link to what opened it reads as
+              disconnected, especially now that it's centered rather than
+              left-aligned under the button. */}
+          <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-white dark:bg-slate-900 border-t border-l border-slate-200/70 dark:border-slate-700" />
+          <div className="relative">
+            {items.map((item, i) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className={`flex items-start gap-3 px-4 py-3.5 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors ${
+                  i !== items.length - 1 ? 'border-b border-slate-100 dark:border-slate-800' : ''
+                }`}
+              >
+                {item.icon && (
+                  <span className="shrink-0 grid place-items-center w-9 h-9 rounded-xl bg-brand-soft text-brand dark:bg-blue-500/10 dark:text-blue-400">
+                    {item.icon}
+                  </span>
+                )}
+                <span className="min-w-0">
+                  <span className="block text-[13px] font-bold text-ink dark:text-slate-100">{item.label}</span>
+                  {item.description && (
+                    <span className="block mt-0.5 text-[11.5px] leading-snug text-muted dark:text-slate-400">{item.description}</span>
+                  )}
+                </span>
+              </a>
+            ))}
+          </div>
         </div>
       )}
     </div>

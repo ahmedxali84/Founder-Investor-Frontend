@@ -13,10 +13,15 @@ import {
 const NAV_LINKS = [
   {
     label: 'Why Kavan',
+    // Pre-rendered elements, not raw component references — NavDropdown is
+    // a Client Component, and a Server Component (this file exports
+    // `metadata`) can't pass a function prop like Icon across that boundary.
+    // A React element built here is plain serializable JSX, so that part
+    // still works fine.
     dropdown: [
-      { href: '#about', label: 'What is Kavan' },
-      { href: '#benefits', label: 'Benefits' },
-      { href: '#why-different', label: "Why it's different" },
+      { href: '#about', label: 'What is Kavan', description: 'The 2-minute explainer', icon: <BulbIcon className="w-4 h-4" /> },
+      { href: '#benefits', label: 'Benefits', description: 'What you actually get', icon: <HandshakeIcon className="w-4 h-4" /> },
+      { href: '#why-different', label: "Why it's different", description: 'Verified, not invented', icon: <ShieldIcon className="w-4 h-4" /> },
     ],
   },
   { href: '#how-it-works', label: 'How it works' },
