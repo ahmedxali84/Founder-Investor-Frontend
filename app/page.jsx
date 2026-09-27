@@ -10,6 +10,7 @@ import {
 } from '../components/icons.jsx'
 
 const NAV_LINKS = [
+  { href: '#about', label: 'About' },
   { href: '#how-it-works', label: 'How it works' },
   { href: '#founders', label: 'For Founders' },
   { href: '#investors', label: 'For Investors' },
@@ -212,18 +213,18 @@ function Hero() {
 const ABOUT_ITEMS = [
   {
     Icon: ShieldIcon,
-    title: 'Real people, not profiles you have to take on faith',
-    body: "Everyone signs in with their real LinkedIn (and GitHub, for founders) — it's live data pulled straight from those accounts, not a bio someone typed in themselves.",
+    title: 'Real people, not made-up profiles',
+    body: "When you sign up, you log in with your actual LinkedIn (founders also connect GitHub). You don't just type in your own bio — Kavan pulls live data straight from those accounts, so nobody can fake their experience, skills, or work history.",
   },
   {
     Icon: HandshakeIcon,
-    title: 'One match at a time, not a list to scroll through',
-    body: "Instead of dumping hundreds of investors or startups on you, Kavan's AI agents rank real fits and hand you a single top match. Pass, and it shows you the next best one.",
+    title: 'One good match, not a hundred to sift through',
+    body: "Most platforms hand you a giant list and leave you to figure out who's worth messaging. Kavan does that work for you — AI agents look at your idea (or your investment criteria) and hand you the one person who's genuinely a strong fit. Not right? Pass, and it shows you the next best one.",
   },
   {
     Icon: DocIcon,
-    title: "From 'hello' to a signed term sheet",
-    body: 'Once both sides agree to meet, real-time chat opens up — and when terms are agreed, an AI drafts a term sheet straight from that actual conversation.',
+    title: 'From your first "hello" to a real deal',
+    body: "Once both sides say yes to meeting, a private chat opens up — no email back-and-forth needed. When you're ready to talk terms, Kavan's AI can even draft a starting term sheet based on what you actually discussed, so you're not writing that from a blank page.",
   },
 ]
 
@@ -231,20 +232,23 @@ const ABOUT_ITEMS = [
  * Plain-language "what is this, actually" explainer — sits right after the
  * Hero's punchy tagline and before the more detailed Features/HowItWorks
  * sections below, for a visitor who wants the concept spelled out in one
- * breath before getting into specifics.
+ * breath before getting into specifics. Linked from the navbar (#about) so
+ * it's reachable in one click, same as How It Works/Founders/Investors.
  */
 function AboutKavan() {
   return (
-    <section className="max-w-6xl mx-auto px-6 py-16 lg:py-20">
+    <section id="about" className="max-w-6xl mx-auto px-6 py-16 lg:py-20 scroll-mt-24">
       <Reveal className="max-w-2xl">
         <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">What is Kavan?</span>
         <h2 className="mt-2 text-page md:text-page-lg text-ink dark:text-slate-100 tracking-tight">
           Where startup founders and investors actually find each other
         </h2>
         <p className="mt-3 text-[15px] leading-relaxed text-muted dark:text-slate-400">
-          No cold emails, no endless spreadsheet of "maybe" investors, and no guessing whether the person
-          on the other end is even real. Kavan verifies who you both are, then its AI agents do the matchmaking —
-          one real, ready-to-talk introduction at a time.
+          Kavan connects two kinds of people: <strong className="text-ink dark:text-slate-200 font-semibold">founders</strong> building
+          a startup, and <strong className="text-ink dark:text-slate-200 font-semibold">investors</strong> looking to fund one. Normally,
+          finding the right person means cold emails, guesswork, and hoping someone's profile isn't exaggerated. Kavan skips all of
+          that — it verifies who you both really are, then its AI figures out who you'd actually be a good fit for, and introduces
+          you to just that one person at a time.
         </p>
       </Reveal>
 
@@ -263,6 +267,13 @@ function AboutKavan() {
           </Reveal>
         ))}
       </div>
+
+      <Reveal delay={300} className="mt-8 max-w-2xl">
+        <p className="text-[13.5px] leading-relaxed text-muted dark:text-slate-400 italic">
+          In short: Kavan is matchmaking for startups and investors — verified, focused on one real fit at a time,
+          and built to actually go somewhere instead of sitting in an inbox.
+        </p>
+      </Reveal>
     </section>
   )
 }
