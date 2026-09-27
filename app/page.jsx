@@ -209,6 +209,64 @@ function Hero() {
   )
 }
 
+const ABOUT_ITEMS = [
+  {
+    Icon: ShieldIcon,
+    title: 'Real people, not profiles you have to take on faith',
+    body: "Everyone signs in with their real LinkedIn (and GitHub, for founders) — it's live data pulled straight from those accounts, not a bio someone typed in themselves.",
+  },
+  {
+    Icon: HandshakeIcon,
+    title: 'One match at a time, not a list to scroll through',
+    body: "Instead of dumping hundreds of investors or startups on you, Kavan's AI agents rank real fits and hand you a single top match. Pass, and it shows you the next best one.",
+  },
+  {
+    Icon: DocIcon,
+    title: "From 'hello' to a signed term sheet",
+    body: 'Once both sides agree to meet, real-time chat opens up — and when terms are agreed, an AI drafts a term sheet straight from that actual conversation.',
+  },
+]
+
+/**
+ * Plain-language "what is this, actually" explainer — sits right after the
+ * Hero's punchy tagline and before the more detailed Features/HowItWorks
+ * sections below, for a visitor who wants the concept spelled out in one
+ * breath before getting into specifics.
+ */
+function AboutKavan() {
+  return (
+    <section className="max-w-6xl mx-auto px-6 py-16 lg:py-20">
+      <Reveal className="max-w-2xl">
+        <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">What is Kavan?</span>
+        <h2 className="mt-2 text-page md:text-page-lg text-ink dark:text-slate-100 tracking-tight">
+          Where startup founders and investors actually find each other
+        </h2>
+        <p className="mt-3 text-[15px] leading-relaxed text-muted dark:text-slate-400">
+          No cold emails, no endless spreadsheet of "maybe" investors, and no guessing whether the person
+          on the other end is even real. Kavan verifies who you both are, then its AI agents do the matchmaking —
+          one real, ready-to-talk introduction at a time.
+        </p>
+      </Reveal>
+
+      <div className="mt-10 space-y-5">
+        {ABOUT_ITEMS.map(({ Icon, title, body }, i) => (
+          <Reveal key={title} delay={i * 100} variant="left">
+            <div className="flex items-start gap-4 rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-sm p-5">
+              <span className="shrink-0 grid place-items-center w-11 h-11 rounded-xl bg-brand-soft text-brand dark:bg-blue-500/10 dark:text-blue-400">
+                <Icon className="w-5 h-5" />
+              </span>
+              <div>
+                <h3 className="text-[15px] font-bold text-ink dark:text-slate-100">{title}</h3>
+                <p className="mt-1 text-[13.5px] leading-relaxed text-muted dark:text-slate-400">{body}</p>
+              </div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function DualAudience() {
   return (
     <section className="max-w-6xl mx-auto px-6 py-16 lg:py-20">
@@ -506,6 +564,7 @@ export default function LandingPage() {
       <Navbar />
       <main>
         <Hero />
+        <AboutKavan />
         <DualAudience />
         <Features />
         <HowItWorks />
