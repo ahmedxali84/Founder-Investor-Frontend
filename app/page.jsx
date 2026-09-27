@@ -5,7 +5,6 @@ import MobileNav from '../components/MobileNav.jsx'
 import NavDropdown from '../components/NavDropdown.jsx'
 import HeroMatchCard from '../components/HeroMatchCard.jsx'
 import ThemeToggle from '../components/ThemeToggle.jsx'
-import WhyDifferentIllustration from '../components/illustrations/WhyDifferentIllustration.jsx'
 import PrivacyIllustration from '../components/illustrations/PrivacyIllustration.jsx'
 import {
   RocketIcon, HandshakeIcon, ShieldIcon, DocIcon, BulbIcon, BriefcaseIcon,
@@ -487,10 +486,17 @@ function Features() {
               <h2 className="text-page text-ink dark:text-slate-100 tracking-tight">Why Kavan feels different</h2>
               <p className="mt-2 text-[14.5px] text-muted dark:text-slate-400">The same principles running under every match, every time.</p>
             </Reveal>
-            <Reveal delay={120} variant="scale">
-              <IllustrationCard>
-                <WhyDifferentIllustration />
-              </IllustrationCard>
+            <Reveal delay={120} variant="scale" className="relative">
+              {/* Same glow-card treatment as About/Benefits' photos — one
+                  consistent visual language for every photo on this page. */}
+              <div className="pointer-events-none absolute -inset-5 bg-gradient-to-br from-brand/20 via-indigo-400/10 to-transparent blur-2xl rounded-[2.5rem]" />
+              <div className="relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 aspect-[5/3]">
+                <img
+                  src="/why-different-scene.png"
+                  alt="A blue verified shield with a checkmark, next to a faded rejected X card, on a desk with a 'Good Principles Build Great Matches' poster behind it"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </Reveal>
           </div>
 
