@@ -5,7 +5,6 @@ import MobileNav from '../components/MobileNav.jsx'
 import NavDropdown from '../components/NavDropdown.jsx'
 import HeroMatchCard from '../components/HeroMatchCard.jsx'
 import ThemeToggle from '../components/ThemeToggle.jsx'
-import PrivacyIllustration from '../components/illustrations/PrivacyIllustration.jsx'
 import {
   RocketIcon, HandshakeIcon, ShieldIcon, DocIcon, BulbIcon, BriefcaseIcon,
   LinkedInMark, GitHubMark, RobotIcon, CheckCircleIcon, ArrowRightIcon,
@@ -248,24 +247,6 @@ const ABOUT_ITEMS = [
     body: "Once both sides say yes to meeting, a private chat opens up — no email back-and-forth needed. When you're ready to talk terms, Kavan's AI can even draft a starting term sheet based on what you actually discussed, so you're not writing that from a blank page.",
   },
 ]
-
-/**
- * Shared visual frame for each "Why Kavan" section's illustration — same
- * cream/dot-pattern canvas as the Hero and NavDropdown's intro panel, so a
- * hand-drawn SVG dropped into it automatically looks native to the page
- * instead of like a pasted-in graphic.
- */
-function IllustrationCard({ children, maxWidth = 'max-w-[300px]' }) {
-  return (
-    <div className="relative rounded-3xl bg-cream dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 shadow-sm overflow-hidden p-6 sm:p-10">
-      <div className="pointer-events-none absolute inset-0 opacity-[0.35] dark:opacity-[0.08]" style={{
-        backgroundImage: 'radial-gradient(#E5DAC5 1px, transparent 1px)',
-        backgroundSize: '22px 22px',
-      }} />
-      <div className={`relative mx-auto ${maxWidth}`}>{children}</div>
-    </div>
-  )
-}
 
 /**
  * Plain-language "what is this, actually" explainer — sits right after the
@@ -561,10 +542,16 @@ function PrivacyTrust() {
   return (
     <section id="privacy-trust" className="max-w-6xl mx-auto px-6 py-16 lg:py-20 scroll-mt-24">
       <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-        <Reveal variant="scale">
-          <IllustrationCard>
-            <PrivacyIllustration />
-          </IllustrationCard>
+        <Reveal variant="scale" className="relative">
+          {/* Same glow-card treatment as every other photo on this page. */}
+          <div className="pointer-events-none absolute -inset-5 bg-gradient-to-br from-brand/20 via-indigo-400/10 to-transparent blur-2xl rounded-[2.5rem]" />
+          <div className="relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 aspect-[5/3]">
+            <img
+              src="/privacy-trust-scene.png"
+              alt="A laptop showing Kavan's privacy settings — private until both say yes, delete anytime, only you decide — next to a glowing shield and padlock"
+              className="w-full h-full object-cover"
+            />
+          </div>
         </Reveal>
         <Reveal delay={120}>
           <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">Privacy &amp; Trust</span>
