@@ -269,68 +269,6 @@ function IllustrationCard({ children, maxWidth = 'max-w-[300px]' }) {
   )
 }
 
-const FOUNDER_CARD_TAGS = ['AI • SaaS', 'MVP Ready', 'GitHub Verified']
-// Same "FinTech, AI" / "$250K–$1.5M" figures HeroMatchCard already shows on
-// the Hero above, reused here on purpose rather than invented anew — one
-// consistent example persona instead of two different ones on the same page.
-const INVESTOR_CARD_TAGS = ['FinTech, AI', '$250K–$1.5M', 'LinkedIn Verified']
-
-/**
- * The "What is Kavan" visual — a Founder mini-card and an Investor mini-card
- * connected by a Verified Match badge, built the same way HeroMatchCard.jsx
- * builds its own floating card (real HTML/CSS, not a photo) since this
- * account's AI image generation isn't available on the current plan. Every
- * tag here is real product vocabulary (MVP Ready, GitHub/LinkedIn Verified)
- * pulled from elsewhere in this app, not invented for this visual alone.
- */
-function AboutMatchVisual() {
-  return (
-    <div className="relative flex flex-col items-center gap-5 py-2">
-      {/* Verified match badge, connecting both cards */}
-      <div className="relative z-10 inline-flex items-center gap-2.5 rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-card px-4 py-2.5">
-        <span className="grid place-items-center w-7 h-7 rounded-full bg-emerald-500 text-white shrink-0">
-          <CheckCircleIcon className="w-4 h-4" />
-        </span>
-        <div className="text-left">
-          <p className="text-[12.5px] font-bold text-ink dark:text-slate-100 leading-tight">Verified Match</p>
-          <p className="text-[10.5px] text-muted dark:text-slate-400 leading-tight">Founder ↔ Investor</p>
-        </div>
-      </div>
-
-      <div className="relative w-full flex items-start justify-center gap-4">
-        {/* dotted connector, sits behind both cards */}
-        <div className="pointer-events-none absolute top-9 left-[18%] right-[18%] border-t-2 border-dashed border-brand/25 dark:border-blue-500/25" />
-
-        {/* Founder card */}
-        <div className="relative z-10 w-[152px] rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-card p-3.5">
-          <div className="flex items-center gap-2">
-            <span className="grid place-items-center w-8 h-8 rounded-full bg-accent-gradient text-white text-[11px] font-black shrink-0">F</span>
-            <span className="text-[12px] font-bold text-ink dark:text-slate-100">Founder</span>
-          </div>
-          <div className="mt-2.5 flex flex-wrap gap-1">
-            {FOUNDER_CARD_TAGS.map((t) => (
-              <span key={t} className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[9.5px] font-semibold text-slate-600 dark:text-slate-300">{t}</span>
-            ))}
-          </div>
-        </div>
-
-        {/* Investor card */}
-        <div className="relative z-10 w-[152px] rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-card p-3.5">
-          <div className="flex items-center gap-2">
-            <span className="grid place-items-center w-8 h-8 rounded-full bg-accent-gradient text-white text-[11px] font-black shrink-0">I</span>
-            <span className="text-[12px] font-bold text-ink dark:text-slate-100">Investor</span>
-          </div>
-          <div className="mt-2.5 flex flex-wrap gap-1">
-            {INVESTOR_CARD_TAGS.map((t) => (
-              <span key={t} className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[9.5px] font-semibold text-slate-600 dark:text-slate-300">{t}</span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 /**
  * Plain-language "what is this, actually" explainer — sits right after the
  * Hero's punchy tagline and before the more detailed Features/HowItWorks
@@ -355,10 +293,12 @@ function AboutKavan() {
             you to just that one person at a time.
           </p>
         </Reveal>
-        <Reveal delay={120} variant="scale">
-          <IllustrationCard maxWidth="max-w-[380px]">
-            <AboutMatchVisual />
-          </IllustrationCard>
+        <Reveal delay={120} variant="scale" className="relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 aspect-[5/3]">
+          <img
+            src="/about-match-scene.png"
+            alt="A founder and an investor talking at a table, with floating Founder and Investor profile cards connected by a verified match badge above them"
+            className="w-full h-full object-cover"
+          />
         </Reveal>
       </div>
 
