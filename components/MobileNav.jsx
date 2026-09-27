@@ -44,16 +44,26 @@ export default function MobileNav({ links }) {
               // No second layer of dropdown-within-drawer here — the drawer
               // already has room, so both items just show directly under a
               // small label instead of needing an extra tap to reveal them.
-              <div key={l.label} className="flex flex-col gap-2.5">
+              <div key={l.label} className="flex flex-col gap-1">
                 <span className="text-[11px] font-bold text-ink/40 dark:text-slate-500 uppercase tracking-wider">{l.label}</span>
                 {l.dropdown.map((item) => (
                   <a
                     key={item.href}
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="text-nav font-semibold text-ink dark:text-slate-100 pl-1"
+                    className="flex items-center gap-3 py-1.5"
                   >
-                    {item.label}
+                    {item.icon && (
+                      <span className="shrink-0 grid place-items-center w-9 h-9 rounded-xl bg-accent-gradient text-white shadow-sm">
+                        {item.icon}
+                      </span>
+                    )}
+                    <span className="min-w-0">
+                      <span className="block text-nav font-semibold text-ink dark:text-slate-100">{item.label}</span>
+                      {item.description && (
+                        <span className="block text-[11px] text-ink/50 dark:text-slate-400 leading-snug">{item.description}</span>
+                      )}
+                    </span>
                   </a>
                 ))}
               </div>
