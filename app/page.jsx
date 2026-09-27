@@ -593,13 +593,29 @@ function PrivacyTrust() {
 function HowItWorks() {
   return (
     <section id="how-it-works" className="max-w-6xl mx-auto px-6 py-16 lg:py-20 scroll-mt-16">
-      <Reveal className="text-center max-w-xl mx-auto">
-        {/* text-brand-hover, not text-brand — at 11px bold directly on the
-            cream background, text-brand's contrast ratio is 4.2:1, just
-            under the 4.5:1 WCAG AA floor for text this small. */}
-        <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">How it works</span>
-        <h2 className="mt-2 text-page text-ink dark:text-slate-100 tracking-tight">From sign-in to term sheet</h2>
-      </Reveal>
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <Reveal>
+          {/* text-brand-hover, not text-brand — at 11px bold directly on the
+              cream background, text-brand's contrast ratio is 4.2:1, just
+              under the 4.5:1 WCAG AA floor for text this small. */}
+          <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">How it works</span>
+          <h2 className="mt-2 text-page text-ink dark:text-slate-100 tracking-tight">From sign-in to term sheet</h2>
+        </Reveal>
+        <Reveal delay={120} variant="scale" className="relative">
+          {/* Same glow-card treatment as every other photo on this page. */}
+          <div className="pointer-events-none absolute -inset-5 bg-gradient-to-br from-brand/20 via-indigo-400/10 to-transparent blur-2xl rounded-[2.5rem]" />
+          {/* aspect-[4/3], not [5/3] like the others — this photo is a
+              vertically-held phone shot, not a wide desk scene, so the
+              wider ratio would crop off the top/bottom of the phone screen. */}
+          <div className="relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 aspect-[4/3] max-w-[360px] mx-auto lg:max-w-none">
+            <img
+              src="/how-it-works-scene.png"
+              alt="A phone showing the Kavan sign-in screen with Continue with LinkedIn and Continue with GitHub buttons, next to a laptop showing the Kavan landing page"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </Reveal>
+      </div>
 
       {/* A real timeline (one continuous line, circles sitting on it), not
           another row of boxed icon-cards — the Features section above
