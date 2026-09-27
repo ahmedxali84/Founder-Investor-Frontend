@@ -21,7 +21,7 @@ const NAV_LINKS = [
     // A React element built here is plain serializable JSX, so that part
     // still works fine.
     dropdown: [
-      { href: '#about', label: 'What is Kavan', description: 'The 2-minute explainer', icon: <BulbIcon className="w-4 h-4" /> },
+      { href: '#about', label: 'About', description: 'The 2-minute explainer', icon: <BulbIcon className="w-4 h-4" /> },
       { href: '#benefits', label: 'Benefits', description: 'What you actually get', icon: <HandshakeIcon className="w-4 h-4" /> },
       { href: '#why-different', label: "Why it's different", description: 'Verified, not invented', icon: <ShieldIcon className="w-4 h-4" /> },
       { href: '#privacy-trust', label: 'Privacy & Trust', description: 'Your data, protected — for real', icon: <LockIcon className="w-4 h-4" /> },
