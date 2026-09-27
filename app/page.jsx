@@ -419,16 +419,23 @@ function Benefits() {
       <Reveal variant="scale" className="relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 aspect-[4/3] sm:aspect-[16/7]">
         <img
           src="/benefits-match-scene.png"
-          alt="A founder's desk with a laptop, with floating Founder and Investor profile cards connected through Kavan above it"
+          alt="A founder's desk with a laptop and a Kavan mug, with floating Founder and Investor profile cards connected through the Kavan pineapple mark above it"
           className="absolute inset-0 w-full h-full object-cover"
         />
         {/* Left-to-right scrim so the overlaid heading stays readable against
-            whatever's directly behind it in the photo, same technique
-            TrustPhotoCard already uses for its own photo+caption overlay. */}
-        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/75 to-transparent dark:from-slate-950 dark:via-slate-950/70 dark:to-transparent" />
+            whatever's directly behind it in the photo (a busier bookshelf in
+            this image than the earlier one, so a touch stronger/wider than
+            before), same technique TrustPhotoCard already uses for its own
+            photo+caption overlay. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-cream from-[15%] via-cream/85 via-[45%] to-transparent dark:from-slate-950 dark:from-[15%] dark:via-slate-950/80 dark:via-[45%] dark:to-transparent" />
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-[280px] sm:max-w-sm pl-6 sm:pl-10">
-            <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">Why join</span>
+            {/* Emerald, not the usual blue brand-hover — echoes the Kavan
+                mark's own green pineapple leaves visible in the photo's
+                center badge, and is already this site's established
+                "verified" accent color (CheckCircleIcon, MVP Ready, ...)
+                rather than an invented new one. */}
+            <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Why join</span>
             <h2 className="mt-2 text-page text-ink dark:text-slate-100 tracking-tight">What you actually get</h2>
             <p className="mt-2 text-[13.5px] sm:text-[14.5px] text-muted dark:text-slate-400">Not features — the real difference it makes for you.</p>
           </div>
