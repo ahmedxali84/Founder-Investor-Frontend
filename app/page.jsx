@@ -5,7 +5,6 @@ import MobileNav from '../components/MobileNav.jsx'
 import NavDropdown from '../components/NavDropdown.jsx'
 import HeroMatchCard from '../components/HeroMatchCard.jsx'
 import ThemeToggle from '../components/ThemeToggle.jsx'
-import BenefitsIllustration from '../components/illustrations/BenefitsIllustration.jsx'
 import WhyDifferentIllustration from '../components/illustrations/WhyDifferentIllustration.jsx'
 import PrivacyIllustration from '../components/illustrations/PrivacyIllustration.jsx'
 import {
@@ -293,12 +292,18 @@ function AboutKavan() {
             you to just that one person at a time.
           </p>
         </Reveal>
-        <Reveal delay={120} variant="scale" className="relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 aspect-[5/3]">
-          <img
-            src="/about-match-scene.png"
-            alt="A founder and an investor talking at a table, with floating Founder and Investor profile cards connected by a verified match badge above them"
-            className="w-full h-full object-cover"
-          />
+        <Reveal delay={120} variant="scale" className="relative">
+          {/* Same soft glow treatment as the Hero's own photo card above —
+              ties this section back to the page's opening visual instead of
+              the photo just sitting flat on the cream background. */}
+          <div className="pointer-events-none absolute -inset-5 bg-gradient-to-br from-brand/20 via-indigo-400/10 to-transparent blur-2xl rounded-[2.5rem]" />
+          <div className="relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 aspect-[5/3]">
+            <img
+              src="/about-match-scene.png"
+              alt="A founder and an investor talking at a table, with floating Founder and Investor profile cards connected by a verified match badge above them"
+              className="w-full h-full object-cover"
+            />
+          </div>
         </Reveal>
       </div>
 
@@ -411,18 +416,24 @@ const BENEFITS_INVESTORS = [
 function Benefits() {
   return (
     <section id="benefits" className="max-w-6xl mx-auto px-6 py-16 lg:py-20 scroll-mt-24">
-      <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-        <Reveal variant="scale">
-          <IllustrationCard>
-            <BenefitsIllustration />
-          </IllustrationCard>
-        </Reveal>
-        <Reveal delay={120}>
-          <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">Why join</span>
-          <h2 className="mt-2 text-page text-ink dark:text-slate-100 tracking-tight">What you actually get</h2>
-          <p className="mt-2 text-[14.5px] text-muted dark:text-slate-400">Not features — the real difference it makes for you.</p>
-        </Reveal>
-      </div>
+      <Reveal variant="scale" className="relative rounded-3xl overflow-hidden shadow-card ring-1 ring-black/5 dark:ring-white/10 aspect-[4/3] sm:aspect-[16/7]">
+        <img
+          src="/benefits-match-scene.png"
+          alt="A founder's desk with a laptop, with floating Founder and Investor profile cards connected through Kavan above it"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* Left-to-right scrim so the overlaid heading stays readable against
+            whatever's directly behind it in the photo, same technique
+            TrustPhotoCard already uses for its own photo+caption overlay. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/75 to-transparent dark:from-slate-950 dark:via-slate-950/70 dark:to-transparent" />
+        <div className="absolute inset-0 flex items-center">
+          <div className="max-w-[280px] sm:max-w-sm pl-6 sm:pl-10">
+            <span className="text-[11px] font-bold text-brand-hover dark:text-blue-400 uppercase tracking-wider">Why join</span>
+            <h2 className="mt-2 text-page text-ink dark:text-slate-100 tracking-tight">What you actually get</h2>
+            <p className="mt-2 text-[13.5px] sm:text-[14.5px] text-muted dark:text-slate-400">Not features — the real difference it makes for you.</p>
+          </div>
+        </div>
+      </Reveal>
 
       <div className="mt-10 grid sm:grid-cols-2 gap-6">
         <Reveal variant="left" className="rounded-3xl bg-white dark:bg-slate-900 ring-1 ring-black/5 dark:ring-white/10 shadow-sm p-7">
