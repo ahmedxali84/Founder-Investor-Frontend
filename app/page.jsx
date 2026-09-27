@@ -13,6 +13,7 @@ import {
 const NAV_LINKS = [
   {
     label: 'Why Kavan',
+    intro: 'See how real profiles, one real match, and real deals actually work.',
     // Pre-rendered elements, not raw component references — NavDropdown is
     // a Client Component, and a Server Component (this file exports
     // `metadata`) can't pass a function prop like Icon across that boundary.
@@ -108,7 +109,7 @@ function Navbar() {
         <nav className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((l) =>
             l.dropdown ? (
-              <NavDropdown key={l.label} label={l.label} items={l.dropdown} />
+              <NavDropdown key={l.label} label={l.label} intro={l.intro} items={l.dropdown} />
             ) : (
               <a key={l.href} href={l.href} className="text-nav text-ink/70 dark:text-slate-300 hover:text-ink dark:hover:text-white transition-colors">{l.label}</a>
             )
